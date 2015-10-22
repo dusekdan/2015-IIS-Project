@@ -5,7 +5,7 @@
  * @description This class handles all the communication with database server
  * @author Daniel Dusek <dusekdan@gmail.com>
  */
-final class MySQLDriver
+final class MySQLDriver extends Config
 {
 
     /**
@@ -35,10 +35,14 @@ final class MySQLDriver
     private $mLastError = "";
 
     /**
-     * Constructor where connection to database is established as well as character sect selection
+     * Basically every page of the system uses database - which makes constructor ideal place to load configuration & establish connection
      */
     public function __construct()
     {
+
+        /// Loading configuration
+        parent::LoadConfiguration();
+
         mysql_connect(self::SERVER_NAME, self::SERVER_USERNAME, self::SERVER_PASSWORD);
         mysql_select_db(self::SERVER_DBNAME);
 

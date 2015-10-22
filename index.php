@@ -1,7 +1,12 @@
 <?php
-header("Content-type: text/html; charset=utf-8");
+/// Auto-loading function that ensures that I will never have to manually add classes from AppData
+function __autoload($className)
+{
+    include_once("AppData/" . $className . ".class.php");
+}
 
-include("AppData/MySQLDriver.class.php");
+
+
 $db = new MySQLDriver();
 
 
