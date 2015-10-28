@@ -27,17 +27,15 @@ if(isset($_POST["logon_username"]) && isset($_POST["logon_password"]))
         exit;
     }
 
-    // At this moment, we should be certain we can safely test user against DB
-    if($Auth->verifyUserCredentials($name, $password))
+    // Trial to log user on
+    if($Auth->logOnEmployee($name, $password))
     {
-        header("location: admin.php");
-        exit;
+        header("location: Admin.php");
     }
     else
     {
         echo "Given combination of username & password does not exist!";
     }
-
 
 }
 else

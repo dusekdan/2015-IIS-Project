@@ -40,6 +40,7 @@ final class MySQLDriver extends Config
      */
     public function __construct()
     {
+        session_start();
 
         /// Loading configuration
         parent::LoadConfiguration();
@@ -54,7 +55,7 @@ final class MySQLDriver extends Config
 
 
     /**
-     * @description Setter for mLastError property. Is set only when verbose parameter of callee function is set to false
+     * Setter for mLastError property. Is set only when verbose parameter of callee function is set to false
      * @param $value String value of last error
      */
     private function setLastError($value)
@@ -64,7 +65,7 @@ final class MySQLDriver extends Config
 
 
     /**
-     * @description Getter for mLastError property
+     * Getter for mLastError property
      * @return string Value of last error
      */
     public function getLastError()
@@ -74,7 +75,7 @@ final class MySQLDriver extends Config
 
 
     /**
-     * @description This method serves for sending sql commands to database. Method expects outputs to be already secured.
+     * Serves for sending sql commands to database. Method expects outputs to be already secured.
      * @param $sql String sql command to be send to sql server
      * @param bool|true $checkForErrors Setting this parameter to false will result in no error check will be done after the sql command is sent to database
      * @param bool|true $useHTMLFormat Setting this parameter to false will strip output from error check (if provided) of HTML formatting
@@ -128,6 +129,18 @@ final class MySQLDriver extends Config
         return $resource;
     }
 
+    /**
+     * Returns one row for the specified command TODO: Responses for error states
+     * @param $sql String sql command to be send to database
+     * @return array One fetched row from the database
+     */
+    public function fetch($sql)
+    {
+        $q = $this->query($sql);
+        $data = mysql_fetch_assoc($q);
+        return $data;
+    }
+/*
     public function prepareString()
     {
 
@@ -137,7 +150,7 @@ final class MySQLDriver extends Config
     {
 
     }
-
+*/
     /// TODO: Create function that secures string & move it to separate class
     private function preventSQLInjection($value)
     {
@@ -151,7 +164,7 @@ final class MySQLDriver extends Config
     }
 
 
-    
+
 }
 
 ?>
