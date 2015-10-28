@@ -1,0 +1,146 @@
+body {
+    margin: auto;
+    background-color: #BECDCF;
+    font-family: Verdana, Arial, sans-serif;
+}
+
+a {
+    color: #2A8F96 ;
+    text-decoration: none;
+}
+
+a.selected {
+    color: #015359;
+}
+
+.boxes {
+    margin: 12% 20%;
+    clear: both;
+
+}
+
+.employee_box, .director_box {
+    float:left;
+    position: relative;
+    overflow: hidden;
+    width: 30%;
+    padding-bottom: 30%; /* = width for a 1:1 aspect ratio */
+    margin:1.66%;
+    background-color: #015359;
+
+}
+
+.director_box {
+    display: none;
+}
+
+.box_content {
+    position:absolute;
+    height:80%; /* = 100% - 2*10% padding */
+    width:90%; /* = 100% - 2*5% padding */
+    padding: 10% 5%;
+}
+.box_content .rs{
+    width:auto;
+    height:auto;
+    max-height:90%;
+    max-width:100%;
+}
+
+.box_table{
+    display:table;
+    height:100%;
+    width:100%;
+}
+
+.box_table-cell{
+    display:table-cell;
+    vertical-align:middle;
+    height:100%;
+    width:100%;
+}
+
+.header {
+    margin-bottom: 12%;
+    padding: 1%;
+    background-color:#8BC4CC;
+}
+
+.main_header {
+    float: right;
+}
+
+.tabs_header {
+    text-align: center;
+    clear: both;
+}
+
+.tabs_header a{
+    padding: 1%;
+    clear: both;
+}
+
+.form {
+    clear: both;
+    float: left;
+    background-color: #A6B1B3 ;
+    display: block;
+    margin: 0 25%;
+    padding: 3%;
+    #position: absolute;
+    #left:0;
+    #right:0;
+    width: 44%;
+    -webkit-column-count: 1;
+    column-count: 1;
+}
+
+.form_content {
+    color: #383D3D;
+    text-align: left;
+    width: 100%;
+}
+
+.form input, .form textarea {
+    color: #022124;
+    background-color: #E6E6E6;
+}
+
+.form textarea{
+    margin-top: 1%;
+    width: 97%;
+}
+
+.form .text {
+    border: none;
+    padding: 0.5% 1%;
+}
+
+input.button {
+    color: #015359;
+    background-color: #CAEBED;
+    font-size: 105%;
+    #font-weight: bold;
+    border: none;
+    padding: 0.5% 3% 0;
+}
+
+select {
+    width: 50%; /* Set width. Do not set height else it will fail in IE8-10. Use padding for height. */
+    padding: 0.5% 1%;
+    font-size: 90%;
+    color: #015359;
+    background-image: url("../Images/arrow.png"); /* add your own arrow image */
+    background-color: #CAEBED;
+}
+select option {
+    background: #CAEBED; /* style the dropdown bg color */
+}
+select:active, select:hover {
+    outline: none
+}
+
+/* make it red instead (with with same width and style) */
+select:active, select:hover {
+    outline-color: #2A8F96;
+}
