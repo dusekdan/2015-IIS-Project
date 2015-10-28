@@ -17,7 +17,7 @@ final class MySQLDriver extends Config
     const SERVER_USERNAME = "root";
     /// Constant containing password to server
     const SERVER_PASSWORD = "";
-    /// Contant containing name of the database
+    /// Constant containing name of the database
     const SERVER_DBNAME   = "iisproject";
     /// Character set we use to work with database
     const SERVER_CHARSET = "utf8";
@@ -33,6 +33,7 @@ final class MySQLDriver extends Config
      */
 
     private $mLastError = "";
+
 
     /**
      * Basically every page of the system uses database - which makes constructor ideal place to load configuration & establish connection
@@ -71,6 +72,7 @@ final class MySQLDriver extends Config
         return $this->mLastError;
     }
 
+
     /**
      * @description This method serves for sending sql commands to database. Method expects outputs to be already secured.
      * @param $sql String sql command to be send to sql server
@@ -104,7 +106,7 @@ final class MySQLDriver extends Config
                 }
                 else
                 {
-                    $errorReport = "Database Error! #$errorNumber:$errorMessage" . PHP_EOL;
+                    $errorReport = "Database Error! #$errorNumber: $errorMessage" . PHP_EOL;
                 }
 
                 // Printing information on screen & setting return value to error
@@ -136,13 +138,13 @@ final class MySQLDriver extends Config
 
     }
 
-    /// TODO: Create function that secures string
+    /// TODO: Create function that secures string & move it to separate class
     private function preventSQLInjection($value)
     {
 
     }
 
-    /// TODO: Create function that secures string
+    /// TODO: Create function that secures string & move it to separate class
     private function preventXSS($value)
     {
         return $value;

@@ -1,11 +1,9 @@
 <?php
-/// Auto-loading function that ensures that I will never have to manually add classes from AppData
+/// Auto-loading function that ensures that I will never have to manually add classes from AppBase
 function __autoload($className)
 {
-    include_once("AppData/" . $className . ".class.php");
+    include_once("AppBase/" . $className . ".class.php");
 }
-
-
 
 $db = new MySQLDriver();
 
