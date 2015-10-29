@@ -54,8 +54,18 @@ $globalHASH     = $_SESSION["emp_hash"];
         <div class="box_content">
             <div class="box_table">
                 <div class="box_table-cell">
-                    <a href="addProduct.html">
-                        <img class="rs" src="https://farm9.staticflickr.com/8461/8048823381_0fbc2d8efb.jpg"/>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="employee_box">
+        <div class="box_content add_box">
+            <div class="box_table">
+                <div class="box_table-cell">
+                    <a class="a_add" href="addProduct.html">
+                        <img class="rs" src="../Resources/Images/ikona_plus_mensi.jpg">
                     </a>
                 </div>
             </div>
@@ -66,7 +76,7 @@ $globalHASH     = $_SESSION["emp_hash"];
         <div class="box_content">
             <div class="box_table">
                 <div class="box_table-cell">
-                    ... CONTENT HERE ...
+                    <img class="rs" src="../Resources/Images/ikona_oko_mensi.jpg">
                 </div>
             </div>
         </div>
@@ -76,20 +86,28 @@ $globalHASH     = $_SESSION["emp_hash"];
         <div class="box_content">
             <div class="box_table">
                 <div class="box_table-cell">
-                    ... CONTENT HERE ...
+                    <img class="rs" src="../Resources/Images/ikona_objednavky_mensi.jpg">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="employee_box">
+        <div class="box_content">
+            <div class="box_table">
+                <div class="box_table-cell">
+
                 </div>
             </div>
         </div>
     </div>
 
     <!-- 2nd row */  -->
-    <!--<div class="director_box">
+    --<div class="director_box">
         <div class="box_content">
             <div class="box_table">
                 <div class="box_table-cell">
-                    <a href="...">
-                        <img class="rs" src="https://farm9.staticflickr.com/8461/8048823381_0fbc2d8efb.jpg"/>
-                    </a>
+
                 </div>
             </div>
         </div>
@@ -113,6 +131,70 @@ $globalHASH     = $_SESSION["emp_hash"];
                 </div>
             </div>
         </div>
-    </div>-->
+    </div>
 
+    <div class="director_box">
+        <div class="box_content">
+            <div class="box_table">
+                <div class="box_table-cell">
+                    ... CONTENT HERE ...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="director_box">
+        <div class="box_content">
+            <div class="box_table">
+                <div class="box_table-cell">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ordinary_box">
+        <div class="box_content">
+            <div class="box_table">
+                <div class="box_table-cell">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ordinary_box">
+        <div class="box_content">
+            <div class="box_table">
+                <div class="box_table-cell">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ordinary_box">
+        <div class="box_content">
+            <div class="box_table">
+                <div class="box_table-cell">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ordinary_box">
+        <div class="box_content">
+            <div class="box_table">
+                <div class="box_table-cell">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ordinary_box">
+        <div class="box_content">
+            <div class="box_table">
+                <div class="box_table-cell">
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
