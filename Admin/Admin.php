@@ -21,6 +21,10 @@ if(!$Auth->verifyEmployeeSession($_SESSION["emp_id"], $_SESSION["emp_hash"]))
     exit;
 }
 
+// Current user data SESSION storage
+$globalUID      = $_SESSION["emp_id"];
+$globalHASH     = $_SESSION["emp_hash"];
+
 $userData = $db->fetch("select emp_fullname, emp_username, emp_email, emp_role FROM employee WHERE emp_id='$globalUID'");
 
 // Current user data storage
@@ -29,9 +33,7 @@ $globalFULLNAME = $userData["emp_fullname"];
 $globalEMAIL    = $userData["emp_email"];
 $globalUSERNAME = $userData["emp_username"];
 
-// Current user data SESSION storage
-$globalUID      = $_SESSION["emp_id"];
-$globalHASH     = $_SESSION["emp_hash"];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
