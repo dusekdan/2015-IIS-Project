@@ -14,20 +14,40 @@ a.selected {
 }
 
 .boxes {
-    margin: 1% 1%;
+    margin: 0 10%;
     clear: both;
 
 }
 
-.employee_box, .director_box, .ordinary_box {
+.employee_box, .director_box, .ordinary_box_s, .ordinary_box_l {
     float:left;
     position: relative;
     overflow: hidden;
-    width: 18%;
-    padding-bottom: 18%; /* = width for a 1:1 aspect ratio */
-    margin:0.66%;
+    width: 19%;
+    padding-bottom: 19%; /* = width for a 1:1 aspect ratio */
+    margin:0.5%;
     background-color: #015359;
 
+}
+
+.first_line_box {
+    width: 19%;
+    padding-bottom: 12%; /* = width for a 1:1 aspect ratio */
+    margin:0.5%;
+}
+
+.last_line_box {
+    width: 19%;
+    padding-bottom: 16%; /* = width for a 1:1 aspect ratio */
+    margin:0.5%;
+}
+
+.ordinary_box_l {
+    background-color: #8BC4CC;
+}
+
+.ordinary_box_s {
+    background-color: #01838C;
 }
 
 .add_box {
@@ -68,13 +88,14 @@ a.selected {
 }
 
 .header {
-    margin-bottom: 3%;
-    padding: 1%;
-    background-color:#8BC4CC;
+    margin: 0.5% 10.4%;
+    padding: 0.5% 0.5%;
+    background-color:#01838C;
+    text-align: right;
 }
 
-.main_header {
-    float: right;
+.a_sign_out {
+    color: #CAEBED;
 }
 
 .tabs_header {

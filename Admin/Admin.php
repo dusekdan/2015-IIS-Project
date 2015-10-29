@@ -42,30 +42,30 @@ $globalHASH     = $_SESSION["emp_hash"];
 </head>
 <body>
 
-<!-- Part where currently logged employee information is displayed -->
 <div class="header main_header">
-    <?php echo "Přihlášený uživatel: " . $userData["emp_fullname"] . "($userData[emp_email]), <a class='a_sign_out' href='LogOff.php'>odhlásit</a>"; ?>
+   <?php echo "Přihlášený uživatel: " . $userData["emp_fullname"] . "($userData[emp_email]), <a class='a_sign_out' href='LogOff.php'>odhlásit</a>"; ?>
 </div>
+
 
 <div class ="boxes">
 
-    <!-- 1st row */ -->
-    <div class="employee_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
+    <!-- Part where currently logged employee information is displayed -->
 
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="ordinary_box_l first_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
+    <div class="ordinary_box_s first_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
+    <div class="ordinary_box_l first_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
+    <div class="ordinary_box_s first_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
+    <div class="ordinary_box_l first_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
+
+    <!-- 1st row */ -->
+    <div class="employee_box ordinary_box_s"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
 
     <div class="employee_box">
         <div class="box_content add_box">
             <div class="box_table">
                 <div class="box_table-cell">
                     <a class="a_add" href="addProduct.html">
-                        <img class="rs" src="../Resources/Images/ikona_plus_mensi.jpg">
+                        <img class="rs" src="../Resources/Images/ikona_plus_mensi.jpg" onmouseover="this.src='../Resources/Images/ikona_plus.jpg'" onmouseout="this.src='../Resources/Images/ikona_plus_mensi.jpg'"/>
                     </a>
                 </div>
             </div>
@@ -76,7 +76,7 @@ $globalHASH     = $_SESSION["emp_hash"];
         <div class="box_content">
             <div class="box_table">
                 <div class="box_table-cell">
-                    <img class="rs" src="../Resources/Images/ikona_oko_mensi.jpg">
+                    <img class="rs" src="../Resources/Images/ikona_oko_mensi.jpg" onmouseover="this.src='../Resources/Images/ikona_oko.jpg'" onmouseout="this.src='../Resources/Images/ikona_oko_mensi.jpg'"/>
                 </div>
             </div>
         </div>
@@ -86,32 +86,16 @@ $globalHASH     = $_SESSION["emp_hash"];
         <div class="box_content">
             <div class="box_table">
                 <div class="box_table-cell">
-                    <img class="rs" src="../Resources/Images/ikona_objednavky_mensi.jpg">
+                    <img class="rs" src="../Resources/Images/ikona_objednavky_mensi.jpg" onmouseover="this.src='../Resources/Images/ikona_objednavky.jpg'" onmouseout="this.src='../Resources/Images/ikona_objednavky_mensi.jpg'"/>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="employee_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
-
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="employee_box ordinary_box_s"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
 
     <!-- 2nd row */  -->
-    --<div class="director_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
-
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="director_box ordinary_box_s"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
 
     <div class="director_box">
         <div class="box_content">
@@ -143,58 +127,12 @@ $globalHASH     = $_SESSION["emp_hash"];
         </div>
     </div>
 
-    <div class="director_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="director_box ordinary_box_s"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
 
-    <div class="ordinary_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
+    <div class="ordinary_box_l last_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
+    <div class="ordinary_box_s last_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
+    <div class="ordinary_box_l last_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
+    <div class="ordinary_box_s last_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
+    <div class="ordinary_box_l last_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
 
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="ordinary_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="ordinary_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="ordinary_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
-
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="ordinary_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
-
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
