@@ -48,93 +48,215 @@ $globalUSERNAME = $userData["emp_username"];
    <?php echo "Přihlášený uživatel: " . $userData["emp_fullname"] . "($userData[emp_email]), <a class='a_sign_out' href='LogOff.php'>odhlásit</a>"; ?>
 </div>
 
+<?php
+if(!isset($_GET["action"]))
+{
+?>
+    <div class="boxes">
 
-<div class ="boxes">
+        <!-- Part where currently logged employee information is displayed -->
 
-    <!-- Part where currently logged employee information is displayed -->
-
-    <div class="ordinary_box_l first_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
-    <div class="ordinary_box_s first_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
-    <div class="ordinary_box_l first_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
-    <div class="ordinary_box_s first_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
-    <div class="ordinary_box_l first_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
-
-    <!-- 1st row */ -->
-    <div class="employee_box ordinary_box_s"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
-
-    <div class="employee_box">
-        <div class="box_content add_box">
-            <div class="box_table">
-                <div class="box_table-cell">
-                    <a class="a_add" href="addProduct.html">
-                        <img class="rs" src="../Resources/Images/ikona_plus_mensi.jpg" onmouseover="this.src='../Resources/Images/ikona_plus.jpg'" onmouseout="this.src='../Resources/Images/ikona_plus_mensi.jpg'"/>
-                    </a>
+        <div class="ordinary_box_l first_line_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="employee_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
-                    <img class="rs" src="../Resources/Images/ikona_oko_mensi.jpg" onmouseover="this.src='../Resources/Images/ikona_oko.jpg'" onmouseout="this.src='../Resources/Images/ikona_oko_mensi.jpg'"/>
+        <div class="ordinary_box_s first_line_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="employee_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
-                    <img class="rs" src="../Resources/Images/ikona_objednavky_mensi.jpg" onmouseover="this.src='../Resources/Images/ikona_objednavky.jpg'" onmouseout="this.src='../Resources/Images/ikona_objednavky_mensi.jpg'"/>
+        <div class="ordinary_box_l first_line_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="employee_box ordinary_box_s"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
-
-    <!-- 2nd row */  -->
-    <div class="director_box ordinary_box_s"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
-
-    <div class="director_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
-                    ... CONTENT HERE ...
+        <div class="ordinary_box_s first_line_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div class="director_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
-                    ... CONTENT HERE ...
+        <div class="ordinary_box_l first_line_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="director_box">
-        <div class="box_content">
-            <div class="box_table">
-                <div class="box_table-cell">
-                    ... CONTENT HERE ...
+        <!-- 1st row */ -->
+        <div class="employee_box ordinary_box_s">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
                 </div>
             </div>
         </div>
+
+
+        <!-- PRIVILEGE LEVEL 1 BOXES -->
+
+        <div class="employee_box">
+            <div class="box_content add_box">
+                <div class="box_table">
+                    <div class="box_table-cell">
+                        <a class="a_add" href="Admin.php?action=Add">
+                            <img class="rs" src="../Resources/Images/ikona_plus_mensi.jpg"
+                                 onmouseover="this.src='../Resources/Images/ikona_plus.jpg'"
+                                 onmouseout="this.src='../Resources/Images/ikona_plus_mensi.jpg'"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="employee_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell">
+                        <a href="Admin.php?action=View">
+                            <img class="rs" src="../Resources/Images/ikona_oko_mensi.jpg"
+                                 onmouseover="this.src='../Resources/Images/ikona_oko.jpg'"
+                                 onmouseout="this.src='../Resources/Images/ikona_oko_mensi.jpg'"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="employee_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell">
+                        <a href="Admin.php?action=Orders">
+                        <img class="rs" src="../Resources/Images/ikona_objednavky_mensi.jpg"
+                             onmouseover="this.src='../Resources/Images/ikona_objednavky.jpg'"
+                             onmouseout="this.src='../Resources/Images/ikona_objednavky_mensi.jpg'"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="employee_box ordinary_box_s">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2nd row */  -->
+        <div class="director_box ordinary_box_s">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="director_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell">
+                        ... CONTENT HERE ...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="director_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell">
+                        ... CONTENT HERE ...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="director_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell">
+                        ... CONTENT HERE ...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="director_box ordinary_box_s">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ordinary_box_l last_line_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ordinary_box_s last_line_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ordinary_box_l last_line_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ordinary_box_s last_line_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
+                </div>
+            </div>
+        </div>
+        <div class="ordinary_box_l last_line_box">
+            <div class="box_content">
+                <div class="box_table">
+                    <div class="box_table-cell"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
+    <?php
+}
+else
+{
+    $action = $_GET["action"];
 
-    <div class="director_box ordinary_box_s"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
+    switch($action)
+    {
 
-    <div class="ordinary_box_l last_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
-    <div class="ordinary_box_s last_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
-    <div class="ordinary_box_l last_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
-    <div class="ordinary_box_s last_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
-    <div class="ordinary_box_l last_line_box"><div class="box_content"><div class="box_table"><div class="box_table-cell"></div></div></div></div>
+        case "Add":
 
-</div>
+            include("../addProduct.html");
+
+            break;
+
+        default: echo "Unauthorized access"; break;
+    }
+}
+?>
+
+</body>
+</html>
