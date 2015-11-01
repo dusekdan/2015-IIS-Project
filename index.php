@@ -9,13 +9,17 @@ $db = new MySQLDriver();
 
 
 
-$data = $db->query("select * from testtable");
 
+
+echo "<h1>Systémové statistiky</h1>";
+
+$data = $db->query("select * from employee, employee_role WHERE emp_role = erole_id");
 if($data != -1)
 {
+    echo "<h2>Aktuálně existující uživatelé:</h2>" . PHP_EOL;
     while($r = mysql_fetch_assoc($data))
     {
-        echo $r["name"] . "<br>";
+        echo $r["erole_name"] . " " . $r["emp_fullname"] . " (" . $r["emp_username"]  . ") <br>" . PHP_EOL;
     }
 }
 
