@@ -134,7 +134,7 @@ final class Auth
      * @param $string String to be hashed
      * @return string String that is hashed
      */
-    private function hashPassword($string)
+    public function hashPassword($string)
     {
         return crypt($string, self::CREDENTIALS_SALT);
     }

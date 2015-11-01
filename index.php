@@ -6,7 +6,7 @@ function __autoload($className)
 }
 
 $db = new MySQLDriver();
-
+$Auth = new Auth($db);
 
 
 
@@ -25,3 +25,21 @@ if($data != -1)
 
 
 ?>
+
+<hr>
+<form method="post" action="">
+    <table>
+        <tr>
+            <td>Heslo k vygenerování:</td>
+            <td><input type="text" name="passwordToHash"></td>
+        </tr>
+        <tr>
+            <td>Hash:</td>
+            <td><input type="text" name="hashedPassword" value="<?php if(isset($_POST["passwordToHash"])){echo $Auth->hashPassword($_POST["passwordToHash"]);} ?>"></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><input type="submit" value="Vygenerovat hash"></td>
+        </tr>
+    </table>
+</form>
