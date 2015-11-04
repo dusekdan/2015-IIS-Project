@@ -1,59 +1,88 @@
+@font-face {
+    font-family: kozuka;
+    src: url('../fonts/KozGoPr6N-Bold.otf');
+}
+
+.page{
+    width: 1600px;
+    margin: 0 auto;
+    background-image: url("../Images/background.png");
+    background-repeat: repeat-x;
+}
+
 body {
-    margin: auto;
-    background-color: #BECDCF;
-    font-family: Verdana, Arial, sans-serif;
+    font-family: kozuka, Arial, sans-serif;
+    margin: 0 auto;
+
+
+}
+
+.headerLine {
+    background-color: #225477;
+    margin: 0 50px;
+    height: 2px;
+    clear: both;
+}
+
+header img.logo {
+    margin: 20px 70px;
+    float: left;
+}
+
+header .headline {
+    float: right;
+    font-size: 25px;
+    font-family: kozuka, Arial, sans-serif;;
+    margin-top: 100px;
+    margin-right: 150px;
+}
+
+header .userdata {
+    text-align: right;
+    float: right;
+    font-size: 18px;
+    font-family: kozuka, Arial, sans-serif;;
+    margin-top: 50px;
+    margin-right: 50px;
+}
+
+.signInForm {
+    
+    padding-bottom: 1000px;
+    clear: both;
+    font-size: 22px;
 }
 
 a {
-    color: #2A8F96 ;
+    color: #225477 ;
     text-decoration: none;
 }
 
 a.selected {
-    color: #015359;
+    color: #427aa1;
 }
 
 .boxes {
-    margin: 0 10%;
+    width: 1200px;
+    margin-top: 100px;
+    margin-right: 350px;
+    margin-left: 350px;
     clear: both;
-
 }
 
-.employee_box, .director_box, .ordinary_box_s, .ordinary_box_l {
+.employee_box, .director_box{
     float:left;
     position: relative;
     overflow: hidden;
-    width: 19%;
-    padding-bottom: 19%; /* = width for a 1:1 aspect ratio */
-    margin:0.5%;
-    background-color: #015359;
-
-}
-
-.first_line_box {
-    width: 19%;
-    padding-bottom: 12%; /* = width for a 1:1 aspect ratio */
-    margin:0.5%;
-}
-
-.last_line_box {
-    width: 19%;
-    padding-bottom: 16%; /* = width for a 1:1 aspect ratio */
-    margin:0.5%;
-}
-
-.ordinary_box_l {
-    background-color: #8BC4CC;
-}
-
-.ordinary_box_s {
-    background-color: #01838C;
+    width: 300px;
+    height: 408px;
+    margin:0;
 }
 
 .add_box {
     width:auto;
     height:auto;
-    max-height:90%;
+    max-height:100%;
     max-width:100%;
 }
 
@@ -68,9 +97,9 @@ a.selected {
     padding: 0 0;
 }
 .box_content .rs{
-    width:auto;
+    width: 408px;
     height:auto;
-    max-height:90%;
+    max-height:100%;
     max-width:100%;
 }
 
@@ -95,7 +124,7 @@ a.selected {
 }
 
 .a_sign_out {
-    color: #CAEBED;
+    color: #225477;
 }
 
 .tabs_header {
@@ -115,9 +144,6 @@ a.selected {
     display: block;
     margin: 0 25%;
     padding: 3%;
-    #position: absolute;
-    #left:0;
-    #right:0;
     width: 44%;
     -webkit-column-count: 1;
     column-count: 1;
@@ -139,18 +165,40 @@ a.selected {
     width: 97%;
 }
 
-.form .text {
+form .text {
     border: none;
-    padding: 0.5% 1%;
+    width: 300px;
+    height: 40px;
+    padding: 2px 1px;
 }
 
 input.button {
+    height: 44px;
+    width: 130px;
     color: #015359;
-    background-color: #CAEBED;
-    font-size: 105%;
-    #font-weight: bold;
-    border: none;
-    padding: 0.5% 3% 0;
+    background-image: url("../Images/button.png");
+    font-size: 90%;
+    font-family: kozuka, Arial, sans-serif;
+    font-weight: normal;
+    border:none;
+    align-content: center;
+    margin: 50px auto;
+
+}
+
+form table {
+    width: 1000px;
+    height: 325px;
+    align-self: auto;
+    margin: 50px auto;
+    padding: 50px;
+}
+form table td {
+    width: 300px;
+}
+
+form table td.thin {
+    width: 150px;
 }
 
 select {
