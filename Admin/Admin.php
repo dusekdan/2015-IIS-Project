@@ -4,8 +4,10 @@ function __autoload($className)
     include_once("../AppBase/" . $className . ".class.php");
 }
 
-$db = new MySQLDriver();
-$Auth = new Auth($db);
+$DB = new MySQLDriver();
+$IF = new InputFilter();
+$Auth = new Auth($DB);
+$AML = new AdminModuleLoader();
 
 // Case when someone access Admin.php without SESSIONs existing
 if(!isset($_SESSION["emp_id"]) || !isset($_SESSION["emp_hash"]))
@@ -25,7 +27,7 @@ if(!$Auth->verifyEmployeeSession($_SESSION["emp_id"], $_SESSION["emp_hash"]))
 $globalUID      = $_SESSION["emp_id"];
 $globalHASH     = $_SESSION["emp_hash"];
 
-$userData = $db->fetch("select emp_fullname, emp_username, emp_email, emp_role FROM employee WHERE emp_id='$globalUID'");
+$userData = $DB->fetch("select emp_fullname, emp_username, emp_email, emp_role FROM employee WHERE emp_id='$globalUID'");
 
 // Current user data storage
 $globalROLE     = $userData["emp_role"];
@@ -153,9 +155,33 @@ else
     switch($action)
     {
 
-        case "Add":
+        case $_GET["action"]:
 
-            include("../addProduct.html");
+            // search how to check that class implements something
+            // search how to check that class extends something
+            // - and make it at least implement public function __construct($MySQLDriver, $InputFilter, $Auth);
+
+            if($AML->checkModuleExists($_GET["action"], "../Admin/Pages/"))
+            {
+                include("Pages/Add/AddHelper.class.php");
+                include("Pages/Add/Add.php");
+
+                $className = $_GET["action"] . "Helper";
+                $classArgs = array($DB, $Auth, $IF);
+
+                $reflection = new ReflectionClass($className);
+
+                $MH = $reflection->newInstanceArgs($classArgs);
+
+                //$gg = new ;
+//                ${$_GET["action"]} = new {$_GET["action"]}($DB, $IF, $Auth);
+                // dynamic loading with passing some useful parameters would be nice... (I could control how the constructor will look like)
+
+            }
+            else
+            {
+                echo "Module loading file or helper class do not exist!";
+            }
 
             break;
 
