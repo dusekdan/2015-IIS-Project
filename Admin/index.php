@@ -1,4 +1,11 @@
 <?php
+/******************************************************************
+ *  IIS PROJECT 2015: Internetový obchod - Papírnictví            *
+ *  Created by: Daniel Dušek <xdusek21> & Anna Popková (xpopko00) *
+ *  FIT VUT, 3BIT (Academic Year 2015/2016)                       *
+ ******************************************************************/
+
+
 /// Auto-loading function that ensures that I will never have to manually add classes from AppBase
 function __autoload($className)
 {

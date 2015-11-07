@@ -1,12 +1,49 @@
 <?php
+/******************************************************************
+ *  IIS PROJECT 2015: Internetový obchod - Papírnictví            *
+ *  Created by: Daniel Dušek <xdusek21> & Anna Popková (xpopko00) *
+ *  FIT VUT, 3BIT (Academic Year 2015/2016)                       *
+ ******************************************************************/
+
+
+/**
+ * Autoloading function to load classes and interfaces as they are called
+ * @param $className String name of the class to be loaded
+ */
 function __autoload($className)
 {
-    include_once("../AppBase/" . $className . ".class.php");
+    // Class auto-loading with check for file existence
+    if(file_exists("../AppBase/" . $className . ".class.php"))
+    {
+        include_once("../AppBase/" . $className . ".class.php");
+    }
+    // Interface auto-loading with check for file existence
+    else if(file_exists("../AppBase/". $className . ".php"))
+    {
+        include_once("../AppBase/" . $className . ".php");
+    }
+    // Neither class file nor interface file exist
+    else
+    {
+        echo "Class/Interface does not exists and could not be loaded. Sorry.";
+        exit;
+    }
 }
 
+/**
+ * Instantiation of classes for basic operations
+ */
+
+/// Database helper
 $DB = new MySQLDriver();
+
+/// Input Filter (user/insecure input)
 $IF = new InputFilter();
+
+/// Authentication helper
 $Auth = new Auth($DB);
+
+/// Admin module loader helper
 $AML = new AdminModuleLoader();
 
 // Case when someone access Admin.php without SESSIONs existing
@@ -35,7 +72,7 @@ $globalFULLNAME = $userData["emp_fullname"];
 $globalEMAIL    = $userData["emp_email"];
 $globalUSERNAME = $userData["emp_username"];
 
-
+// Layout base is loaded here
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,13 +86,14 @@ $globalUSERNAME = $userData["emp_username"];
         <header>
             <img src="../Resources/Images/logo.png" alt="LOGO" class="logo" height="120px">
             <div class="userdata">
-
+               <!-- Here goes information about user that is currently logged on -->
                <?php echo "Přihlášený uživatel: " . $userData["emp_fullname"] . "($userData[emp_email])<br> <a class='a_sign_out' href='LogOff.php'>ODHLÁSIT</a>"; ?>
             </div>
             <hr class="headerLine">
         </header>
 
 <?php
+// When no get parameter for action is present, show dashboard layout (HTML)
 if(!isset($_GET["action"]))
 {
 ?>
@@ -148,47 +186,69 @@ if(!isset($_GET["action"]))
      </div>
     <?php
 }
+// When get parameter for action is present, load admin module accordingly
 else
 {
     $action = $_GET["action"];
-
     switch($action)
     {
 
-        case $_GET["action"]:
+        case $action:
 
-            // search how to check that class implements something
-            // search how to check that class extends something
-            // - and make it at least implement public function __construct($MySQLDriver, $InputFilter, $Auth);
+            // Creation of paths to files that should module contain
+            $moduleFile = "Pages/" . $action . "/" . $action . ".php";
+            $moduleHelperClassFile = "Pages/" . $action . "/" . $action . "Helper.class.php";
 
-            if($AML->checkModuleExists($_GET["action"], "../Admin/Pages/"))
+            // Check whether module file is present
+            if(!file_exists($moduleFile))
             {
-                include("Pages/Add/AddHelper.class.php");
-                include("Pages/Add/Add.php");
+                echo "Module file does not exists.";
+                exit;
+            }
 
-                $className = $_GET["action"] . "Helper";
+            // Check whether module helper class is present
+            if(!file_exists($moduleHelperClassFile))
+            {
+                echo "Module helper class file does not exists.";
+                exit;
+            }
+
+            // TODO: Resolve whether this is duplicate code (checkModuleExists)
+            if($AML->checkModuleExists($action, "../Admin/Pages/"))
+            {
+
+                // There is no security risk since existence of the file was confirmed already
+                include($moduleHelperClassFile);
+
+
+                // Every module HAS TO implement IAdminModule interface. This is the check.
+                $className = $action . "Helper";
+                if(!$AML->checkModuleImplementsInterface($className))
+                {
+                    echo "Module has to implement IAdminModule interface and its methods.";
+                    exit;
+                }
+
+                // Creating class dynamically using ReflectionClass in php
+                $reflection = new ReflectionClass($className);
                 $classArgs = array($DB, $Auth, $IF);
 
-                $reflection = new ReflectionClass($className);
-
+                // Creates module helper object, while ensuring entry parameters (Database helper, Auth helper, Input Filter)
+                // This variable is used further on, in the Module.php file to access properly created ModuleHelper object
                 $MH = $reflection->newInstanceArgs($classArgs);
 
-                //$gg = new ;
-//                ${$_GET["action"]} = new {$_GET["action"]}($DB, $IF, $Auth);
-                // dynamic loading with passing some useful parameters would be nice... (I could control how the constructor will look like)
-
+                // Same as the include above, no security risks
+                // Including the module file itself (should contain your custom code, calls & handles for actions contained)
+                include($moduleFile);
             }
+            // Links to TO-DO in condition starting block
             else
             {
-                echo "Module loading file or helper class do not exist!";
+                echo "Module loading file and/or helper class file do not exist!";
             }
-
             break;
-
-        default: echo "Unauthorized access"; break;
     }
 }
 ?>
-
 </body>
 </html>

@@ -1,12 +1,19 @@
 <?php
+/******************************************************************
+ *  IIS PROJECT 2015: Internetový obchod - Papírnictví            *
+ *  Created by: Daniel Dušek <xdusek21> & Anna Popková (xpopko00) *
+ *  FIT VUT, 3BIT (Academic Year 2015/2016)                       *
+ ******************************************************************/
+
 
 /**
  * Class MySQLDriver
- * @description This class handles all the communication with database server
+ * This class handles all the communication with database server
  * @author Daniel Dusek <dusekdan@gmail.com>
  */
 final class MySQLDriver extends Config
 {
+
 
     /**
      * SQL Connection constants
@@ -140,22 +147,14 @@ final class MySQLDriver extends Config
         $data = mysql_fetch_assoc($q);
         return $data;
     }
-/*
-    public function prepareString()
-    {
 
-    }
 
-    public function prepareInteger()
-    {
-
-    }
-*/
     /// TODO: Create function that secures string & move it to separate class
     private function preventSQLInjection($value)
     {
 
     }
+
 
     /// TODO: Create function that secures string & move it to separate class
     private function preventXSS($value)

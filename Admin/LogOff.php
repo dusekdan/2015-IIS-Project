@@ -1,4 +1,11 @@
 <?php
+/******************************************************************
+ *  IIS PROJECT 2015: Internetový obchod - Papírnictví            *
+ *  Created by: Daniel Dušek <xdusek21> & Anna Popková (xpopko00) *
+ *  FIT VUT, 3BIT (Academic Year 2015/2016)                       *
+ ******************************************************************/
+
+
 function __autoload($className)
 {
     include_once("../AppBase/" . $className . ".class.php");

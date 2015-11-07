@@ -1,3 +1,5 @@
+<!-- MODULE DESIGN & CODE GOES HERE -->
+
 <div class="header tabs_header">
     <a class="selected" href="addProduct.html">Produkt</a>
     <a href="addSupplier.html">Dodavatel</a>
@@ -27,3 +29,10 @@
     </div>
 
 </div>
+
+<?php
+// TODO: Remove this.
+// Display information about module, debugging only
+echo $MH->_getModuleDescription();
+
+?>
