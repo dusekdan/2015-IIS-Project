@@ -83,6 +83,7 @@ $globalUSERNAME = $userData["emp_username"];
 </head>
 <body>
 
+        <div class="page">
         <header>
             <img src="../Resources/Images/logo.png" alt="LOGO" class="logo" height="120px">
             <div class="userdata">
@@ -97,7 +98,6 @@ $globalUSERNAME = $userData["emp_username"];
 if(!isset($_GET["action"]))
 {
 ?>
-     <div class="page">
          <div class="boxes">
 
         <!-- Part where currently logged employee information is displayed -->
