@@ -8,7 +8,7 @@
 
 /**
  * Class InputFilter
- * @description Methods for different kinds of filtering user input
+ * Methods for different kinds of filtering user input
  * @author Daniel Dusek <dusekdan@gmail.com>
  */
 class InputFilter
@@ -18,7 +18,7 @@ class InputFilter
     private $mLastError = "";
 
     /**
-     * @description Setter for mLastError property
+     * Setter for mLastError property
      * @param $value String value of last error
      */
     private function setLastError($value)
@@ -28,7 +28,7 @@ class InputFilter
 
 
     /**
-     * @description Getter for mLastError property
+     * Getter for mLastError property
      * @return string Value of last error
      */
     public function getLastError()
@@ -37,7 +37,7 @@ class InputFilter
     }
 
     /**
-     * @description Checks if the password is in the correct format (longer than 6 characters)
+     * Checks if the password is in the correct format (longer than 6 characters)
      * @param $string String value of password
      * @return bool True if password is in correct format, false otherwise
      */
@@ -56,7 +56,7 @@ class InputFilter
     }
 
     /**
-     * @description Checks whether username is in correct format (not empty, atm.)
+     * Checks whether username is in correct format (not empty, atm.)
      * @param $string String value of Username
      * @return bool
      */
@@ -75,7 +75,7 @@ class InputFilter
     }
 
     /**
-     * @description Removes dangerous characters from the string. This is usually a "bad practice" but in this specific situation is acceptable
+     * Removes dangerous characters from the string. This is usually a "bad practice" but in this specific situation is acceptable
      * @param $string String value of user input with possibility of containing dangerous characters
      * @return String without dangerous characters (may as well be empty string)
      */
@@ -85,6 +85,31 @@ class InputFilter
         $string = str_replace("\\", "", $string);
         $string = str_replace("\"", "", $string);
         return $string;
+    }
+
+    /**
+     * Prepares input for insertion to database. Preparation is considering magic_quotes's possible states
+     * @param $input
+     * @return string
+     */
+    public function prepareInputForSQL($input)
+    {
+        if(get_magic_quotes_gpc())
+        {
+            $input = stripslashes($input);
+        }
+
+        return mysql_real_escape_string($input);
+    }
+
+    public function preparePlainText($output)
+    {
+        return false;
+    }
+
+    public function prepareText($output)
+    {
+        return htmlspecialchars($output, ENT_QUOTES);
     }
 
 
