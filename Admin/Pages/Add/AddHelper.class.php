@@ -124,6 +124,7 @@ final class AddHelper implements IAdminModule
                     <td>Mail dodavatele:</td>
                     <td><input class="text" type="text" name="supplierMail"<?php $this->returnPostBackValue("supplierMail"); ?>></td>
                 </tr>
+                <!-- -->
 
                 <tr>
                     <td>Telefon:</td>

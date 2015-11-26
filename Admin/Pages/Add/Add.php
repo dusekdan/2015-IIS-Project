@@ -1,4 +1,4 @@
-<!-- MODULE DESIGN & CODE GOES HERE -->
+<!-- MODULE DESIGN & CODE GOES HERE  -->
 <a href="<?php echo $linkBase; ?>&amp;type=category">Správa kategorií</a> |
 <a href="<?php echo $linkBase; ?>&amp;type=product">Přidat produkt</a> | <a href="<?php echo $linkBase; ?>&amp;type=supplier">Přidat dodavatele</a>
 <?php
