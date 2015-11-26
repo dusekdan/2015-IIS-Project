@@ -97,6 +97,16 @@ final class AddHelper implements IAdminModule
                 </tr>
 
                 <tr>
+                    <td>Mail dodavatele:</td>
+                    <td><input class="text" type="text" name="supplierMail"</td>
+                </tr>
+
+                <tr>
+                    <td>Telefon:</td>
+                    <td><input class="text" type="text" name="supplierPhone"></td>
+                </tr>
+
+                <tr>
                     <td>Dostupnost zboží</td>
                     <td><input class="text" type="text" name="supplierResupplytime"></td>
                     <td>(doba ve dnech)</td>
@@ -108,13 +118,13 @@ final class AddHelper implements IAdminModule
                 </tr>
 
                 <tr>
-                    <td>Kontaktní informace</td>
+                    <td>Adresa</td>
                     <td></td>
                 </tr>
 
                 <tr>
                     <td colspan="2">
-                        <textarea name="supplierContactInfo" rows="3"></textarea>
+                        <textarea name="supplierAddress" rows="3"></textarea>
                     </td>
                 </tr>
 
@@ -130,10 +140,10 @@ final class AddHelper implements IAdminModule
 <?php
     }
 
-    private function insertSupplier($supplierName, $supplierRessuplytime, $supplierICO, $supplierContactInfo)
+    private function insertSupplier($supplierName, $supplierMail, $supplierPhone, $supplierRessuplytime, $supplierICO, $supplierAddress)
     {
-        $insertSQL = "INSERT INTO supplier (sup_name, sup_contact, sup_resupplytime, sup_ico, sup_enabled) VALUES
-        ('$supplierName', '$supplierContactInfo', '$supplierRessuplytime', '$supplierICO', 'true');";
+        $insertSQL = "INSERT INTO supplier (sup_name, sup_mail, sup_phone, sup_resupplytime, sup_ico, sup_address, sup_enabled) VALUES
+        ('$supplierName', '$supplierMail', '$supplierPhone', '$supplierRessuplytime', '$supplierICO', '$supplierAddress', 'true');";
 
         if($this->DBH->query($insertSQL) == -1)
         {
@@ -153,12 +163,14 @@ final class AddHelper implements IAdminModule
         $addRecord = true;
         $errorMessage =  "";
 
-        if(isset($p["supplierName"], $p["supplierResupplytime"], $p["supplierICO"], $p["supplierContactInfo"]))
+        if(isset($p["supplierName"], $p["supplierResupplytime"], $p["supplierICO"], $p["supplierAddress"], $p["supplierPhone"], $p["supplierMail"]))
         {
             $supplierName           =   $this->FILTER->prepareInputForSQL($p["supplierName"]);
             $supplierRessuplytime   =   $this->FILTER->prepareInputForSQL($p["supplierResupplytime"]);
             $supplierICO            =   $this->FILTER->prepareInputForSQL($p["supplierICO"]);
-            $supplierContactInfo    =   $this->FILTER->prepareInputForSQL($p["supplierContactInfo"]);
+            $supplierAddress        =   $this->FILTER->prepareInputForSQL($p["supplierAddress"]);
+            $supplierMail           =   $this->FILTER->prepareInputForSQL($p["supplierMail"]);
+            $supplierPhone          =   $this->FILTER->prepareInputForSQL($p["supplierPhone"]);
 
             if(empty($supplierName))
             {
@@ -178,15 +190,27 @@ final class AddHelper implements IAdminModule
                 $errorMessage .= "IČO dodavatele je nutné uvést! <br>";
             }
 
-            if(empty($supplierContactInfo))
+            if(empty($supplierAddress))
             {
                 $addRecord = false;
                 $errorMessage .= "Kontaktní informace na dodavatele je třeba uvést! <br>";
             }
 
+            if(empty($supplierMail))
+            {
+                $addRecord = false;
+                $errorMessage .= "Email dodavatele musí být uveden! <br>";
+            }
+
+            if(empty($supplierPhone))
+            {
+               $addRecord = false;
+               $errorMessage .= "Email dodavatele musí být uveden! <br>";
+            }
+
             if($addRecord)
             {
-                return $this->insertSupplier($supplierName, $supplierRessuplytime, $supplierICO, $supplierContactInfo);
+                return $this->insertSupplier($supplierName, $supplierMail, $supplierPhone, $supplierRessuplytime, $supplierICO, $supplierAddress);
             }
             else
             {
