@@ -192,7 +192,6 @@ else
     $action = $_GET["action"];
     switch($action)
     {
-        // Sync commentary
         case $action:
 
             // Creation of paths to files that should module contain

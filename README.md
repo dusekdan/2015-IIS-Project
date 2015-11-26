@@ -11,7 +11,6 @@
 * Při špatném post-backu vypsat data zpátky do formuláře, vyznačit políčko, které je špatně (zapracovat klientskou kontrolu, na některé pole
 * Refactorovat (pře-třídit a okomentovat) nový kód v AddHelper.classe
 
-* Sync point
 
 Information systems - Project in PHP with MySQL Database
 
