@@ -1,5 +1,5 @@
 <!-- MODULE DESIGN & CODE GOES HERE -->
-
+<a href="<?php echo $linkBase; ?>&amp;type=category">Správa kategorií</a> |
 <a href="<?php echo $linkBase; ?>&amp;type=product">Přidat produkt</a> | <a href="<?php echo $linkBase; ?>&amp;type=supplier">Přidat dodavatele</a>
 <?php
 
@@ -10,7 +10,7 @@ if( (isset($_GET["type"]) && $_GET["type"] == "product") || !isset($_GET["type"]
 
 if(isset($_GET["type"]) && $_GET["type"] == "supplier")
 {
-    if(isset($_POST["supplierName"]))
+    if(isset($_POST["supplierName"]) && $_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
     {
         $submitSupplierResult = $MH->submitNewSupplier();
 
@@ -26,6 +26,49 @@ if(isset($_GET["type"]) && $_GET["type"] == "supplier")
     }
     $MH->loadAddSupplierForm();
     $MH->loadSupplierList();
+}
+
+if(isset($_GET["type"]) && $_GET["type"] == "category")
+{
+
+    if(isset($_POST["categoryName"]))
+    {
+        $submitCategoryResult = $MH->submitNewCategory();
+
+        if(is_string($submitCategoryResult))
+        {
+            // Error while processing
+            echo $submitCategoryResult;
+        }
+        else
+        {
+            echo "Kategorie přidána";
+        }
+    }
+
+    if(isset($_POST["subcategoryName"]))
+    {
+        if(isset($_POST["subcategoryName"]))
+        {
+            $submitSubcategoryResult = $MH->submitNewSubCategory();
+
+            if(is_string($submitSubcategoryResult))
+            {
+                // Error while processing
+                echo $submitSubcategoryResult;
+            }
+            else
+            {
+                echo "Podkategorie přidána";
+            }
+        }
+    }
+
+    $MH->loadCategoryManagement();
+    $MH->loadCategoryList();
+    echo "<hr>";
+    $MH->loadSubcategoryList();
+    echo "<hr>";
 }
 
 

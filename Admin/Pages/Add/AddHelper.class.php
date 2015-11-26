@@ -84,8 +84,31 @@ final class AddHelper implements IAdminModule
         return $description;
     }
 
+    private function returnPostBackValue($index)
+    {
+        if(isset($_POST[$index]))
+        {
+            echo " value='" . $_POST[$index] . "' ";
+        }
+    }
+
+    private function returnPostBackValuePlain($index)
+    {
+        if(isset($_POST[$index]))
+        {
+            echo $_POST[$index];
+        }
+    }
+
     public function loadAddSupplierForm()
     {
+        $timeStamp = time();
+        $_SESSION["formGenerationStamp"] = $timeStamp;
+        if(isset($_POST))
+        {
+            $p = $_POST;
+        }
+
 ?>
 <div class="form">
     <div class="form_content">
@@ -93,28 +116,29 @@ final class AddHelper implements IAdminModule
             <table>
                 <tr>
                     <td>Název nového dodavatele</td>
-                    <td><input class="text" type="text" name="supplierName"></td>
+                    <td><input class="text" type="text" name="supplierName" <?php $this->returnPostBackValue("supplierName"); ?>></td>
+                    <td><input type="hidden" value="<?php echo $timeStamp;?>" name="formGenerationStamp"></td>
                 </tr>
 
                 <tr>
                     <td>Mail dodavatele:</td>
-                    <td><input class="text" type="text" name="supplierMail"</td>
+                    <td><input class="text" type="text" name="supplierMail"<?php $this->returnPostBackValue("supplierMail"); ?>></td>
                 </tr>
 
                 <tr>
                     <td>Telefon:</td>
-                    <td><input class="text" type="text" name="supplierPhone"></td>
+                    <td><input class="text" type="text" name="supplierPhone"<?php $this->returnPostBackValue("supplierPhone"); ?>></td>
                 </tr>
 
                 <tr>
                     <td>Dostupnost zboží</td>
-                    <td><input class="text" type="text" name="supplierResupplytime"></td>
+                    <td><input class="text" type="text" name="supplierResupplytime"<?php $this->returnPostBackValue("supplierResupplytime"); ?>></td>
                     <td>(doba ve dnech)</td>
                 </tr>
 
                 <tr>
                     <td>IČO</td>
-                    <td><input class="text" type="text" name="supplierICO"></td>
+                    <td><input class="text" type="text" name="supplierICO"<?php $this->returnPostBackValue("supplierICO"); ?>></td>
                 </tr>
 
                 <tr>
@@ -124,7 +148,7 @@ final class AddHelper implements IAdminModule
 
                 <tr>
                     <td colspan="2">
-                        <textarea name="supplierAddress" rows="3"></textarea>
+                        <textarea name="supplierAddress" rows="3"><?php $this->returnPostBackValuePlain("supplierAddress");?></textarea>
                     </td>
                 </tr>
 
@@ -153,6 +177,137 @@ final class AddHelper implements IAdminModule
         {
             return true;
         }
+    }
+
+    public function submitNewCategory()
+    {
+        // Simplication of $_POST data checking
+        $p = $_POST;
+
+        $addRecord = true;
+        $errorMessage = "";
+
+        if(isset($p["categoryName"], $p["categoryDescription"]))
+        {
+
+            $categoryName           =   $this->FILTER->prepareInputForSQL($p["categoryName"]);
+            $categoryDescription    =   $this->FILTER->prepareInputForSQL($p["categoryDescription"]);
+
+            if(empty($categoryName))
+            {
+                $errorMessage   .= "Název kategorie musí být vyplněn! <br>";
+                $addRecord      = false;
+            }
+
+            if(empty($categoryDescription))
+            {
+                $errorMessage .= "Popisek kategorie musí být vyplněn! <br>";
+                $addRecord     = false;
+            }
+
+
+            if($addRecord)
+            {
+                return $this->insertCategory($categoryName, $categoryDescription);
+            }
+            else
+            {
+                return $errorMessage;
+            }
+
+        }
+        else
+        {
+            $errorMessage .= "Nedostatečná POST data přijata!";
+            return $errorMessage;
+        }
+    }
+
+    private function insertCategory($categoryName, $categoryDescription)
+    {
+        $insertQuery = $this->DBH->query("INSERT INTO product_category (pcat_name, pcat_description) VALUES ('$categoryName', '$categoryDescription')");
+
+        if($insertQuery == -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public function submitNewSubcategory()
+    {
+        // Simplification of $_POST data checking
+        $p = $_POST;
+
+        $addRecord = true;
+        $errorMessage = "";
+
+        if(isset($p["subcategoryName"], $p["subcategoryDescription"], $p["subcategoryCategory"]))
+        {
+            $subcategoryName    =   $this->FILTER->prepareInputForSQL($p["subcategoryName"]);
+            $subcategoryDescription = $this->FILTER->prepareInputForSQL($p["subcategoryDescription"]);
+            $subcategoryCategory    = $this->FILTER->prepareInputForSQL($p["subcategoryCategory"]);
+
+            if(empty($subcategoryName))
+            {
+                $errorMessage .= "Název podkategorie musí být vyplněn!";
+                $addRecord = false;
+            }
+
+            if(empty($subcategoryDescription))
+            {
+                $errorMessage   .=  "Popisek podkategorie musí být vyplněn!";
+                $addRecord  = false;
+            }
+
+            if(empty($subcategoryCategory))
+            {
+                $errorMessage   .= "Nadřazená kategorie musí být uvedena!";
+                $addRecord = false;
+            }
+
+            if(!is_numeric($subcategoryCategory))
+            {
+                $errorMessage   .= "Nadřazená kategorie musí obsahovat číselnou hodnotu (pravděpodobně děláte něco, co nemáte).";
+                $addRecord  = false;
+            }
+
+
+            if($addRecord)
+            {
+                return $this->insertSubcategory($subcategoryName, $subcategoryDescription, $subcategoryCategory);
+            }
+            else
+            {
+                return $errorMessage;
+            }
+
+
+        }
+        else
+        {
+            $errorMessage   .=  "Obdržena nedostatečná POST data!";
+            return $errorMessage;
+        }
+
+    }
+
+    private function insertSubcategory($subcategoryName, $subcategoryDescription, $subcategoryCategory)
+    {
+        $insertQuery = $this->DBH->query("INSERT INTO product_subcategory (psub_name, psub_description, psub_category) VALUES ('$subcategoryName', '$subcategoryDescription', '$subcategoryCategory')");
+
+        if($insertQuery == -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+
     }
 
     public function submitNewSupplier()
@@ -231,7 +386,37 @@ final class AddHelper implements IAdminModule
 
         while($r = mysql_fetch_assoc($selectQuery))
         {
-            echo "<option value='$r[sup_id]'>" . $this->FILTER->prepareText($r[sup_name]) . "</option>" . PHP_EOL;
+            echo "<option value='$r[sup_id]'>" . $this->FILTER->prepareText($r["sup_name"]) . "</option>" . PHP_EOL;
+        }
+    }
+
+    private function loadCategoryOptions()
+    {
+        $selectQuery = $this->DBH->query("SELECT pcat_id, pcat_name FROM product_category ORDER BY pcat_name ASC");
+
+        while($r = mysql_fetch_assoc($selectQuery))
+        {
+            echo "<option value='$r[pcat_id]'>" . $this->FILTER->prepareText($r["pcat_name"]) . "</option>" . PHP_EOL;
+        }
+    }
+
+    private function loadSubcategoryOptions()
+    {
+        $selectQuery = $this->DBH->query("SELECT psub_id, psub_name FROM product_subcategory ORDER BY psub_name ASC");
+
+        while($r = mysql_fetch_assoc($selectQuery))
+        {
+            echo "<option value='$r[psub_id]'>" . $this->FILTER->prepareText($r["psub_name"]) . "</option>" . PHP_EOL;
+        }
+    }
+
+    private function loadSubcategoryOptionsFor($categoryId)
+    {
+        $selectQuery = $this->DBH->query("SELECT psub_id, psub_name FROM product_subcategory WHERE psub_category = '$categoryId' ORDER BY psub_name ASC");
+
+        while($r = mysql_fetch_assoc($selectQuery))
+        {
+            echo "<option value='$r[cat_id]'>" . $this->FILTER->prepareText($r["cat_name"]) . "</option>" . PHP_EOL;
         }
     }
 
@@ -262,8 +447,9 @@ final class AddHelper implements IAdminModule
                     <td>Kategorie produktu</td>
                     <td>
                         <select name="productCategory">
-                            <option value="hs" selected="selected">Hlavní kategorie</option>
-                            <option value="hs2" >Hlavní kategorie 2</option>
+                            <?php
+                                $this->loadCategoryOptions();
+                            ?>
                         </select>
                     </td>
                 </tr>
@@ -272,8 +458,9 @@ final class AddHelper implements IAdminModule
                     <td>Subkategorie produktu</td>
                     <td>
                         <select name="productSubCategory">
-                            <option value="hs" selected="selected">Vedlejší kategorie</option>
-                            <option value="h2s" >Vedlejší kategorie 2</option>
+                            <?php
+                                $this->loadSubcategoryOptions();
+                            ?>
                         </select>
                     </td>
                 </tr>
@@ -321,9 +508,9 @@ final class AddHelper implements IAdminModule
             ?>
         <tr>
             <td><?php echo $i;                  ?></td>
-            <td><?php echo $r["sup_name"];      ?></td>
-            <td><?php echo $r["sup_ico"];       ?></td>
-            <td><?php echo $r["sup_enabled"];   ?></td>
+            <td><?php echo $this->FILTER->prepareText($r["sup_name"]);      ?></td>
+            <td><?php echo $this->FILTER->prepareText($r["sup_ico"]);       ?></td>
+            <td><?php echo $this->FILTER->prepareText($r["sup_enabled"]);   ?></td>
         </tr>
             <?php
             $i++;
@@ -331,6 +518,134 @@ final class AddHelper implements IAdminModule
 
         echo "</table>";
 
+    }
+
+    public function loadCategoryList()
+    {
+        $selectQuery = $this->DBH->query("SELECT pcat_id, pcat_name FROM product_category ORDER BY pcat_name ASC");
+
+
+    echo "<table>";
+    echo "<tr>";
+    echo "<th>#</th>";
+    echo "<th>Název kategorie</th>";
+    echo "</tr>";
+
+        $i = 1;
+        while($r = mysql_fetch_assoc($selectQuery))
+        {
+            ?>
+
+            <tr>
+                <td><?php echo $i; ?></td>
+                <td><?php echo $this->FILTER->prepareText($r["pcat_name"]); ?></td>
+            </tr>
+
+            <?php
+            $i++;
+        }
+    echo "</table>";
+    }
+
+    public function loadSubcategoryList()
+    {
+        $selectQuery = $this->DBH->query("SELECT psub_name, psub_category, pcat_name FROM product_category JOIN product_subcategory ON pcat_id=psub_category ORDER BY psub_name ASC");
+
+        echo "<table>";
+        echo "<tr>";
+        echo "<th>#</th>";
+        echo "<th>Název podkategorie</th>";
+        echo "<th>Název nadřazené kategorie</th>";
+        echo "</tr>";
+
+        $i = 1;
+        while($r = mysql_fetch_assoc($selectQuery))
+        {
+            ?>
+            <tr>
+                <td><?php echo $i; ?></td>
+                <td><?php echo $this->FILTER->prepareText($r["psub_name"]); ?></td>
+                <td><?php echo $this->FILTER->prepareText($r["pcat_name"]); ?></td>
+            </tr>
+            <?php
+            $i++;
+        }
+
+        echo "</table>";
+    }
+
+
+    public function loadCategoryManagement()
+    {
+        ?>
+
+<div class="form">
+    <div class="form_content">
+        <form action="" method="post">
+            <table>
+
+                    <tr>
+                        <td>Jméno kategorie:</td>
+                        <td><input type="text" class="text" name="categoryName"></td>
+                    </tr>
+
+                    <tr>
+                        <td>Popisek kategorie:</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2"><textarea name="categoryDescription"></textarea></td>
+                    </tr>
+
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Přidat kategorii"></td>
+                    </tr>
+            </table>
+        </form>
+    </div>
+
+    <hr>
+
+    <div class="form_content">
+        <form action="" method="post">
+            <table>
+
+                <tr>
+                    <td>Jméno podkategorie:</td>
+                    <td><input type="text" class="text" name="subcategoryName"></td>
+                </tr>
+
+                <tr>
+                    <td>Nadřazená kategorie:</td>
+                    <td><select name="subcategoryCategory">
+                            <?php
+                            $this->loadCategoryOptions();
+                            ?>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Popisek podkategorie:</td>
+                    <td></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2"><textarea name="subcategoryDescription"></textarea></td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Přidat kategorii"></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+</div>
+        <?php
     }
 }
 ?>

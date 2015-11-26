@@ -236,7 +236,7 @@ else
                 // Creates module helper object, while ensuring entry parameters (Database helper, Auth helper, Input Filter)
                 // This variable is used further on, in the Module.php file to access properly created ModuleHelper object
                 $MH = $reflection->newInstanceArgs($classArgs);
-                $linkBase = strlen($_SERVER['QUERY_STRING']) ? basename($_SERVER['PHP_SELF'])."?".$_SERVER['QUERY_STRING'] : basename($_SERVER['PHP_SELF']);
+                $linkBase = basename($_SERVER['PHP_SELF']) . "?action=$action";
 
                 // Same as the include above, no security risks
                 // Including the module file itself (should contain your custom code, calls & handles for actions contained)
