@@ -4,6 +4,71 @@
 <hr>
 <?php
 
+if(isset($_GET["edittype"], $_GET["edit"]) && is_numeric($_GET["edit"]))
+{
+    echo "<h2> Editovat ";
+
+    switch($_GET["edittype"])
+    {
+        // Editace dodavatele
+        case "supplier":
+            echo "dodavatele</h2>";
+
+            $renderForm = true;
+            if(isset($_POST["supplierName"]) && @$_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
+            {
+
+                $editSupplierResult = $MH->editSupplier();
+                var_dump($editSupplierResult);
+                if($editSupplierResult)
+                {
+                    $PBH->showMessage("Dodavatel úspěšně změněn! Chcete se vrátit <a href='Admin.php?action=Show&amp;type=supplier'>zpět na seznam dodavatelů</a>?");
+                    unset($_SESSION["formGenerationStamp"]);
+                    $renderForm = false;
+                }
+                else
+                {
+                    $PBH->showMessage($MH->getPostbackInfo(), "error");
+                }
+            }
+
+            if($renderForm)
+            {
+                $MH->loadSupplierEditForm($_GET["edit"]);
+            }
+
+
+            break;
+
+
+
+
+
+
+
+
+
+
+
+
+        // Editace kategorie
+        case "category":
+            echo "kategorii</h2>";
+            break;
+
+        case "subcategory":
+            echo "podkategorii</h2>";
+            break;
+
+        case "product":
+            echo "produkt</h2>";
+            break;
+    }
+
+}
+
+
+
 if(isset($_GET["type"]) && $_GET["type"] == "category")
 {
     if(isset($_POST["deleteCategory"]) && is_numeric($_POST["deleteCategory"]))

@@ -166,6 +166,7 @@ final class ShowHelper implements IAdminModule
                 <td><?php echo $this->FILTER->prepareText($r["sup_ico"]);       ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["sup_enabled"]);   ?></td>
                 <td><form method="post" action=""><input type="hidden" name="deleteSupplier" value="<?php echo $this->FILTER->prepareInputForSQL($r["sup_id"]); ?>"><input onclick="return confirm('Opravdu chcete tohoto dodavatele smazat?');" type="submit" value="Smazat"></form></td>
+                <td><a href="Admin.php?action=Show&amp;edittype=supplier&amp;edit=<?php echo $this->FILTER->prepareText($r["sup_id"]); ?>">Editovat</a></td>
             </tr>
             <?php
             $i++;
@@ -330,6 +331,367 @@ final class ShowHelper implements IAdminModule
         {
             return true;
         }
+    }
+
+    /// Editation here
+
+    // Data for edited record are stored here
+    private $temporaryDataBuffer;
+
+
+    private function returnEditPostbackValue($index, $columnName)
+    {
+        if(isset($_POST[$index]))
+        {
+            echo " value='" . $_POST[$index] . "' ";
+        }
+        else
+        {
+            // Use data for the edited record
+            echo " value='" . $this->temporaryDataBuffer[$columnName] . "' ";
+        }
+    }
+
+    private function returnEditPostbackValuePlain($index, $columnName)
+    {
+        if(isset($_POST[$index]))
+        {
+            echo $_POST[$index];
+        }
+        else
+        {
+            // Use data for the edited record
+            echo $this->temporaryDataBuffer[$columnName];
+        }
+    }
+
+    public function editSupplier()
+    {
+        // Reseting postbackinformation
+        $this->postBackInfo = "";
+
+        // Simplication of $_POST
+        $p = $_POST;
+
+        // Simplification of $_GET["edit"]
+        $supId = $_GET["edit"];
+
+        // Basic variables init
+        $editRecord = true;
+        $errorMessage = "";
+
+        // Data initialization & securing
+        if(isset($p["supplierName"], $p["supplierMail"], $p["supplierPhone"], $p["supplierResupplytime"], $p["supplierICO"], $p["supplierAddress"]))
+        {
+
+            $supplierName = $this->FILTER->prepareInputForSQL($p["supplierName"]);
+            $supplierMail = $this->FILTER->prepareInputForSQL($p["supplierMail"]);
+            $supplierPhone = $this->FILTER->prepareInputForSQL($p["supplierPhone"]);
+            $supplierResupplytime = $this->FILTER->prepareInputForSQL($p["supplierResupplytime"]);
+            $supplierICO = $this->FILTER->prepareInputForSQL($p["supplierICO"]);
+            $supplierAddress = $this->FILTER->prepareInputForSQL($p["supplierAddress"]);
+            $supId = $this->FILTER->prepareInputForSQL($supId);
+
+            if(empty($supplierName))
+            {
+                $errorMessage .= "Název dodavatele musí být vyplněn!";
+                $editRecord = false;
+            }
+
+            if(empty($supplierMail))
+            {
+                $errorMessage .= "Email dodavatele musí být vyplněn!";
+                $editRecord = false;
+            }
+
+            if(empty($supplierPhone))
+            {
+                $errorMessage .= "Telefon dodavatele musí být vyplněn!";
+                $editRecord = false;
+            }
+
+            if(!is_numeric($supplierResupplytime))
+            {
+                $errorMessage .= "Doba znovuobnovení musí být číslo!";
+                $editRecord = false;
+            }
+
+            if(empty($supplierICO))
+            {
+                $errorMessage .= "IČO dodavatele musí být vyplněn!";
+                $editRecord = false;
+            }
+
+            if(empty($supplierAddress))
+            {
+                $errorMessage .= "Adresa dodavatele musí být vyplněn!";
+                $editRecord = false;
+            }
+
+
+            if($editRecord)
+            {
+                $editRecordResult = $this->editSupplierQuery($supplierName, $supplierMail, $supplierPhone, $supplierResupplytime, $supplierICO, $supplierAddress, $supId);
+                if(!$editRecordResult)
+                {
+                    $this->postBackInfo = "Nepodařilo se upravit dodavatele! (vnitřní chyba)";
+                }
+
+                return $editRecordResult;
+            }
+            else
+            {
+                $this->postBackInfo = $errorMessage;
+                return false;
+            }
+
+        }
+        else
+        {
+            $errorMessage .= "Obdržena nedostatečná POST data!";
+            $this->postBackInfo = $errorMessage;
+            return false;
+        }
+    }
+
+    private function editSupplierQuery($supplierName, $supplierMail, $supplierPhone, $supplierResupplytime, $supplierICO, $supplierAddress, $supId)
+    {
+        $updateQuery = $this->DBH->query("UPDATE supplier SET
+                                          sup_name='$supplierName',
+                                          sup_mail='$supplierMail',
+                                          sup_phone='$supplierPhone',
+                                          sup_resupplytime='$supplierResupplytime',
+                                          sup_ico='$supplierICO',
+                                          sup_address='$supplierAddress'
+                                          WHERE sup_id='$supId'");
+
+        if($updateQuery === -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private function loadScriptsForProductEditForm()
+    {
+        ?>
+
+        <script language="javascript" type="text/javascript">
+$(document).ready(function(){
+
+//let's create arrays
+var chocolates = [
+    {display: "Dark chocolate", value: "dark-chocolate" },
+    {display: "Milk chocolate", value: "milk-chocolate" },
+    {display: "White chocolate", value: "white-chocolate" },
+    {display: "Gianduja chocolate", value: "gianduja-chocolate" }];
+
+var vegetables = [
+    {display: "Broccoli", value: "broccoli" },
+    {display: "Cabbage", value: "cabbage" },
+    {display: "Carrot", value: "carrot" },
+    {display: "Cauliflower", value: "cauliflower" }];
+
+var icecreams = [
+    {display: "Frozen yogurt", value: "frozen-yogurt" },
+    {display: "Booza", value: "booza" },
+    {display: "Frozen yogurt", value: "frozen-yogurt" },
+    {display: "Ice milk", value: "ice-milk" }];
+
+//If parent option is changed
+$("#parent_selection").change(function() {
+        var parent = $(this).val(); //get option value from parent
+
+        switch(parent){ //using switch compare selected option and populate child
+              case 'chocolates':
+                list(chocolates);
+                break;
+              case 'vegetables':
+                list(vegetables);
+                break;
+              case 'icecreams':
+                list(icecreams);
+                break;
+            default: //default child option is blank
+                $("#child_selection").html('');
+                break;
+           }
+});
+
+//function to populate child select box
+function list(array_list)
+{
+    $("#child_selection").html(""); //reset child options
+    $(array_list).each(function (i) { //populate child options
+        $("#child_selection").append("<option value=\""+array_list[i].value+"\">"+array_list[i].display+"</option>");
+    });
+}
+
+});
+</script>
+
+
+        <?php
+    }
+
+    public function loadProductEditForm($productId)
+    {
+        $productId = $this->FILTER->prepareInputForSQL($productId);
+        $this->temporaryDataBuffer = $this->DBH->fetch("SELECT * FROM product WHERE pr_id = '$productId'");
+
+        // Double postback prevention
+        $timeStamp = time();
+        $_SESSION["formGenerationStamp"] = $timeStamp;
+        ?>
+
+        <div class="form">
+            <div class="form_content">
+                <form action="" method="post">
+                    <table>
+                        <tr>
+                            <td>Název nového produktu</td>
+                            <td><input class="text" type="text" name="productName"<?php $this->returnPostBackValue("productName"); ?>></td>
+                            <td><input type="hidden" name="formGenerationStamp" value="<?php echo $timeStamp; ?>"></td>
+                        </tr>
+
+                        <tr>
+                            <td>Ceseta k náhledovému obrázku</td>
+                            <td><input class="text" type="text" name="productUrl"<?php $this->returnPostBackValue("productUrl");?>></td>
+                        </tr>
+
+                        <tr>
+                            <td>Cena</td>
+                            <td><input class="text" type="text" name="productPrice"<?php $this->returnPostBackValue("productPrice");?>></td>
+                        </tr>
+
+                        <tr>
+                            <td>Počáteční počet:</td>
+                            <td><input class="text" type="text" name="productInitialStock"<?php $this->returnPostBackValue("productInitialStock");?>></td>
+                        </tr>
+
+                        <tr>
+                            <td>Dodavatel</td>
+                            <td>
+                                <select name="productSupplier">
+                                    <?php
+                                    $this->loadSupplierSelectionOptions();
+                                    ?>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Kategorie produktu</td>
+                            <td>
+                                <select name="productCategory">
+                                    <?php
+                                    $this->loadCategoryOptions();
+                                    ?>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Subkategorie produktu</td>
+                            <td>
+                                <select name="productSubcategory">
+                                    <?php
+                                    $this->loadSubcategoryOptions();
+                                    ?>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Popis produktu</td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <textarea name="productDescription" rows="3"></textarea>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td><input type="submit" value="Upravit produkt"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+
+        </div>
+
+        <?php
+    }
+
+    public function loadSupplierEditForm($supplierId)
+    {
+        $supplierId = $this->FILTER->prepareInputForSQL($supplierId);
+
+        $this->temporaryDataBuffer = $this->DBH->fetch("SELECT * FROM supplier WHERE sup_id = '$supplierId'");
+
+        // Double postback prevention
+        $timeStamp = time();
+        $_SESSION["formGenerationStamp"] = $timeStamp;
+        ?>
+        <div class="form">
+            <div class="form_content">
+                <form action="" method="post">
+                    <table>
+                        <tr>
+                            <td>Název dodavatele</td>
+                            <td><input class="text" type="text" name="supplierName" <?php $this->returnEditPostbackValue("supplierName", "sup_name"); ?>></td>
+                            <td><input type="hidden" value="<?php echo $timeStamp;?>" name="formGenerationStamp"></td>
+                        </tr>
+
+                        <tr>
+                            <td>Mail dodavatele:</td>
+                            <td><input class="text" type="text" name="supplierMail" <?php $this->returnEditPostbackValue("supplierMail", "sup_mail"); ?>></td>
+                        </tr>
+
+                        <tr>
+                            <td>Telefon:</td>
+                            <td><input class="text" type="text" name="supplierPhone" <?php $this->returnEditPostbackValue("supplierPhone", "sup_phone"); ?>></td>
+                        </tr>
+
+                        <tr>
+                            <td>Dostupnost zboží</td>
+                            <td><input class="text" type="text" name="supplierResupplytime" <?php $this->returnEditPostbackValue("supplierResupplytime", "sup_resupplytime"); ?>></td>
+                            <td>(doba ve dnech)</td>
+                        </tr>
+
+                        <tr>
+                            <td>IČO</td>
+                            <td><input class="text" type="text" name="supplierICO" <?php $this->returnEditPostbackValue("supplierICO", "sup_ico"); ?>></td>
+                        </tr>
+
+                        <tr>
+                            <td>Adresa</td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <textarea name="supplierAddress" rows="3"><?php $this->returnEditPostbackValuePlain("supplierAddress", "sup_address"); ?></textarea>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td><input type="submit" value="Upravit dodavatele"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+
+        </div>
+
+        <?php
     }
 
 }

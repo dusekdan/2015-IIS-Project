@@ -12,6 +12,7 @@
 * Refactorovat (pře-třídit a okomentovat) nový kód v AddHelper.classe
 * DISABLE button který nejde použít ke smazání subkategorie/dodavatele apod + zobrazit informaci o tom, proč ne
 * Kontrolovat formát emailu, čísla, apod
+* Kontrolovat duplicitní data (tam, kde to má smysl - mail/username...)
 
 
 ZADÁNÍ ZE ŠKOLY:
