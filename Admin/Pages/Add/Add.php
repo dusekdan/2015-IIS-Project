@@ -1,76 +1,117 @@
 <!-- MODULE DESIGN & CODE GOES HERE -->
-<a href="<?php echo $linkBase; ?>&amp;type=category">Správa kategorií</a> |
+<a href="<?php echo $linkBase; ?>&amp;type=category">Přidat (pod)kategorie</a> |
 <a href="<?php echo $linkBase; ?>&amp;type=product">Přidat produkt</a> | <a href="<?php echo $linkBase; ?>&amp;type=supplier">Přidat dodavatele</a>
+<hr>
+
 <?php
 
-if( (isset($_GET["type"]) && $_GET["type"] == "product") || !isset($_GET["type"]))
-{
-    $MH->loadAddProductForm();
-}
 
-if(isset($_GET["type"]) && $_GET["type"] == "supplier")
-{
-    if(isset($_POST["supplierName"]) && $_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
-    {
-        $submitSupplierResult = $MH->submitNewSupplier();
 
-        if(is_string($submitSupplierResult))
-        {
-            // Error occured while processing
-            echo $submitSupplierResult;
-        }
-        else
-        {
-            echo "Dodavatel přidán...";
-        }
-    }
-    $MH->loadAddSupplierForm();
-    $MH->loadSupplierList();
-}
 
-if(isset($_GET["type"]) && $_GET["type"] == "category")
+
+// Category rewrite trial - operational now
+if( isset($_GET["type"]) && $_GET["type"] == "category")
 {
 
-    if(isset($_POST["categoryName"]))
+    $renderCategoryForm = true;
+
+    // Handle category post backs
+    if(isset($_POST["categoryName"]) && @$_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
     {
         $submitCategoryResult = $MH->submitNewCategory();
 
-        if(is_string($submitCategoryResult))
+        if($submitCategoryResult)
         {
-            // Error while processing
-            echo $submitCategoryResult;
+            // No need to render form again | show message about success + maybe submit more/view rest
+            $renderCategoryForm = false;
+            $PBH->showMessage("Kategorie úspěšně přidána. Chcete <a href='$linkBase&amp;type=category'>přidat další</a> nebo <a href='Admin.php?action=Show&amp;type=category'>zobrazit existující</a>?", "info");
+            unset($_SESSION["formGenerationStamp"]);
         }
         else
         {
-            echo "Kategorie přidána";
+            // Error post back and form is rendered
+            $PBH->showMessage($MH->getPostBackInfo(), "error");
+            $renderCategoryForm = true;
         }
     }
 
-    if(isset($_POST["subcategoryName"]))
+    // Handle subcategory post backs
+    if(isset($_POST["subcategoryName"]) && @$_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
     {
-        if(isset($_POST["subcategoryName"]))
-        {
-            $submitSubcategoryResult = $MH->submitNewSubCategory();
+        $submitSubcategoryResult = $MH->submitNewSubcategory();
 
-            if(is_string($submitSubcategoryResult))
-            {
-                // Error while processing
-                echo $submitSubcategoryResult;
-            }
-            else
-            {
-                echo "Podkategorie přidána";
-            }
+        if($submitSubcategoryResult)
+        {
+            $renderCategoryForm = false;
+            $PBH->showMessage("Podkategorie úspěšně přidána. Chcete <a href='$linkBase&amp;type=category'>přidat další</a> nebo <a href='Admin.php?action=Show&amp;type=category'>zobrazit existující</a>?", "info");
+            unset($_SESSION["formGenerationStamp"]);
+        }
+        else
+        {
+            $PBH->showMessage($MH->getPostBackInfo(), "error");
         }
     }
 
-    $MH->loadCategoryManagement();
-    $MH->loadCategoryList();
-    echo "<hr>";
-    $MH->loadSubcategoryList();
-    echo "<hr>";
+
+    if($renderCategoryForm)
+    {
+        $MH->loadCategoryManagement();
+    }
 }
 
+// Supplier rewrite
+if(isset($_GET["type"]) && $_GET["type"] == "supplier")
+{
+    $renderForm = true;
+
+    if(isset($_POST["supplierName"]) && @$_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
+    {
+        $submitSupplierResult = $MH->submitNewSupplier();
+
+        if($submitSupplierResult)
+        {
+            $renderForm = false;
+            $PBH->showMessage("Doadavatel byl přidán. Chcete <a href='$linkBase&amp;type=supplier'>přidat další</a> nebo <a href='Admin.php?action=Show&amp;type=supplier'>zobrazit existující</a>?");
+            unset($_SESSION["formGenerationStamp"]);
+        }
+        else
+        {
+            $PBH->showMessage($MH->getPostBackInfo(), "error");
+        }
+    }
+
+    if($renderForm)
+    {
+        $MH->loadAddSupplierForm();
+    }
+}
+
+// Product coming clean
+if(isset($_GET["type"]) && $_GET["type"] == "product")
+{
+    $renderForm = true;
+
+    if(isset($_POST["productName"]) && @$_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
+    {
+        $submitProductResult = $MH->submitNewProduct();
+
+        if($submitProductResult)
+        {
+            $renderForm = false;
+            $PBH->showMessage("Produkt byl přidán. Chcete  <a href='$linkBase&amp;type=product'>přidat další</a> nebo <a href='Admin.php?action=Show&amp;type=product'>zobrazit existující</a>?");
+            unset($_SESSION["formGenerationStamp"]);
+        }
+        else
+        {
+            $PBH->showMessage($MH->getPostBackInfo(), "error");
+        }
+    }
+
+    if($renderForm)
+    {
+        $MH->loadAddProductForm();
+    }
+}
 
 // TODO: Remove this.
 // Display information about module, debugging only

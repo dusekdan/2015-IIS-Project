@@ -23,6 +23,16 @@ final class AddHelper implements IAdminModule
     /// InputFilter - helps work with user input (or other not secure strings)
     private $FILTER;
 
+    private $postBackInfo = "";
+    private $postBackType = "info";
+
+    const PRODUCT_DEFAULT_URL = "HTTP_DEFAULT_URL_FILLIN";
+
+    public function getPostBackInfo()
+    {
+        return $this->postBackInfo;
+    }
+
 
     /**
      * Constructor (enforced by IAdminModule interface)
@@ -104,10 +114,6 @@ final class AddHelper implements IAdminModule
     {
         $timeStamp = time();
         $_SESSION["formGenerationStamp"] = $timeStamp;
-        if(isset($_POST))
-        {
-            $p = $_POST;
-        }
 
 ?>
 <div class="form">
@@ -169,7 +175,7 @@ final class AddHelper implements IAdminModule
         $insertSQL = "INSERT INTO supplier (sup_name, sup_mail, sup_phone, sup_resupplytime, sup_ico, sup_address, sup_enabled) VALUES
         ('$supplierName', '$supplierMail', '$supplierPhone', '$supplierRessuplytime', '$supplierICO', '$supplierAddress', 'true');";
 
-        if($this->DBH->query($insertSQL) == -1)
+        if($this->DBH->query($insertSQL) === -1)
         {
             return false;
         }
@@ -179,8 +185,13 @@ final class AddHelper implements IAdminModule
         }
     }
 
+
+
     public function submitNewCategory()
     {
+        // Reset internal property for last postback message
+        $this->postBackInfo = "";
+
         // Simplication of $_POST data checking
         $p = $_POST;
 
@@ -208,18 +219,21 @@ final class AddHelper implements IAdminModule
 
             if($addRecord)
             {
+                echo "false vraci insertcategory";
                 return $this->insertCategory($categoryName, $categoryDescription);
             }
             else
             {
-                return $errorMessage;
+                $this->postBackInfo = $errorMessage;
+                return false;
             }
 
         }
         else
         {
             $errorMessage .= "Nedostatečná POST data přijata!";
-            return $errorMessage;
+            $this->postBackInfo = $errorMessage;
+            return false;
         }
     }
 
@@ -227,7 +241,7 @@ final class AddHelper implements IAdminModule
     {
         $insertQuery = $this->DBH->query("INSERT INTO product_category (pcat_name, pcat_description) VALUES ('$categoryName', '$categoryDescription')");
 
-        if($insertQuery == -1)
+        if($insertQuery === -1)
         {
             return false;
         }
@@ -282,7 +296,8 @@ final class AddHelper implements IAdminModule
             }
             else
             {
-                return $errorMessage;
+                $this->postBackInfo = $errorMessage;
+                return false;
             }
 
 
@@ -290,7 +305,8 @@ final class AddHelper implements IAdminModule
         else
         {
             $errorMessage   .=  "Obdržena nedostatečná POST data!";
-            return $errorMessage;
+            $this->postBackInfo = $errorMessage;
+            return false;
         }
 
     }
@@ -299,7 +315,7 @@ final class AddHelper implements IAdminModule
     {
         $insertQuery = $this->DBH->query("INSERT INTO product_subcategory (psub_name, psub_description, psub_category) VALUES ('$subcategoryName', '$subcategoryDescription', '$subcategoryCategory')");
 
-        if($insertQuery == -1)
+        if($insertQuery === -1)
         {
             return false;
         }
@@ -336,7 +352,7 @@ final class AddHelper implements IAdminModule
             if(!is_numeric($supplierRessuplytime))
             {
                 $addRecord = false;
-                $errorMessage .= "Dobu obnovy je třeba zadat jako číslo! <br>";
+                $errorMessage .= "Dobu obnovy dostupnosti zboží je třeba zadat jako číslo! <br>";
             }
 
             if(empty($supplierICO))
@@ -360,7 +376,7 @@ final class AddHelper implements IAdminModule
             if(empty($supplierPhone))
             {
                $addRecord = false;
-               $errorMessage .= "Email dodavatele musí být uveden! <br>";
+               $errorMessage .= "Telefon dodavatele musí být uveden! <br>";
             }
 
             if($addRecord)
@@ -369,13 +385,15 @@ final class AddHelper implements IAdminModule
             }
             else
             {
-                return $errorMessage;
+                $this->postBackInfo = $errorMessage;
+                return false;
             }
         }
         else
         {
             $errorMessage = "Insufficient data received (no POST data arrived).";
-            return $errorMessage;
+            $this->postBackInfo = $errorMessage;
+            return false;
         }
 
     }
@@ -420,16 +438,150 @@ final class AddHelper implements IAdminModule
         }
     }
 
+    public function submitNewProduct()
+    {
+        $p = $_POST;
+
+        $addRecord = true;
+        $errorMessage = "";
+
+        if(isset($p["productName"], $p["productSupplier"], $p["productCategory"], $p["productSubcategory"], $p["productDescription"]))
+        {
+            $productName = $this->FILTER->prepareInputForSQL($p["productName"]);
+            $productSupplier = $this->FILTER->prepareInputForSQL($p["productSupplier"]);
+            $productCategory = $this->FILTER->prepareInputForSQL($p["productCategory"]);
+            $productSubcategory = $this->FILTER->prepareInputForSQL($p["productSubcategory"]);
+            $productDescription = $this->FILTER->prepareInputForSQL($p["productDescription"]);
+            $productPrice = $this->FILTER->prepareInputForSQL($p["productPrice"]);
+            $productInitialStock = $this->FILTER->prepareInputForSQL($p["productInitialStock"]);
+            $productUrl = $this->FILTER->prepareInputForSQL($p["productUrl"]);
+
+            if(empty($productName))
+            {
+                $addRecord = false;
+                $errorMessage .= "Jméno produktu nesmí být prázdné! <br>";
+            }
+
+            if(empty($productSupplier))
+            {
+                $addRecord = false;
+                $errorMessage .= "Není možné přidat produkt bez dodavatele! <br>";
+            }
+
+            if(empty($productCategory))
+            {
+                $addRecord = false;
+                $errorMessage .= "Produkt musí spadat do některé z kategorií! <br>";
+            }
+
+            if(empty($productSubcategory))
+            {
+                $addRecord = false;
+                $errorMessage .= "Produkt musí spadat do nějaké vedlejší kategoriie! <br>";
+            }
+
+            if(empty($productDescription))
+            {
+                $addRecord = false;
+                $errorMessage .= "Produkt musí mít popisek! <br>";
+            }
+
+            if(empty($productInitialStock))
+            {
+                $productInitialStock = 0;
+            }
+
+            if(empty($productPrice))
+            {
+                $addRecord = false;
+                $errorMessage .= "Produkt musí mít nastavenou cenu! <br>";
+            }
+
+            if(empty($productUrl))
+            {
+                // TODO: Check this actually works
+                $productUrl = self::PRODUCT_DEFAULT_URL;
+            }
+
+            $subcategoryTestSelectQuery = $this->DBH->fetch("SELECT * FROM product_subcategory WHERE psub_id='$productSubcategory' AND psub_category='$productCategory'");
+
+            if(empty($subcategoryTestSelectQuery))
+            {
+                $addRecord = false;
+                $errorMessage .= "Zvolená podkategorie nespadá pod zvolenou kategorii! (Toto může být způsobeno vypnutým javascriptem na Vaší straně!) <br>";
+            }
+
+            if($addRecord)
+            {
+                return $this->insertProduct($productName, $productSupplier, $productCategory, $productSubcategory, $productDescription, $productPrice, $productUrl, $productInitialStock);
+            }
+            else
+            {
+                $this->postBackInfo = $errorMessage;
+                return false;
+            }
+
+        }
+        else
+        {
+            $errorMessage .= "Obdržena nedostatečná POST data!";
+            $this->postBackInfo = $errorMessage;
+            return false;
+        }
+    }
+
+    private function insertProduct($productName, $productSupplier, $productCategory, $productSubcategory, $productDescription, $productPrice, $productUrl, $productInitialStock)
+    {
+
+        $productAddedBy = $_SESSION["emp_id"];
+        $productAvailability = ($productInitialStock == 0) ? 'false' : 'true';
+
+        // well apparently I have missed some columns too
+        $insertQuery = $this->DBH->query("INSERT INTO product (pr_name, pr_description, pr_quantity, pr_available, pr_imageurl, pr_price, pr_subcategory, pr_addedby, pr_supplier)
+        VALUES ('$productName', '$productDescription', '$productInitialStock', '$productAvailability', '$productUrl', '$productPrice', '$productSubcategory', '$productAddedBy', '$productSupplier');");
+
+        if($insertQuery === -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     public function loadAddProductForm()
     {
+        $timeStamp = time();
+        $_SESSION["formGenerationStamp"] = $timeStamp;
+        if(isset($_POST))
+        {
+            $p = $_POST;
+        }
 ?>
 <div class="form">
     <div class="form_content">
-        <form action="skript.php" method="get">
+        <form action="" method="post">
             <table>
                 <tr>
                     <td>Název nového produktu</td>
-                    <td><input class="text" type="text" name="productName"></td>
+                    <td><input class="text" type="text" name="productName"<?php $this->returnPostBackValue("productName"); ?>></td>
+                    <td><input type="hidden" name="formGenerationStamp" value="<?php echo $timeStamp; ?>"></td>
+                </tr>
+
+                <tr>
+                    <td>Ceseta k náhledovému obrázku</td>
+                    <td><input class="text" type="text" name="productUrl"<?php $this->returnPostBackValue("productUrl");?>></td>
+                </tr>
+
+                <tr>
+                    <td>Cena</td>
+                    <td><input class="text" type="text" name="productPrice"<?php $this->returnPostBackValue("productPrice");?>></td>
+                </tr>
+
+                <tr>
+                    <td>Počáteční počet:</td>
+                    <td><input class="text" type="text" name="productInitialStock"<?php $this->returnPostBackValue("productInitialStock");?>></td>
                 </tr>
 
                 <tr>
@@ -457,7 +609,7 @@ final class AddHelper implements IAdminModule
                 <tr>
                     <td>Subkategorie produktu</td>
                     <td>
-                        <select name="productSubCategory">
+                        <select name="productSubcategory">
                             <?php
                                 $this->loadSubcategoryOptions();
                             ?>
@@ -577,6 +729,8 @@ final class AddHelper implements IAdminModule
 
     public function loadCategoryManagement()
     {
+        $timeStamp = time();
+        $_SESSION["formGenerationStamp"] = $timeStamp;
         ?>
 
 <div class="form">
@@ -586,7 +740,8 @@ final class AddHelper implements IAdminModule
 
                     <tr>
                         <td>Jméno kategorie:</td>
-                        <td><input type="text" class="text" name="categoryName"></td>
+                        <td><input type="text" class="text" name="categoryName"<?php $this->returnPostBackValue("categoryName"); ?>></td>
+                        <td><input type="hidden" value="<?php echo $timeStamp;?>" name="formGenerationStamp"></td>
                     </tr>
 
                     <tr>
@@ -595,7 +750,7 @@ final class AddHelper implements IAdminModule
                     </tr>
 
                     <tr>
-                        <td colspan="2"><textarea name="categoryDescription"></textarea></td>
+                        <td colspan="2"><textarea name="categoryDescription"><?php $this->returnPostBackValuePlain("categoryDescription"); ?></textarea></td>
                     </tr>
 
                     <tr>
@@ -615,6 +770,7 @@ final class AddHelper implements IAdminModule
                 <tr>
                     <td>Jméno podkategorie:</td>
                     <td><input type="text" class="text" name="subcategoryName"></td>
+                    <td><input type="hidden" value="<?php echo $timeStamp;?>" name="formGenerationStamp"></td>
                 </tr>
 
                 <tr>

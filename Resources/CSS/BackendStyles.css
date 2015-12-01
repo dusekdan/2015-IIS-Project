@@ -225,3 +225,28 @@ select:active, select:hover {
 img.add:hover {
     
 }
+
+
+div.message-error
+{
+    width: 450px;
+    height: auto;
+    margin: auto;
+    background-color: red;
+}
+
+div.message-warning
+{
+    width: 450px;
+    height: auto;
+    margin: auto;
+    background-color: orange;
+}
+
+div.message-info
+{
+    width: 450px;
+    height: auto;
+    margin: auto;
+    background-color: green;
+}

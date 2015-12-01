@@ -46,6 +46,9 @@ $Auth = new Auth($DB);
 /// Admin module loader helper
 $AML = new AdminModuleLoader();
 
+/// PostBackHelper
+$PBH = new PostBackHelper();
+
 // Case when someone access Admin.php without SESSIONs existing
 if(!isset($_SESSION["emp_id"]) || !isset($_SESSION["emp_hash"]))
 {
@@ -124,7 +127,7 @@ if(!isset($_GET["action"]))
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
-                            <a href="Admin.php?action=View">
+                            <a href="Admin.php?action=Show">
                                 <img class="rs" src="../Resources/Images/see.png"
                                      onmouseover="this.src='../Resources/Images/see_selected.png'"
                                      onmouseout="this.src='../Resources/Images/see.png'"/>
