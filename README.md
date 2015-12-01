@@ -1,16 +1,17 @@
 # IISProject2015
 =====
 
-### Emering to-do's:
+### Emerging to-do's:
 * Přidávání produktu/Editace produktu - filtrovat podkategorie v závislosti na kategorii do které patří (ajax pravděpodobně)
 * Zobrazovat v UI hlášku o tom, že bez javascriptu může administrace fungovat s ručením omezeným
-* Při nemožnosti využití ajaxu pro nahrátí kategorií, kontrolovat, že produkt může existovat v této kategorii
-* Tam, kde se kontroluje jestli je uživatel přihlášený zároveň kontrolovat platnost jeho přihlášení
+* [RESOLVED: OK] Při nemožnosti využití ajaxu pro nahrátí kategorií, kontrolovat, že produkt může existovat v této kategorii
+* Tam, kde se kontroluje jestli je uživatel přihlášený zároveň kontrolovat platnost jeho přihlášení (časovou)
 * Prověřit náchylnost na XSS napříč webem
-* Zabránit opakovanému post-backu
+* [RESOLVED: OK] Zabránit opakovanému post-backu
 * Při špatném post-backu vypsat data zpátky do formuláře, vyznačit políčko, které je špatně (zapracovat klientskou kontrolu, na některé pole
 * Refactorovat (pře-třídit a okomentovat) nový kód v AddHelper.classe
 * DISABLE button který nejde použít ke smazání subkategorie/dodavatele apod + zobrazit informaci o tom, proč ne
+* Kontrolovat formát emailu, čísla, apod
 
 
 ZADÁNÍ ZE ŠKOLY:
@@ -22,8 +23,8 @@ Implementovaný systém by měl být prakticky použitelný pro účel daný zad
 Musí umožňovat vložení odpovídajících vstupů.
 Musí poskytovat výstupy ve formě, která je v dané oblasti využitelná. Tedy nezobrazovat obsah tabulek databáze, ale prezentovat uložená data tak, aby byla pro danou roli uživatele a danou činnost užitečná (např. spojit data z více tabulek, je-li to vhodné, poskytnout odkazy na související data, apod).
 Uživatelské rozhraní musí umožňovat snadno realizovat operace pro každou roli vyplývající z diagramu případů použití (use-case). Je-li cílem např. prodej zboží, musí systém implementovat odpovídající operaci, aby uživatel nemusel při každém prodeji ručně upravovat počty zboží na skladě, pamatovat si identifikátory položek a přepisovat je do objednávky a podobně.
-Kromě vlastní funkcionality musí být implementovány následující funkce:
 
+Kromě vlastní funkcionality musí být implementovány následující funkce:
 Správa uživatelů a jejich rolí (podle povahy aplikace, např. obchodník, zákazník, administrátor). Tím se rozumí přidávání nových uživatelů u jednotlivých rolí, stejně tak možnost editace a mazání nebo deaktivace účtů. Musí být k dispozici alespoň dvě různé role uživatelů.
 Ošetření všech uživatelských vstupů tak, aby nebylo možno zadat nesmyslná nebo nekonzistentní data.
 Povinná pole formulářů musí být odlišena od nepovinných.
