@@ -13,6 +13,13 @@ final class ShowHelper implements IAdminModule
     private $FILTER;
 
 
+    private $postBackInfo = "";
+        public function getPostBackInfo()
+        {
+            return $this->postBackInfo;
+        }
+
+
     /**
      * Constructor (enforced by IAdminModule interface)
      * @param $DBDriver MySQLDriver object
@@ -92,6 +99,7 @@ final class ShowHelper implements IAdminModule
             <tr>
                 <td><?php echo $i; ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["pcat_name"]); ?></td>
+                <td><form method="post" action=""><input type="hidden" name="deleteCategory" value="<?php echo $this->FILTER->prepareInputForSQL($r["pcat_id"]); ?>"><input onclick="return confirm('Opravdu chcete smazat tuto kategorii?');" type="submit" value="Smazat"></form></td>
             </tr>
 
             <?php
@@ -99,6 +107,41 @@ final class ShowHelper implements IAdminModule
         }
         echo "</table>";
     }
+
+    public function deleteCategory($id)
+    {
+        $id = $this->FILTER->prepareInputForSQL($id);
+
+        $categorySubcategories = $this->DBH->fetch("SELECT psub_id FROM product_subcategory WHERE psub_category = '$id'");
+            if(!empty($categorySubcategories))
+            {
+                $this->postBackInfo = "Kategorii není možné smazat. Stále existují podkategorie náležící do této kategorie!";
+                return false;
+            }
+
+        $deleteCategoryResult = $this->deleteCategoryQuery($id);
+            if(!$deleteCategoryResult)
+            {
+                $this->postBackInfo = "Kategorii se nepodařilo smazat (vnitřní chyba).";
+            }
+
+        return $deleteCategoryResult;
+    }
+
+    private function deleteCategoryQuery($id)
+    {
+        $deleteQuery = $this->DBH->query("DELETE FROM product_category WHERE pcat_id = '$id'");
+
+        if($deleteQuery === -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
 
     public function loadSupplierList()
     {
@@ -122,6 +165,7 @@ final class ShowHelper implements IAdminModule
                 <td><?php echo $this->FILTER->prepareText($r["sup_name"]);      ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["sup_ico"]);       ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["sup_enabled"]);   ?></td>
+                <td><form method="post" action=""><input type="hidden" name="deleteSupplier" value="<?php echo $this->FILTER->prepareInputForSQL($r["sup_id"]); ?>"><input onclick="return confirm('Opravdu chcete tohoto dodavatele smazat?');" type="submit" value="Smazat"></form></td>
             </tr>
             <?php
             $i++;
@@ -131,9 +175,44 @@ final class ShowHelper implements IAdminModule
 
     }
 
+    public function deleteSupplier($id)
+    {
+        $id = $this->FILTER->prepareInputForSQL($id);
+
+        // Check whether supplier is still supplying with some products
+        $selectSupplierProducts = $this->DBH->fetch("SELECT pr_id FROM product WHERE pr_supplier = '$id'");
+            if(!empty($selectSupplierProducts))
+            {
+                $this->postBackInfo = "Dodavatele nebylo možné smazat - stále existují výrobky, které jsou tímto dodavatelem dodávány.";
+                return false;
+            }
+
+        $deleteSupplierResult =  $this->deleteSupplierQuery($id);
+            if(!$deleteSupplierResult)
+            {
+                $this->postBackInfo = "Nepodařilo se smazat dodavatele z databáze (vnitřní chyba).";
+            }
+
+        return $deleteSupplierResult;
+    }
+
+    private function deleteSupplierQuery($id)
+    {
+        $deleteQuery = $this->DBH->query("DELETE FROM supplier WHERE sup_id = '$id'");
+
+        if($deleteQuery === -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     public function loadSubcategoryList()
     {
-        $selectQuery = $this->DBH->query("SELECT psub_name, psub_category, pcat_name FROM product_category JOIN product_subcategory ON pcat_id=psub_category ORDER BY psub_name ASC");
+        $selectQuery = $this->DBH->query("SELECT psub_id, psub_name, psub_category, pcat_name FROM product_category JOIN product_subcategory ON pcat_id=psub_category ORDER BY psub_name ASC");
 
         echo "<table>";
         echo "<tr>";
@@ -150,12 +229,47 @@ final class ShowHelper implements IAdminModule
                 <td><?php echo $i; ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["psub_name"]); ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["pcat_name"]); ?></td>
+                <td><form method="post" action=""><input type="hidden" name="deleteSubcategory" value="<?php echo $this->FILTER->prepareInputForSQL($r["psub_id"]); ?>"><input onclick="return confirm('Opravdu chcete tuto podkategorii smazat?\n \n');" type="submit" value="Smazat"></form></td>
             </tr>
             <?php
             $i++;
         }
 
         echo "</table>";
+    }
+
+    public function deleteSubcategory($id)
+    {
+        $id = $this->FILTER->prepareInputForSQL($id);
+
+        $selectSubcategoryProducts = $this->DBH->fetch("SELECT pr_id FROM product WHERE pr_subcategory = '$id'");
+            if(!empty($selectSubcategoryProducts))
+            {
+                $this->postBackInfo = "Podkategorie nemůže být smazána. Stále existují produkty, které do ní spadají.";
+                return false;
+            }
+
+        $deleteSubcategoryResult = $this->deleteSubcategoryQuery($id);
+            if(!$deleteSubcategoryResult)
+            {
+                $this->postBackInfo  = "Podkategorie nemohla být smazána (vnitřní chyba).";
+            }
+
+        return $deleteSubcategoryResult;
+    }
+
+    private function deleteSubcategoryQuery($id)
+    {
+        $deleteQuery = $this->DBH->query("DELETE FROM product_subcategory WHERE psub_id = '$id' ");
+
+        if($deleteQuery === -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     /// TODO: Allow user to view only products in some specific (sub)category
@@ -181,6 +295,7 @@ final class ShowHelper implements IAdminModule
                 <td><?php echo $this->FILTER->prepareText($r["pr_name"]);?></td>
                 <td><?php echo $this->FILTER->prepareText($r["pcat_name"]);?></td>
                 <td><?php echo $this->FILTER->prepareText($r["psub_name"]);?></td>
+                <td><form method="post" action=""><input type="hidden" name="deleteProduct" value="<?php echo $this->FILTER->prepareInputForSQL($r["pr_id"]); ?>"><input onclick="return confirm('Opravdu chcete smazat tento produkt?');" type="submit" value="Smazat"></form></td>
             </tr>
 
             <?php
@@ -189,6 +304,32 @@ final class ShowHelper implements IAdminModule
 
         echo "</table>";
 
+    }
+
+    public function deleteProduct($id)
+    {
+        $id = $this->FILTER->prepareInputForSQL($id);
+
+        $deleteProductResult = $this->deleteProductQuery($id);
+            if(!$deleteProductResult)
+            {
+                $this->postBackInfo = "Produkt se nepodařilo smazat (vnitřní chyba).";
+            }
+        return $deleteProductResult;
+    }
+
+    private function deleteProductQuery($id)
+    {
+        $deleteQuery = $this->DBH->query("DELETE FROM product WHERE pr_id = '$id' ");
+
+        if($deleteQuery === -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
 }

@@ -10,7 +10,7 @@
 * Zabránit opakovanému post-backu
 * Při špatném post-backu vypsat data zpátky do formuláře, vyznačit políčko, které je špatně (zapracovat klientskou kontrolu, na některé pole
 * Refactorovat (pře-třídit a okomentovat) nový kód v AddHelper.classe
-
+* DISABLE button který nejde použít ke smazání subkategorie/dodavatele apod + zobrazit informaci o tom, proč ne
 
 
 ZADÁNÍ ZE ŠKOLY:

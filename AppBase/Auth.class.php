@@ -69,6 +69,20 @@ final class Auth
     }
 
 
+    public function checkUserAccess($allowedLevel)
+    {
+        $userLevel = $this->DBH->fetch("SELECT emp_role FROM employee WHERE emp_id = '".$_SESSION["emp_id"]."'");
+        if($allowedLevel != $userLevel["emp_role"])
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+
     /**
      * Logs user on, or returns false when credentials are not correct
      * @param $name String User name
