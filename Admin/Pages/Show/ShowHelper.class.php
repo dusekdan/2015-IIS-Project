@@ -339,7 +339,7 @@ final class ShowHelper implements IAdminModule
         }
     }
 
-    /// Editation here // Dumb
+
 
     // Data for edited record are stored here
     private $temporaryDataBuffer;

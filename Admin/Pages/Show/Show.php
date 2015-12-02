@@ -63,7 +63,6 @@ if(isset($_GET["edittype"], $_GET["edit"]) && is_numeric($_GET["edit"]))
             if($renderForm)
             {
                 $MH->loadCategoryEditForm($_GET["edit"]);
-                // Dumb comment
             }
             break;
 

@@ -718,7 +718,6 @@ final class AddHelper implements IAdminModule
         echo "</table>";
     }
 
-// duumb comment
     public function loadCategoryManagement()
     {
         $timeStamp = time();
