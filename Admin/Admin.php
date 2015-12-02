@@ -101,6 +101,7 @@ $globalUSERNAME = $userData["emp_username"];
 // When no get parameter for action is present, show dashboard layout (HTML)
 if(!isset($_GET["action"]))
 {
+
 ?>
          <div class="boxes">
 
@@ -110,6 +111,10 @@ if(!isset($_GET["action"]))
 
         <!-- PRIVILEGE LEVEL 1 BOXES -->
 
+         <?php
+         if($globalROLE == 1)
+         {
+         ?>
             <div class="employee_box">
                 <div class="box_content">
                     <div class="box_table">
@@ -152,6 +157,12 @@ if(!isset($_GET["action"]))
                 </div>
             </div>
 
+             <?php }
+
+            else
+            {
+
+              ?>
             <!-- 2nd row */  -->
 
 
@@ -179,12 +190,14 @@ if(!isset($_GET["action"]))
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
-                            ... CONTENT HERE ...
+                            <a href="Admin.php?action=RoleManagement">... CONTENT HERE ...</a>
                         </div>
                     </div>
                 </div>
             </div>
 
+          <?php
+            } ?>
 
         </div>
      </div>

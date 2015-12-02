@@ -2,17 +2,18 @@
 =====
 
 ### Emerging to-do's:
-* Přidávání produktu/Editace produktu - filtrovat podkategorie v závislosti na kategorii do které patří (ajax pravděpodobně)
+* [RESOLVED: OK] Přidávání produktu/Editace produktu - filtrovat podkategorie v závislosti na kategorii do které patří (ajax pravděpodobně)
 * Zobrazovat v UI hlášku o tom, že bez javascriptu může administrace fungovat s ručením omezeným
 * [RESOLVED: OK] Při nemožnosti využití ajaxu pro nahrátí kategorií, kontrolovat, že produkt může existovat v této kategorii
 * Tam, kde se kontroluje jestli je uživatel přihlášený zároveň kontrolovat platnost jeho přihlášení (časovou)
 * Prověřit náchylnost na XSS napříč webem
 * [RESOLVED: OK] Zabránit opakovanému post-backu
-* Při špatném post-backu vypsat data zpátky do formuláře, vyznačit políčko, které je špatně (zapracovat klientskou kontrolu, na některé pole
+* [RESOLVED: OK] Při špatném post-backu vypsat data zpátky do formuláře, vyznačit políčko, které je špatně (zapracovat klientskou kontrolu, na některé pole
 * Refactorovat (pře-třídit a okomentovat) nový kód v AddHelper.classe
 * DISABLE button který nejde použít ke smazání subkategorie/dodavatele apod + zobrazit informaci o tom, proč ne
-* Kontrolovat formát emailu, čísla, apod
+* Kontrolovat formát emailu, čísla, apod (klient i server)
 * Kontrolovat duplicitní data (tam, kde to má smysl - mail/username...)
+* Zakázat popkový přístup do administrace kam nemá nárok lozit
 
 
 ZADÁNÍ ZE ŠKOLY:
@@ -26,7 +27,14 @@ Musí poskytovat výstupy ve formě, která je v dané oblasti využitelná. Ted
 Uživatelské rozhraní musí umožňovat snadno realizovat operace pro každou roli vyplývající z diagramu případů použití (use-case). Je-li cílem např. prodej zboží, musí systém implementovat odpovídající operaci, aby uživatel nemusel při každém prodeji ručně upravovat počty zboží na skladě, pamatovat si identifikátory položek a přepisovat je do objednávky a podobně.
 
 Kromě vlastní funkcionality musí být implementovány následující funkce:
-Správa uživatelů a jejich rolí (podle povahy aplikace, např. obchodník, zákazník, administrátor). Tím se rozumí přidávání nových uživatelů u jednotlivých rolí, stejně tak možnost editace a mazání nebo deaktivace účtů. Musí být k dispozici alespoň dvě různé role uživatelů.
+===
+
+Správa uživatelů a jejich rolí (podle povahy aplikace, např. obchodník, zákazník, administrátor).
+Tím se rozumí přidávání nových uživatelů u jednotlivých rolí, stejně tak možnost editace a mazání nebo deaktivace účtů.
+[x] Musí být k dispozici alespoň dvě různé role uživatelů.
+
+
+
 Ošetření všech uživatelských vstupů tak, aby nebylo možno zadat nesmyslná nebo nekonzistentní data.
 Povinná pole formulářů musí být odlišena od nepovinných.
 Hodnoty ve formulářích, které nejsou pro fungování aplikace nezbytné, neoznačujte jako povinné (např. adresy, telefonní čísla apod.) Nenuťte uživatele (opravujícího) vyplňovat desítky zbytečných řádků.
@@ -48,10 +56,7 @@ Systém bude evidovat dodavatele (externí společnost) pro každou nabízenou p
 
 
 
-Information systems - Project in PHP with MySQL Database
-
-*Within the project, we also developed wannabe framework which would simplify process of recreation of similar application. Both authors are well aware of disadvantages of
-developing own framework in the World full of frameworks and reinventing the wheel as well as they are aware of educational benefits of such actions.*
+# Information systems - Project in PHP with MySQL Database
 
 ### Authors
 

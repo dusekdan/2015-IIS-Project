@@ -219,7 +219,6 @@ final class AddHelper implements IAdminModule
 
             if($addRecord)
             {
-                echo "false vraci insertcategory";
                 return $this->insertCategory($categoryName, $categoryDescription);
             }
             else
@@ -557,10 +556,6 @@ final class AddHelper implements IAdminModule
     {
         $timeStamp = time();
         $_SESSION["formGenerationStamp"] = $timeStamp;
-        if(isset($_POST))
-        {
-            $p = $_POST;
-        }
 ?>
 <div class="form">
     <div class="form_content">
@@ -573,7 +568,7 @@ final class AddHelper implements IAdminModule
                 </tr>
 
                 <tr>
-                    <td>Ceseta k náhledovému obrázku</td>
+                    <td>Cesta k náhledovému obrázku</td>
                     <td><input class="text" type="text" name="productUrl"<?php $this->returnPostBackValue("productUrl");?>></td>
                 </tr>
 
