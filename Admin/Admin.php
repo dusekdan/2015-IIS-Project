@@ -170,7 +170,11 @@ if(!isset($_GET["action"]))
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
-                            ... CONTENT HERE ...
+                            <a href="Admin.php">
+                                <img class="rs" src="../Resources/Images/seest.png"
+                                     onmouseover="this.src='../Resources/Images/seest_selected.png'"
+                                     onmouseout="this.src='../Resources/Images/seest.png'"/>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -180,7 +184,11 @@ if(!isset($_GET["action"]))
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
-                            ... CONTENT HERE ...
+                            <a href="Admin.php">
+                                <img class="rs" src="../Resources/Images/seeobj.png"
+                                     onmouseover="this.src='../Resources/Images/seeobj_selected.png'"
+                                     onmouseout="this.src='../Resources/Images/seeobj.png'"/>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -190,7 +198,11 @@ if(!isset($_GET["action"]))
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
-                            <a href="Admin.php?action=RoleManagement">... CONTENT HERE ...</a>
+                            <a href="Admin.php?action=RoleManagement">
+                                <img class="rs" src="../Resources/Images/edit.png"
+                                     onmouseover="this.src='../Resources/Images/edit_selected.png'"
+                                     onmouseout="this.src='../Resources/Images/edit.png'"/>
+                            </a>
                         </div>
                     </div>
                 </div>
