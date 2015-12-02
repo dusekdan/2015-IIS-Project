@@ -70,6 +70,33 @@ if(isset($_GET["type"]))
 
 }
 
+if(isset($_GET["edittype"]) && $_GET["edittype"] == "employee" && is_numeric($_GET["edit"]))
+{
 
+    echo "<h2>Editovat zaměstnance</h2>";
+
+    $renderForm = true;
+
+    if(isset($_POST["employeeName"]) && @$_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
+    {
+        $editEmployeeResult = $MH->editEmployee();
+        if($editEmployeeResult)
+        {
+            $renderForm = false;
+            $PBH->showMessage("Zaměstnanec upraven! Chcete se vrátit <a href='Admin.php?action=RoleManagement&amp;type=list'>zpět na seznam zaměstnanců?</a>");
+            unset($_SESSION["formGenerationStamp"]);
+        }
+        else
+        {
+            $PBH->showMessage($MH->getPostbackInfo(), "error");
+        }
+    }
+
+    if($renderForm)
+    {
+        $MH->loadEmployeeEditForm($_GET["edit"]);
+    }
+
+}
 
 ?>

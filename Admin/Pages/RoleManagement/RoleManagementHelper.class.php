@@ -125,12 +125,216 @@ class RoleManagementHelper implements IAdminModule
             echo "<td>$r[emp_phone]</td>";
             // <form method="post" action=""><input type="hidden" name="deleteCategory" value="
             echo "<td><form method='post' action=''><input type='hidden' name='deleteEmployee' value='$r[emp_id]'><input type='submit' value='Smazat'></form></td>";
+            echo "<td><a href='Admin.php?action=RoleManagement&amp;edittype=employee&amp;edit=$r[emp_id]'>Editovat</a></td>";
             echo "</tr>";
         }
 
 
 
         echo "</table>";
+
+    }
+
+    private $temporaryDataBuffer;
+
+    private function returnEditPostbackValue($index, $columnName)
+    {
+        if(isset($_POST[$index]))
+        {
+            echo " value='" . $_POST[$index] . "' ";
+        }
+        else
+        {
+            // Use data for the edited record
+            echo " value='" . $this->temporaryDataBuffer[$columnName] . "' ";
+        }
+    }
+
+    private function returnEditPostbackValuePlain($index, $columnName)
+    {
+        if(isset($_POST[$index]))
+        {
+            echo $_POST[$index];
+        }
+        else
+        {
+            // Use data for the edited record
+            echo $this->temporaryDataBuffer[$columnName];
+        }
+    }
+
+    public function editEmployee()
+    {
+        $this->postBackInfo = "";
+
+        $p = $_POST;
+        $empId = $this->FILTER->prepareInputForSQL($_GET["edit"]);
+
+        $editRecord = true;
+        $errorMessage = "";
+
+        if(isset($p["employeeName"], $p["employeeUsername"], $p["employeeMail"], $p["employeePhone"], $p["employeeBCN"], $p["employeeRole"], $p["employeeAddress"]))
+        {
+
+            $employeeName = $this->FILTER->prepareInputForSQL($p["employeeName"]);
+            $employeeUserName = $this->FILTER->prepareInputForSQL($p["employeeUsername"]);
+            $employeeMail = $this->FILTER->prepareInputForSQL($p["employeeMail"]);
+            $employeePhone = $this->FILTER->prepareInputForSQL($p["employeePhone"]);
+            $employeeBCN = $this->FILTER->prepareInputForSQL($p["employeeBCN"]);
+            $employeeRole = $this->FILTER->prepareInputForSQL($p["employeeRole"]);
+            $employeeAddress = $this->FILTER->prepareInputForSQL($p["employeeAddress"]);
+
+
+            if(!is_numeric($employeeRole) || empty($employeeRole))
+            {
+                $errorMessage .= "Zaměstnancká role musí být vyplněna správně!";
+                $editRecord = false;
+            }
+
+            if(empty($employeeBCN))
+            {
+                $errorMessage .= "Rodné číslo zaměstnance musí být vyplněno!";
+                $editRecord = false;
+            }
+
+            if(empty($employeeAddress))
+            {
+                $errorMessage .= "Adresa zaměstnance musí být vyplněna!";
+                $editRecord = false;
+            }
+
+            if(empty($employeePhone))
+            {
+                $errorMessage .= "Telefon zaměstnance musí být vyplněn!";
+                $editRecord = false;
+            }
+
+            if(empty($employeeMail))
+            {
+                $errorMessage .= "Email zaměstnance musí být vyplněn!";
+                $editRecord = false;
+            }
+
+            if(empty($employeeUserName))
+            {
+                $errorMessage .= "Username pro zaměstnance musí být vyplněno!";
+                $editRecord = false;
+            }
+
+            if(empty($employeeName))
+            {
+                $errorMessage .= "Jméno zaměstnance musí být vyplněno!";
+                $editRecord = false;
+            }
+
+            if($editRecord)
+            {
+                return $this->editEmployeeQuery($employeeName, $employeeUserName, $employeeMail, $employeePhone, $employeeBCN, $employeeRole, $employeeAddress, $empId);
+            }
+            else
+            {
+                $this->postBackInfo = $errorMessage;
+                return false;
+            }
+
+        }
+        else
+        {
+            $errorMessage .= "Obdržena nedostatečná POST data!";
+            $this->postBackInfo = $errorMessage;
+            return false;
+        }
+
+    }
+
+    private function editEmployeeQuery($employeeName, $employeeUserName, $employeeMail, $employeePhone, $employeeBCN, $employeeRole, $employeeAddress, $empId)
+    {
+        $updateQuery = $this->DBH->query("UPDATE employee SET
+                                          emp_fullname = '$employeeName',
+                                          emp_username = '$employeeUserName',
+                                          emp_email    = '$employeeMail',
+                                          emp_phone = '$employeePhone',
+                                          emp_bcn = '$employeeBCN',
+                                          emp_role = '$employeeRole',
+                                          emp_address = '$employeeAddress'
+                                          WHERE emp_id = '$empId'");
+
+        if($updateQuery === -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    public function loadEmployeeEditForm($employeeId)
+    {
+        $timeStamp = time();
+        $_SESSION["formGenerationStamp"] = $timeStamp;
+
+        $employeeId = $this->FILTER->prepareInputForSQL($employeeId);
+        $this->temporaryDataBuffer = $this->DBH->fetch("SELECT * FROM employee JOIN employee_role on emp_role = erole_id WHERE emp_id = '$employeeId'");
+
+        ?>
+
+        <div class="form">
+            <div class="form_content">
+                <form action="" method="post">
+                    <table>
+
+                        <tr>
+                            <td>Jméno zaměstnance: </td>
+                            <td><input type="text" class="text" name="employeeName"<?php $this->returnEditPostBackValue("employeeName", "emp_fullname"); ?>></td>
+                            <td><input type="hidden" name="formGenerationStamp" value="<?php echo $timeStamp;?>"></td>
+                        </tr>
+
+                        <tr>
+                            <td>Username:</td>
+                            <td><input type="text" class="text" name="employeeUsername"<?php $this->returnEditPostBackValue("employeeUsername", "emp_username"); ?>></td>
+                        </tr>
+
+                        <tr>
+                            <td>Email:</td>
+                            <td><input type="email" class="text" name="employeeMail"<?php $this->returnEditPostBackValue("employeeMail", "emp_email"); ?>></td>
+                        </tr>
+
+                        <tr>
+                            <td>Telefon:</td>
+                            <td><input type="text" class="text" name="employeePhone"<?php $this->returnEditPostBackValue("employeePhone", "emp_phone"); ?>></td>
+                        </tr>
+
+                        <tr>
+                            <td>Rodné číslo:</td>
+                            <td><input type="text" class="text" name="employeeBCN"<?php $this->returnEditPostBackValue("employeeBCN", "emp_bcn"); ?>></td>
+                        </tr>
+
+                        <tr>
+                            <td>Role:</td>
+                            <td>
+                                <select name="employeeRole">
+                                    <?php $this->loadUserRolesOptions(); ?>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Adresa:</td>
+                            <td><textarea name="employeeAddress"><?php $this->returnEditPostBackValuePlain("employeeAddress", "emp_address"); ?></textarea></td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td><input type="submit" value="Přidat zaměstnance"></td>
+                        </tr>
+
+                    </table>
+                </form>
+            </div>
+        </div>
+
+        <?php
 
     }
 
