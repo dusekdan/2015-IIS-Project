@@ -445,11 +445,10 @@ final class AddHelper implements IAdminModule
         $addRecord = true;
         $errorMessage = "";
 
-        if(isset($p["productName"], $p["productSupplier"], $p["productCategory"], $p["productSubcategory"], $p["productDescription"]))
+        if(isset($p["productName"], $p["productSupplier"], $p["productSubcategory"], $p["productDescription"]))
         {
             $productName = $this->FILTER->prepareInputForSQL($p["productName"]);
             $productSupplier = $this->FILTER->prepareInputForSQL($p["productSupplier"]);
-            $productCategory = $this->FILTER->prepareInputForSQL($p["productCategory"]);
             $productSubcategory = $this->FILTER->prepareInputForSQL($p["productSubcategory"]);
             $productDescription = $this->FILTER->prepareInputForSQL($p["productDescription"]);
             $productPrice = $this->FILTER->prepareInputForSQL($p["productPrice"]);
@@ -466,12 +465,6 @@ final class AddHelper implements IAdminModule
             {
                 $addRecord = false;
                 $errorMessage .= "Není možné přidat produkt bez dodavatele! <br>";
-            }
-
-            if(empty($productCategory))
-            {
-                $addRecord = false;
-                $errorMessage .= "Produkt musí spadat do některé z kategorií! <br>";
             }
 
             if(empty($productSubcategory))
@@ -503,17 +496,10 @@ final class AddHelper implements IAdminModule
                 $productUrl = self::PRODUCT_DEFAULT_URL;
             }
 
-            $subcategoryTestSelectQuery = $this->DBH->fetch("SELECT * FROM product_subcategory WHERE psub_id='$productSubcategory' AND psub_category='$productCategory'");
-
-            if(empty($subcategoryTestSelectQuery))
-            {
-                $addRecord = false;
-                $errorMessage .= "Zvolená podkategorie nespadá pod zvolenou kategorii! (Toto může být způsobeno vypnutým javascriptem na Vaší straně!) <br>";
-            }
 
             if($addRecord)
             {
-                return $this->insertProduct($productName, $productSupplier, $productCategory, $productSubcategory, $productDescription, $productPrice, $productUrl, $productInitialStock);
+                return $this->insertProduct($productName, $productSupplier, $productSubcategory, $productDescription, $productPrice, $productUrl, $productInitialStock);
             }
             else
             {
@@ -530,7 +516,7 @@ final class AddHelper implements IAdminModule
         }
     }
 
-    private function insertProduct($productName, $productSupplier, $productCategory, $productSubcategory, $productDescription, $productPrice, $productUrl, $productInitialStock)
+    private function insertProduct($productName, $productSupplier, $productSubcategory, $productDescription, $productPrice, $productUrl, $productInitialStock)
     {
 
         $productAddedBy = $_SESSION["emp_id"];
@@ -547,6 +533,23 @@ final class AddHelper implements IAdminModule
         else
         {
             return true;
+        }
+    }
+
+    private function loadProductCategoryOptions()
+    {
+        $selectCategoryQueries = $this->DBH->query("SELECT pcat_name, pcat_id FROM product_category ORDER BY pcat_name");
+
+        while($r = mysql_fetch_assoc($selectCategoryQueries))
+        {
+
+            echo "<option disabled='disabled' value='$r[pcat_id]'>$r[pcat_name]</option>";
+
+            $selectSubcategories = $this->DBH->query("SELECT psub_name, psub_id FROM product_subcategory WHERE psub_category = '".$r["pcat_id"]."'");
+            while($sc = mysql_fetch_assoc($selectSubcategories))
+            {
+                echo "<option value='$sc[psub_id]'>&nbsp;&nbsp;$sc[psub_name]</option>";
+            }
         }
     }
 
@@ -596,22 +599,11 @@ final class AddHelper implements IAdminModule
                 </tr>
 
                 <tr>
-                    <td>Kategorie produktu</td>
-                    <td>
-                        <select name="productCategory">
-                            <?php
-                                $this->loadCategoryOptions();
-                            ?>
-                        </select>
-                    </td>
-                </tr>
-
-                <tr>
                     <td>Subkategorie produktu</td>
                     <td>
                         <select name="productSubcategory">
                             <?php
-                                $this->loadSubcategoryOptions();
+                                $this->loadProductCategoryOptions();
                             ?>
                         </select>
                     </td>
@@ -624,7 +616,7 @@ final class AddHelper implements IAdminModule
 
                 <tr>
                     <td colspan="2">
-                        <textarea name="productDescription" rows="3"></textarea>
+                        <textarea name="productDescription" rows="3"><?php $this->returnPostBackValuePlain("productDescription"); ?></textarea>
                     </td>
                 </tr>
 

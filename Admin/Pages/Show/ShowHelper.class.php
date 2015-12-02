@@ -13,6 +13,9 @@ final class ShowHelper implements IAdminModule
     private $FILTER;
 
 
+    const PRODUCT_DEFAULT_URL = "HTTP_DEFAULT_URL_FILLIN";
+
+
     private $postBackInfo = "";
         public function getPostBackInfo()
         {
@@ -100,6 +103,7 @@ final class ShowHelper implements IAdminModule
                 <td><?php echo $i; ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["pcat_name"]); ?></td>
                 <td><form method="post" action=""><input type="hidden" name="deleteCategory" value="<?php echo $this->FILTER->prepareInputForSQL($r["pcat_id"]); ?>"><input onclick="return confirm('Opravdu chcete smazat tuto kategorii?');" type="submit" value="Smazat"></form></td>
+                <td><a href="Admin.php?action=Show&amp;edittype=category&amp;edit=<?php echo $this->FILTER->prepareText($r["pcat_id"]); ?>">Editovat</a></td>
             </tr>
 
             <?php
@@ -231,6 +235,7 @@ final class ShowHelper implements IAdminModule
                 <td><?php echo $this->FILTER->prepareText($r["psub_name"]); ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["pcat_name"]); ?></td>
                 <td><form method="post" action=""><input type="hidden" name="deleteSubcategory" value="<?php echo $this->FILTER->prepareInputForSQL($r["psub_id"]); ?>"><input onclick="return confirm('Opravdu chcete tuto podkategorii smazat?\n \n');" type="submit" value="Smazat"></form></td>
+                <td><a href="Admin.php?action=Show&amp;edittype=subcategory&amp;edit=<?php echo $this->FILTER->prepareText($r["psub_id"]); ?>">Editovat</a></td>
             </tr>
             <?php
             $i++;
@@ -297,6 +302,7 @@ final class ShowHelper implements IAdminModule
                 <td><?php echo $this->FILTER->prepareText($r["pcat_name"]);?></td>
                 <td><?php echo $this->FILTER->prepareText($r["psub_name"]);?></td>
                 <td><form method="post" action=""><input type="hidden" name="deleteProduct" value="<?php echo $this->FILTER->prepareInputForSQL($r["pr_id"]); ?>"><input onclick="return confirm('Opravdu chcete smazat tento produkt?');" type="submit" value="Smazat"></form></td>
+                <td><a href="Admin.php?action=Show&amp;edittype=product&amp;edit=<?php echo $this->FILTER->prepareText($r["pr_id"]); ?>">Editovat</a></td>
             </tr>
 
             <?php
@@ -338,7 +344,6 @@ final class ShowHelper implements IAdminModule
     // Data for edited record are stored here
     private $temporaryDataBuffer;
 
-
     private function returnEditPostbackValue($index, $columnName)
     {
         if(isset($_POST[$index]))
@@ -362,6 +367,208 @@ final class ShowHelper implements IAdminModule
         {
             // Use data for the edited record
             echo $this->temporaryDataBuffer[$columnName];
+        }
+    }
+
+
+
+
+
+
+
+    #region "Editation"
+
+    public function editCategory()
+    {
+        // Reseting postbackinformation
+        $this->postBackInfo = "";
+
+        // Simplication of $_POST
+        $p = $_POST;
+
+        // Simplification of $_GET["edit"]
+        $catId = $_GET["edit"];
+
+        // Basic variables init
+        $editRecord = true;
+        $errorMessage = "";
+
+        // Data initialization & securing
+        if(isset($p["categoryName"], $p["categoryDescription"]))
+        {
+            // Secure data
+            $categoryName = $this->FILTER->prepareInputForSQL($p["categoryName"]);
+            $categoryDescription = $this->FILTER->prepareInputForSQL($p["categoryDescription"]);
+            $catId = $this->FILTER->prepareInputForSQL($catId);
+
+            if(empty($categoryName))
+            {
+                $editRecord = false;
+                $errorMessage .= "Jméno kategorie nesmí být prázdné! <br>";
+            }
+
+            if(empty($categoryDescription))
+            {
+                $editRecord = false;
+                $errorMessage .= "Popisek kategorie nesmí být prázdný! <br>";
+            }
+
+            if($editRecord)
+            {
+                return $this->editCategoryQuery($categoryName, $categoryDescription, $catId);
+            }
+            else
+            {
+                $this->postBackInfo = $errorMessage;
+                return false;
+            }
+        }
+        else
+        {
+            $this->postBackInfo = "Obdržena nedostatečná POST data!";
+            return false;
+        }
+    }
+
+    public function editProduct()
+    {
+        // Reseting postbackinformation
+        $this->postBackInfo = "";
+
+        // Simplication of $_POST
+        $p = $_POST;
+
+        // Simplification of $_GET["edit"]
+        $prId = $_GET["edit"];
+
+        // Basic variables init
+        $editRecord = true;
+        $errorMessage = "";
+
+        // Data initialization & securing
+        if(isset($p["productName"], $p["productUrl"], $p["productPrice"], $p["productInitialStock"], $p["productSupplier"], $p["productSubcategory"], $p["productDescription"]))
+        {
+            // Secure data
+            $productName = $this->FILTER->prepareInputForSQL($p["productName"]);
+            $productUrl = $this->FILTER->prepareInputForSQL($p["productUrl"]);
+            $productPrice = $this->FILTER->prepareInputForSQL($p["productPrice"]);
+            $productInitialStock = $this->FILTER->prepareInputForSQL($p["productInitialStock"]);
+            $productSupplier = $this->FILTER->prepareInputForSQL($p["productSupplier"]);
+            $productCategory = $this->FILTER->prepareInputForSQL($p["productSubcategory"]);
+            $productDescription = $this->FILTER->prepareInputForSQL($p["productDescription"]);
+            $prId        =  $this->FILTER->prepareInputForSQL($prId);
+
+            if(empty($productName))
+            {
+                $editRecord = false;
+                $errorMessage .= "Jméno produktu nesmí být prázdné! <br>";
+            }
+
+            if(empty($productSupplier))
+            {
+                $editRecord = false;
+                $errorMessage .= "Není možné přidat produkt bez dodavatele! <br>";
+            }
+
+            if(empty($productDescription))
+            {
+                $editRecord = false;
+                $errorMessage .= "Produkt musí mít popisek! <br>";
+            }
+
+            if(empty($productInitialStock))
+            {
+                $productInitialStock = 0;
+            }
+
+            if(empty($productPrice))
+            {
+                $editRecord = false;
+                $errorMessage .= "Produkt musí mít nastavenou cenu! <br>";
+            }
+
+            if(empty($productUrl))
+            {
+                $productUrl = self::PRODUCT_DEFAULT_URL;
+            }
+
+            if($editRecord)
+            {
+                return $this->editProductQuery($productName, $productUrl, $productPrice, $productInitialStock, $productSupplier, $productCategory, $productDescription, $prId);
+            }
+            else
+            {
+                $this->postBackInfo = $errorMessage;
+                return false;
+            }
+
+        }
+        else
+        {
+            $errorMessage = "Obdržena nedostatečná POST data!";
+            $this->postBackInfo = $errorMessage;
+            return false;
+        }
+    }
+
+    public function editSubcategory()
+    {
+        // Reseting postbackinformation
+        $this->postBackInfo = "";
+
+        // Simplication of $_POST
+        $p = $_POST;
+
+        // Simplification of $_GET["edit"]
+        $psubId = $_GET["edit"];
+
+        // Basic variables init
+        $editRecord = true;
+        $errorMessage = "";
+
+        // Data initialization & securing
+        if(isset($p["subcategoryName"], $p["subcategoryCategory"], $p["subcategoryDescription"]))
+        {
+            // Secure data
+            $subcategoryName = $this->FILTER->prepareInputForSQL($p["subcategoryName"]);
+            $subcategoryCategory = $this->FILTER->prepareInputForSQL($p["subcategoryCategory"]);
+            $subcategoryDescription = $this->FILTER->prepareInputForSQL($p["subcategoryDescription"]);
+            $psubId = $this->FILTER->prepareInputForSQL($psubId);
+
+            if(empty($subcategoryName))
+            {
+                $errorMessage .= "Název podkategorie musí být vyplněn!";
+                $editRecord = false;
+            }
+
+            if(empty($subcategoryCategory))
+            {
+                $errorMessage .= "Nadřazená kategorie musí být vyplněna!";
+                $editRecord = false;
+            }
+
+            if(empty($subcategoryDescription))
+            {
+                $errorMessage .= "Popisek podkategorie musí být vyplněn!";
+                $editRecord = false;
+            }
+
+            if($editRecord)
+            {
+                return $this->editSubcategoryQuery($subcategoryName, $subcategoryCategory, $subcategoryDescription, $psubId);
+            }
+            else
+            {
+                $this->postBackInfo = $errorMessage;
+                return false;
+            }
+
+        }
+        else
+        {
+            $errorMessage = "Obdržena nedostatečná POST data!";
+            $this->postBackInfo = $errorMessage;
+            return false;
         }
     }
 
@@ -454,6 +661,63 @@ final class ShowHelper implements IAdminModule
         }
     }
 
+    private function editCategoryQuery($categoryName, $categoryDescription, $catId)
+    {
+        $updateQuery = $this->DBH
+                            ->query("UPDATE product_category SET pcat_name='$categoryName', pcat_description='$categoryDescription' WHERE pcat_id='$catId'");
+
+        if($updateQuery === -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    private function editProductQuery($productName, $productUrl, $productPrice, $productInitialStock, $productSupplier, $productCategory, $productDescription, $prId)
+    {
+
+        $updateQuery = $this->DBH->query("UPDATE product SET
+                        pr_name = '$productName',
+                        pr_imageurl = '$productUrl',
+                        pr_price = '$productPrice',
+                        pr_quantity = '$productInitialStock',
+                        pr_supplier = '$productSupplier',
+                        pr_subcategory = '$productCategory',
+                        pr_description = '$productDescription'
+                        WHERE pr_id = '$prId'");
+
+        if($updateQuery === -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+
+    }
+
+    private function editSubcategoryQuery($subcategoryName, $subcategoryCategory, $subcategoryDescription, $psubId)
+    {
+        $updateQuery = $this->DBH->query("UPDATE product_subcategory SET
+                                          psub_name = '$subcategoryName',
+                                          psub_category = '$subcategoryCategory',
+                                          psub_description = '$subcategoryDescription'
+                                          WHERE psub_id = '$psubId'");
+
+        if($updateQuery === -1)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
     private function editSupplierQuery($supplierName, $supplierMail, $supplierPhone, $supplierResupplytime, $supplierICO, $supplierAddress, $supId)
     {
         $updateQuery = $this->DBH->query("UPDATE supplier SET
@@ -475,65 +739,42 @@ final class ShowHelper implements IAdminModule
         }
     }
 
-    private function loadScriptsForProductEditForm()
+    public function loadCategoryEditForm($categoryId)
     {
+        $timeStamp = time();
+        $_SESSION["formGenerationStamp"] = $timeStamp;
+
+        $categoryId = $this->FILTER->prepareInputForSQL($categoryId);
+        $this->temporaryDataBuffer = $this->DBH->fetch("SELECT * FROM product_category WHERE pcat_id = '$categoryId'");
         ?>
+<div class="form">
+    <div class="form_content">
+        <form action="" method="post">
+            <table>
 
-        <script language="javascript" type="text/javascript">
-$(document).ready(function(){
+                    <tr>
+                        <td>Jméno kategorie:</td>
+                        <td><input type="text" class="text" name="categoryName"<?php $this->returnEditPostBackValue("categoryName", "pcat_name"); ?>></td>
+                        <td><input type="hidden" value="<?php echo $timeStamp;?>" name="formGenerationStamp"></td>
+                    </tr>
 
-//let's create arrays
-var chocolates = [
-    {display: "Dark chocolate", value: "dark-chocolate" },
-    {display: "Milk chocolate", value: "milk-chocolate" },
-    {display: "White chocolate", value: "white-chocolate" },
-    {display: "Gianduja chocolate", value: "gianduja-chocolate" }];
+                    <tr>
+                        <td>Popisek kategorie:</td>
+                        <td></td>
+                    </tr>
 
-var vegetables = [
-    {display: "Broccoli", value: "broccoli" },
-    {display: "Cabbage", value: "cabbage" },
-    {display: "Carrot", value: "carrot" },
-    {display: "Cauliflower", value: "cauliflower" }];
+                    <tr>
+                        <td colspan="2"><textarea name="categoryDescription"><?php $this->returnEditPostBackValuePlain("categoryDescription", "pcat_description"); ?></textarea></td>
+                    </tr>
 
-var icecreams = [
-    {display: "Frozen yogurt", value: "frozen-yogurt" },
-    {display: "Booza", value: "booza" },
-    {display: "Frozen yogurt", value: "frozen-yogurt" },
-    {display: "Ice milk", value: "ice-milk" }];
-
-//If parent option is changed
-$("#parent_selection").change(function() {
-        var parent = $(this).val(); //get option value from parent
-
-        switch(parent){ //using switch compare selected option and populate child
-              case 'chocolates':
-                list(chocolates);
-                break;
-              case 'vegetables':
-                list(vegetables);
-                break;
-              case 'icecreams':
-                list(icecreams);
-                break;
-            default: //default child option is blank
-                $("#child_selection").html('');
-                break;
-           }
-});
-
-//function to populate child select box
-function list(array_list)
-{
-    $("#child_selection").html(""); //reset child options
-    $(array_list).each(function (i) { //populate child options
-        $("#child_selection").append("<option value=\""+array_list[i].value+"\">"+array_list[i].display+"</option>");
-    });
-}
-
-});
-</script>
-
-
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" value="Upravit kategorii"></td>
+                    </tr>
+            </table>
+        </form>
+    </div>
+</div>
         <?php
     }
 
@@ -553,23 +794,23 @@ function list(array_list)
                     <table>
                         <tr>
                             <td>Název nového produktu</td>
-                            <td><input class="text" type="text" name="productName"<?php $this->returnPostBackValue("productName"); ?>></td>
+                            <td><input class="text" type="text" name="productName"<?php $this->returnEditPostBackValue("productName", "pr_name"); ?>></td>
                             <td><input type="hidden" name="formGenerationStamp" value="<?php echo $timeStamp; ?>"></td>
                         </tr>
 
                         <tr>
                             <td>Ceseta k náhledovému obrázku</td>
-                            <td><input class="text" type="text" name="productUrl"<?php $this->returnPostBackValue("productUrl");?>></td>
+                            <td><input class="text" type="text" name="productUrl"<?php $this->returnEditPostBackValue("productUrl", "pr_imageurl");?>></td>
                         </tr>
 
                         <tr>
                             <td>Cena</td>
-                            <td><input class="text" type="text" name="productPrice"<?php $this->returnPostBackValue("productPrice");?>></td>
+                            <td><input class="text" type="text" name="productPrice"<?php $this->returnEditPostBackValue("productPrice", "pr_price");?>></td>
                         </tr>
 
                         <tr>
                             <td>Počáteční počet:</td>
-                            <td><input class="text" type="text" name="productInitialStock"<?php $this->returnPostBackValue("productInitialStock");?>></td>
+                            <td><input class="text" type="text" name="productInitialStock"<?php $this->returnEditPostBackValue("productInitialStock", "pr_quantity");?>></td>
                         </tr>
 
                         <tr>
@@ -586,20 +827,9 @@ function list(array_list)
                         <tr>
                             <td>Kategorie produktu</td>
                             <td>
-                                <select name="productCategory">
-                                    <?php
-                                    $this->loadCategoryOptions();
-                                    ?>
-                                </select>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Subkategorie produktu</td>
-                            <td>
                                 <select name="productSubcategory">
                                     <?php
-                                    $this->loadSubcategoryOptions();
+                                    $this->loadProductCategoryOptions();
                                     ?>
                                 </select>
                             </td>
@@ -612,7 +842,7 @@ function list(array_list)
 
                         <tr>
                             <td colspan="2">
-                                <textarea name="productDescription" rows="3"></textarea>
+                                <textarea name="productDescription" rows="3"><?php echo $this->returnEditPostbackValuePlain("productDescription", "pr_description"); ?></textarea>
                             </td>
                         </tr>
 
@@ -624,6 +854,58 @@ function list(array_list)
                 </form>
             </div>
 
+        </div>
+
+        <?php
+    }
+
+    public function loadSubcategoryEditForm($subcategoryId)
+    {
+        $subcategoryId = $this->FILTER->prepareInputForSQL($subcategoryId);
+
+        $this->temporaryDataBuffer = $this->DBH->fetch("SELECT * FROM product_subcategory WHERE psub_id = '$subcategoryId'");
+
+        // Double postback prevention
+        $timeStamp = time();
+        $_SESSION["formGenerationStamp"] = $timeStamp;
+        ?>
+        <div class="form">
+            <div class="form_content">
+                <form action="" method="post">
+                    <table>
+
+                        <tr>
+                            <td>Jméno podkategorie:</td>
+                            <td><input type="text" class="text" name="subcategoryName" <?php $this->returnEditPostbackValue("subcategoryName", "psub_name"); ?>></td>
+                            <td><input type="hidden" value="<?php echo $timeStamp;?>" name="formGenerationStamp"></td>
+                        </tr>
+
+                        <tr>
+                            <td>Nadřazená kategorie:</td>
+                            <td><select name="subcategoryCategory">
+                                    <?php
+                                    $this->loadSubcategoryCategoryOptions();
+                                    ?>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Popisek podkategorie:</td>
+                            <td></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2"><textarea name="subcategoryDescription"><?php $this->returnEditPostbackValuePlain("subcategoryDescription", "psub_description"); ?></textarea></td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td><input type="submit" value="Přidat kategorii"></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
         </div>
 
         <?php
@@ -692,6 +974,47 @@ function list(array_list)
         </div>
 
         <?php
+    }
+
+
+
+    // Selection options load methods
+
+    private function loadProductCategoryOptions()
+    {
+        $selectCategoryQueries = $this->DBH->query("SELECT pcat_name, pcat_id FROM product_category ORDER BY pcat_name");
+
+        while($r = mysql_fetch_assoc($selectCategoryQueries))
+        {
+
+            echo "<option disabled='disabled' value='$r[pcat_id]'>$r[pcat_name]</option>";
+
+            $selectSubcategories = $this->DBH->query("SELECT psub_name, psub_id FROM product_subcategory WHERE psub_category = '".$r["pcat_id"]."'");
+            while($sc = mysql_fetch_assoc($selectSubcategories))
+            {
+                echo "<option value='$sc[psub_id]'>&nbsp;&nbsp;$sc[psub_name]</option>";
+            }
+        }
+    }
+
+    private function loadSubcategoryCategoryOptions()
+    {
+        $selectQuery = $this->DBH->query("SELECT pcat_id, pcat_name FROM product_category ORDER BY pcat_name ASC");
+
+        while($r = mysql_fetch_assoc($selectQuery))
+        {
+            echo "<option value='$r[pcat_id]'>" . $this->FILTER->prepareText($r["pcat_name"]) . "</option>" . PHP_EOL;
+        }
+    }
+
+    private function loadSupplierSelectionOptions()
+    {
+        $selectQuery = $this->DBH->query("SELECT sup_name, sup_id FROM supplier ORDER BY sup_name ASC");
+
+        while($r = mysql_fetch_assoc($selectQuery))
+        {
+            echo "<option value='$r[sup_id]'>" . $this->FILTER->prepareText($r["sup_name"]) . "</option>" . PHP_EOL;
+        }
     }
 
 }
