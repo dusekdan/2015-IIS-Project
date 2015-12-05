@@ -5,11 +5,6 @@
 
 <?php
 
-
-
-
-
-// Category rewrite trial - operational now
 if( isset($_GET["type"]) && $_GET["type"] == "category")
 {
 

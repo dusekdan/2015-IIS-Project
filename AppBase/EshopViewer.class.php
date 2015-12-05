@@ -306,7 +306,7 @@ class EshopViewer
 
         // Not resolved orders
         echo "<h2>Nevyřízené objednávky</h2>";
-        $orderSelect = $this->DBH->query("SELECT ord_time, ord_processed, ord_id FROM orders WHERE ord_processed='false' or ord_processed='waiting' ORDER BY ord_time DESC");
+        $orderSelect = $this->DBH->query("SELECT ord_time, ord_processed, ord_id FROM orders WHERE (ord_processed='false' or ord_processed='waiting') AND ord_orderedby='$uid'  ORDER BY ord_time DESC");
         while($r = mysql_fetch_assoc($orderSelect))
         {
             echo "Objednávka z " . $r["ord_time"] . " STAV: $r[ord_processed]<br>";
@@ -326,7 +326,7 @@ class EshopViewer
 
         // Only already processed orders
         echo "<h2>Vyřízené objednávky</h2>";
-        $orderSelect = $this->DBH->query("SELECT ord_time, ord_processed, ord_id FROM orders WHERE ord_processed='true' ORDER BY ord_time DESC");
+        $orderSelect = $this->DBH->query("SELECT ord_time, ord_processed, ord_id FROM orders WHERE ord_processed='true' AND ord_orderedby='$uid'  ORDER BY ord_time DESC");
         while($r = mysql_fetch_assoc($orderSelect))
         {
             echo "Objednávka z " . $r["ord_time"] . "<br>";
@@ -339,7 +339,7 @@ class EshopViewer
                 $i++;
             }
             echo "Celková cena...";
-            echo "<a href=''>Vytisknout objednávku</a>";
+            echo "<a href=''>Vytisknout objednávku</a><hr>";
         }
 
     }
