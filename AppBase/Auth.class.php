@@ -51,6 +51,14 @@ final class Auth
     }
 
 
+    public function killUnauthorizedVisit()
+    {
+        if(!isset($_SESSION["cust_id"]) || !isset($_SESSION["cust_hash"]) || !@$this->verifyCustomerSession($_SESSION["cust_id"], $_SESSION["cust_hash"]))
+        {
+            die("Sorry, unathorized access!");
+        }
+    }
+
     /**
      * TODO: Add timestamp check to satisfy task assignment conditions
      * Verifies whether the user session is still valid

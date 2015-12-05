@@ -679,6 +679,16 @@ final class ShowHelper implements IAdminModule
     private function editProductQuery($productName, $productUrl, $productPrice, $productInitialStock, $productSupplier, $productCategory, $productDescription, $prId)
     {
 
+        $updateQueryAddition = "";
+        if($productInitialStock == 0)
+        {
+            $updateQueryAddition = "pr_available = 'false',";
+        }
+        else
+        {
+            $updateQueryAddition = "pr_available = 'true',";
+        }
+
         $updateQuery = $this->DBH->query("UPDATE product SET
                         pr_name = '$productName',
                         pr_imageurl = '$productUrl',
@@ -686,6 +696,7 @@ final class ShowHelper implements IAdminModule
                         pr_quantity = '$productInitialStock',
                         pr_supplier = '$productSupplier',
                         pr_subcategory = '$productCategory',
+                        $updateQueryAddition
                         pr_description = '$productDescription'
                         WHERE pr_id = '$prId'");
 

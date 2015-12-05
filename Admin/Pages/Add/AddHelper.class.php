@@ -522,8 +522,8 @@ final class AddHelper implements IAdminModule
         $productAvailability = ($productInitialStock == 0) ? 'false' : 'true';
 
         // well apparently I have missed some columns too
-        $insertQuery = $this->DBH->query("INSERT INTO product (pr_name, pr_description, pr_quantity, pr_available, pr_imageurl, pr_price, pr_subcategory, pr_addedby, pr_supplier)
-        VALUES ('$productName', '$productDescription', '$productInitialStock', '$productAvailability', '$productUrl', '$productPrice', '$productSubcategory', '$productAddedBy', '$productSupplier');");
+        $insertQuery = $this->DBH->query("INSERT INTO product (pr_name, pr_description, pr_quantity, pr_available, pr_imageurl, pr_price, pr_subcategory, pr_addedby, pr_supplier, pr_addtime)
+        VALUES ('$productName', '$productDescription', '$productInitialStock', '$productAvailability', '$productUrl', '$productPrice', '$productSubcategory', '$productAddedBy', '$productSupplier', NOW());");
 
         if($insertQuery === -1)
         {

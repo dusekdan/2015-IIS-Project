@@ -27,9 +27,11 @@ $Viewer = new EshopViewer($db, $Auth, $IF);
 
 </head>
 <body>
-<h1>Eshop - Papírnictví</h1>
+<h1><a href="index.php">Eshop</a> - Papírnictví</h1>
 <hr>
 <?php
+// Logon/Userinfo part
+$isSessionValid = false;
 if(isset($_SESSION["cust_id"], $_SESSION["cust_hash"]))
 {
     $isSessionValid = $Auth->verifyCustomerSession($_SESSION["cust_id"], $_SESSION["cust_hash"]);
@@ -49,13 +51,14 @@ if(isset($_SESSION["cust_id"], $_SESSION["cust_hash"]))
 }
 else
 {
-    ?><a href="index.php?auth=register">Registrovat se</a> | <a href="index.php?auth=logon">Přihlásit se</a><?php
+    ?><a href="index.php?auth=register">Registrovat se</a> | <a href="index.php?auth=logon">Přihlásit se</a> <?php
 }
 ?>
 
 <hr>
 
 <div class="frontend-menu">
+    <!-- HERE COMES CATEGORY LISTING -->
     <strong>Kategorie zboží</strong> <br>
     <?php
     $Viewer->loadCategoryListing();
@@ -77,6 +80,7 @@ if(isset($_GET["auth"]))
 {
     if ($_GET["auth"] == "register")
     {
+
         $renderForm = true;
 
         if(isset($_POST["registerFirstName"]) && @$_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
@@ -104,6 +108,11 @@ if(isset($_GET["auth"]))
     if($_GET["auth"] == "logon")
     {
 
+        if(isset($_GET["from"]) && $_GET["from"] == "addToBasket")
+        {
+            $PBH->showMessage("Pro přidávání položek do košíku je třeba se přihlásit!");
+        }
+
         if(isset($_POST["logonMail"], $_POST["logonPassword"]))
         {
             $logonResult = $Viewer->submitLogon();
@@ -128,6 +137,104 @@ if(isset($_GET["auth"]))
         $PBH->redirectPage("index.php");
     }
 }
+
+
+
+
+
+if(isset($_GET["shopaction"]))
+{
+
+    switch($_GET["shopaction"])
+    {
+
+
+        // Shopping process cases
+        case "addtobasket":
+                    $renderForm = true;
+
+                    // Check whether the user is logged on - if not, redirect to registration with information about the fact that he needs to register first (&from=addToBasket)
+                    if(!isset($_SESSION["cust_id"], $_SESSION["cust_hash"]) || !$isSessionValid)
+                    {
+                        $PBH->redirectPage("index.php?auth=logon&from=addToBasket");
+                    }
+
+                    if(isset($_POST["addToBasketQuantity"], $_GET["productid"]) && is_numeric($_GET["productid"]))
+                    {
+                        // Correction of added value(s)
+                        if($_POST["addToBasketQuantity"] < 0)
+                            $quantity = 1;
+                        else
+                            $quantity = $IF->prepareInputForSQL($_POST["addToBasketQuantity"]);
+
+                        $pid = $IF->prepareInputForSQL($_GET["productid"]);
+                        $Viewer->addToBasket($pid, $quantity);
+                        $PBH->showMessage("Úspěšně přidáno do košíku! Chcete si prohlédnout <a href='index.php?shopaction=viewcart'>obsah košíku</a>, nebo pokračovat v <a href='index.php'>nákupu</a>?");
+                        $renderForm = false;
+                    }
+
+                    if($renderForm)
+                    {
+                        $Viewer->loadAddToBasketForm($_GET["productid"]);
+                    }
+
+
+            break;
+
+        case "viewcart":
+            $Auth->killUnauthorizedVisit();
+            if(isset($_POST["deleteItem"]) && is_numeric($_POST["deleteItem"]))
+            {
+                if($Viewer->removeFromBasket($_POST["deleteItem"]))
+                {
+                    $PBH->showMessage("Položka úspěšně odebrána!");
+                }
+            }
+
+            if(isset($_POST["makeOrder"]))
+            {
+                $Auth->killUnauthorizedVisit();
+                $Viewer->orderBasketContent();
+                $Viewer->emptyBasket();
+                $PBH->showMessage("Obsah košíku byl objednán. Objednávku si můžete <a href='index.php'>prohlédnout zde</a>.");
+            }
+
+            $Viewer->loadBasketContents();
+            break;
+
+
+        case "orderhistory":
+            $Auth->killUnauthorizedVisit();
+            $Viewer->showOrderHistory();
+            break;
+
+        // Listing cases
+        case "viewproduct":
+            if(isset($_GET["productid"]) && is_numeric($_GET["productid"]))
+                $Viewer->showProductDetail($_GET["productid"]);
+            else
+                echo "Neoprávněný přístup! Pokud jste adresu zadávali ručně, zkontrolujte, že nedošlo k překlepu.";
+            break;
+        case "viewcategory":
+            if(isset($_GET["categoryid"]) && is_numeric($_GET["categoryid"]))
+                $Viewer->showProductsInCategory($_GET["categoryid"]);
+            else
+                echo "Neoprávněný přístup! Pokud jste adresu zadávali ručně, zkontrolujte, že nedošlo k překlepu.";
+
+            break;
+        case "viewsubcategory":
+            if(isset($_GET["subcategoryid"]) && is_numeric($_GET["subcategoryid"]))
+                $Viewer->showProductsInSubcategory($_GET["subcategoryid"]);
+            else
+                echo "Neoprávněný přístup! Pokud jste adresu zadávali ručně, zkontrolujte, že nedošlo k překlepu.";
+            break;
+    }
+}
+
+
+
+
+
 ?>
 
 </div>
