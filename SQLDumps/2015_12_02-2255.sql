@@ -11,7 +11,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 
 --
 -- Databáze: `iisproject`
-DROP DATABASE `iisproject`; 
+
 CREATE DATABASE `iisproject` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `iisproject`;
 

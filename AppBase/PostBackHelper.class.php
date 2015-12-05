@@ -68,6 +68,13 @@ class PostBackHelper
         <?php
     }
 
+    public function redirectPage($url, $timer = 0)
+    {
+        ?>
+        <meta http-equiv="refresh" content="<?php echo $timer;?>; url=<?php echo $url; ?>">
+        <?php
+    }
+
 
 
 

@@ -14,25 +14,141 @@ function __autoload($className)
 
 $db = new MySQLDriver();
 $Auth = new Auth($db);
+$IF = new InputFilter();
+$PBH = new PostBackHelper();
 
+$Viewer = new EshopViewer($db, $Auth, $IF);
+?>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="Resources/CSS/FrontendStyles.css" type="text/css">
+    <title>Eshop - Papírnictví</title>
 
-
-
-echo "<h1>Systémové statistiky</h1>";
-
-$data = $db->query("select * from employee, employee_role WHERE emp_role = erole_id");
-if($data != -1)
+</head>
+<body>
+<h1>Eshop - Papírnictví</h1>
+<hr>
+<?php
+if(isset($_SESSION["cust_id"], $_SESSION["cust_hash"]))
 {
-    echo "<h2>Aktuálně existující uživatelé:</h2>" . PHP_EOL;
-    while($r = mysql_fetch_assoc($data))
+    $isSessionValid = $Auth->verifyCustomerSession($_SESSION["cust_id"], $_SESSION["cust_hash"]);
+    if($isSessionValid)
     {
-        echo $r["erole_name"] . " " . $r["emp_fullname"] . " (" . $r["emp_username"]  . ") <br>" . PHP_EOL;
+        $Viewer->viewProfileInfo();
+    }
+    else
+    {
+        unset($_SESSION["cust_id"]);
+        unset($_SESSION["cust_hash"]);
+        $PBH->showMessage("Vaše přihlášení vypršelo!", "warning");
+        ?>
+        <a href="index.php?auth=register">Registrovat se</a> | <a href="index.php?auth=logon">Přihlásit se</a>
+        <?php
     }
 }
-
-
+else
+{
+    ?><a href="index.php?auth=register">Registrovat se</a> | <a href="index.php?auth=logon">Přihlásit se</a><?php
+}
 ?>
 
+<hr>
+
+<div class="frontend-menu">
+    <strong>Kategorie zboží</strong> <br>
+    <?php
+    $Viewer->loadCategoryListing();
+    ?>
+
+
+</div>
+
+<div class="frontend-content">
+<?php if(!count($_GET)) { ?>
+    <h2>Nejnovější produkty...</h2>
+    <?php
+    $Viewer->loadNewestProducts();
+    ?>
+<?php } ?>
+
+<?php
+if(isset($_GET["auth"]))
+{
+    if ($_GET["auth"] == "register")
+    {
+        $renderForm = true;
+
+        if(isset($_POST["registerFirstName"]) && @$_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
+        {
+            $registerUserResult = $Viewer->submitRegistration();
+            if($registerUserResult)
+            {
+                $PBH->showMessage("Registrace proběhla úspěšně, nyní se můžete <a href='index.php?auth=logon'>přihlásit</a>.");
+                unset($_SESSION["formGenerationStamp"]);
+                $renderForm = false;
+            }
+            else
+            {
+                $PBH->showMessage($Viewer->getPostbackInfo(), "error");
+            }
+
+        }
+
+        if($renderForm)
+        {
+            $Viewer->loadRegisterForm();
+        }
+    }
+
+    if($_GET["auth"] == "logon")
+    {
+
+        if(isset($_POST["logonMail"], $_POST["logonPassword"]))
+        {
+            $logonResult = $Viewer->submitLogon();
+            if($logonResult)
+            {
+                $PBH->redirectPage("index.php");
+            }
+            else
+            {
+                $PBH->showMessage("Zadané přihlašovací údaje nejsou platné!", "error");
+            }
+
+        }
+
+        $Viewer->loadLogonForm();
+
+    }
+
+    if($_GET["auth"] == "logoff")
+    {
+        $Auth->logOffCustomer();
+        $PBH->redirectPage("index.php");
+    }
+}
+?>
+
+</div>
+
+<div class="clearingbox"></div>
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+<hr>
+<hr>
+<hr>
 <hr>
 <form method="post" action="">
     <table>

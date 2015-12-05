@@ -83,6 +83,76 @@ final class Auth
     }
 
 
+    public function verifyCustomerSession($uid, $hash)
+    {
+        $sql = $this->DBH->fetch("SELECT * FROM customer_hash WHERE chash_value='$hash' AND chash_customer='$uid'");
+        if(empty($sql))
+        {
+            return false;
+        }
+        return true;
+    }
+
+    public function logOnCustomer($mail, $password)
+    {
+        if($this->verifyCustomerCredentials($mail, $password))
+        {
+            $sql = $this->DBH->fetch("SELECT cust_id FROM customer WHERE cust_email = '$mail'");
+            $uid = $sql["cust_id"];
+            $hash = $this->generateUniqueHash();
+
+            // Insert information about login to database
+            $this->DBH->query("INSERT INTO customer_hash (chash_value, chash_time, chash_customer) VALUES ('$hash', NOW(), '$uid')");
+
+            // SESSION set up
+            $_SESSION["cust_hash"] = $hash;
+            $_SESSION["cust_id"]   = $uid;
+
+            return true;
+        }
+        return false;
+    }
+
+    private function verifyCustomerCredentials($mail, $password)
+    {
+        // Prepare password to be send to database
+        $password = $this->hashPassword($password);
+
+        $sql = $this->DBH->fetch("SELECT cust_id FROM customer WHERE cust_email='$mail' AND cust_password='$password'");
+
+        if(empty($sql))
+        {
+            return false;
+        }
+        return true;
+    }
+
+
+    public function logOffCustomer()
+    {
+        $this->destroyCustomerHash($_SESSION["cust_id"], $_SESSION["cust_hash"]);
+        $this->destroyCustomerSession();
+    }
+
+    private function destroyCustomerHash($uid, $hash)
+    {
+        $removeSql = "DELETE FROM customer_hash WHERE chash_customer='$uid' AND chash_value='$hash'";
+        $this->DBH->query($removeSql);
+    }
+
+    private function destroyCustomerSession()
+    {
+        if(isset($_SESSION["cust_id"]))
+        {
+            unset($_SESSION["cust_id"]);
+        }
+
+        if(isset($_SESSION["cust_hash"]))
+        {
+            unset($_SESSION["cust_hash"]);
+        }
+    }
+
     /**
      * Logs user on, or returns false when credentials are not correct
      * @param $name String User name
