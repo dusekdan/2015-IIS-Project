@@ -2,7 +2,7 @@
 <div class="navigation"><a href="<?php echo $linkBase; ?>&type=list">Všichni zaměstnanci</a> |
 <a href="<?php echo $linkBase;?>&type=add">Přidat zaměstnance</a> |
 <a href="<?php echo $linkBase;?>&amp;type=customers">Databáze zákazníků</a>
-</div><hr>
+</div>
 <?php
 
 if(isset($_GET["type"]))

@@ -1,7 +1,7 @@
 <!-- MODULE DESIGN & CODE GOES HERE -->
 <div class="navigation"><a href="<?php echo $linkBase; ?>&amp;type=resupply">Doplnit zásoby produktu</a> |
 <a href="<?php echo $linkBase; ?>&amp;type=process">Nevyřízené objednávky</a> | <a href="<?php echo $linkBase; ?>&amp;type=orderhistory">Historie objednávek</a>
-</div></div><hr>
+</div>
 <?php
 if(isset($_GET["type"]) && $_GET["type"] == "process")
 {

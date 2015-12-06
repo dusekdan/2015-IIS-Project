@@ -1,7 +1,7 @@
 <!-- MODULE DESIGN & CODE GOES HERE -->
 <div class="navigation"><a href="<?php echo $linkBase; ?>&amp;type=category">Přidat (pod)kategorie</a> |
 <a href="<?php echo $linkBase; ?>&amp;type=product">Přidat produkt</a> | <a href="<?php echo $linkBase; ?>&amp;type=supplier">Přidat dodavatele</a>
-</div><hr>
+</div>
 
 <?php
 
@@ -109,7 +109,3 @@ if(isset($_GET["type"]) && $_GET["type"] == "product")
 }
 
 // TODO: Remove this.
-// Display information about module, debugging only
-echo $MH->_getModuleDescription();
-
-?>

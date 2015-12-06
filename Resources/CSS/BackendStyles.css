@@ -4,14 +4,15 @@
 }
 
 .page{
-    width: 1600px;
-    margin: 0 auto;
+
+    margin: auto;
 
 }
 
 body, html {
+    width: 95%;
     font-family: 'MS Sans Serif', Arial, Verdana, sans-serif;
-    margin: 0 auto;
+    margin: auto;
     padding: 0;
     background-image: url("../Images/background.png");
     background-repeat: repeat-x;
@@ -19,30 +20,37 @@ body, html {
 }
 
 .headerLine {
-    background-color: #225477;
+    background-color: #438ce5;
     margin: 0 50px;
     height: 2px;
     clear: both;
 }
 
 header img.logo {
-    margin: 20px 70px;
+    margin: 2% 7%;
+    width: 20%;
+    height: 20%;
     float: left;
 }
 
 header .headline {
     float: right;
-    font-size: 25px;
-    margin-top: 100px;
-    margin-right: 150px;
+    font-size: 200%;
+    margin-top: 10%;
+    margin-right: 15%;
 }
 
 header .userdata {
     text-align: right;
     float: right;
-    font-size: 18px;
-    margin-top: 50px;
-    margin-right: 50px;
+    font-size: 120%;
+    margin-top: 5%;
+    margin-right: 5%;
+}
+
+header .userdata .a_sign_out, header .userdata .username
+{
+    font-weight: bold;
 }
 
 .signInForm {
@@ -53,41 +61,29 @@ header .userdata {
 }
 
 a {
-    color: #225477 ;
+    color: #214ea5;
     text-decoration: none;
 }
 
 a.selected {
-    color: #427aa1;
+    color: #2a61e1;
 }
 
 .boxes {
-    width: 1200px;
-    margin-top: 100px;
-    margin-right: 350px;
-    margin-left: 350px;
-    clear: both;
+    width: 60%;
+    height: 413px;
+    margin: auto;
 }
 
 .employee_box, .director_box{
     float:left;
     position: relative;
     overflow: hidden;
-    width: 300px;
-    height: 408px;
-    margin:0;
+    width: 33%;
+    height: 100%;
+    margin: auto;
 }
 
-.add_box {
-    width:auto;
-    height:auto;
-    max-height:100%;
-    max-width:100%;
-}
-
-.director_box {
-    /*display: none;*/
-}
 
 .box_content {
     position:absolute;
@@ -96,7 +92,7 @@ a.selected {
     padding: 0 0;
 }
 .box_content .rs{
-    width: 408px;
+    width: auto;
     height:auto;
     max-height:100%;
     max-width:100%;
@@ -118,12 +114,7 @@ a.selected {
 .header {
     margin: 0.5% 10.4%;
     padding: 0.5% 0.5%;
-    background-color:#01838C;
     text-align: right;
-}
-
-.a_sign_out {
-    color: #225477;
 }
 
 .tabs_header {
@@ -139,13 +130,23 @@ a.selected {
 .form {
     clear: both;
     float: left;
-    background-color: #A6B1B3 ;
+    background-color: rgba(95, 156, 225, 0.24);
     display: block;
     margin: 0 25%;
     padding: 3%;
     width: 44%;
     -webkit-column-count: 1;
     column-count: 1;
+}
+
+.form table
+{
+    border-spacing:1em;
+}
+
+.form table tr, .form table td
+{
+    height: 2em;
 }
 
 .form_content {
@@ -174,7 +175,7 @@ form .text {
 input.button {
     height: 44px;
     width: 130px;
-    color: #015359;
+    color: #214ea5;
     background-image: url("../Images/button.png");
     font-size: 90%;
     font-weight: normal;
@@ -200,23 +201,23 @@ form table td.thin {
 }*/
 
 select {
-    width: 50%; /* Set width. Do not set height else it will fail in IE8-10. Use padding for height. */
+    width: 100%;
+    height: 2em;
     padding: 0.5% 1%;
     font-size: 90%;
-    color: #015359;
+    color: #102f6a;
     background-image: url("../Images/arrow.png"); /* add your own arrow image */
-    background-color: #CAEBED;
+    background-color: rgba(95, 156, 225, 0.27);
 }
 select option {
-    background: #CAEBED; /* style the dropdown bg color */
+    background: rgba(95, 156, 225, 0.29);
 }
 select:active, select:hover {
     outline: none
 }
 
-/* make it red instead (with with same width and style) */
 select:active, select:hover {
-    outline-color: #2A8F96;
+    outline-color: #438ce5;
 }
 
 img.add:hover {
@@ -264,4 +265,8 @@ div.navigation {
     font-size: 120%;
     margin: 1% auto 1%;
     text-align: center;
+}
+
+div.navigation a:hover {
+    border-bottom: solid #214ea5 2px;
 }

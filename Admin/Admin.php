@@ -92,7 +92,7 @@ $globalUSERNAME = $userData["emp_username"];
             <a href="./Admin.php"><img src="../Resources/Images/logo.png" alt="LOGO" class="logo" height="120px"></a>
             <div class="userdata">
                <!-- Here goes information about user that is currently logged on -->
-               <?php echo "Přihlášený uživatel: " . $userData["emp_fullname"] . "($userData[emp_email])<br> <a class='a_sign_out' href='LogOff.php'>ODHLÁSIT</a>"; ?>
+               <?php echo "Přihlášený uživatel: <span class=\"username\">" . $userData["emp_fullname"] . "</span> ($userData[emp_email])<br> <a class='a_sign_out' href='LogOff.php'>ODHLÁSIT</a>"; ?>
             </div>
             <hr class="headerLine">
         </header>
