@@ -14,21 +14,21 @@ class PostBackHelper
         switch($type)
         {
             case "info":
-                echo "<div class='message-info'>" . PHP_EOL;
+                echo "<div class='message-info'><p>" . PHP_EOL;
                 echo $message;
                 break;
 
             case "warning":
-                echo "<div class='message-warning'>" . PHP_EOL;
+                echo "<div class='message-warning'><p>" . PHP_EOL;
                 echo $message;
                 break;
 
             case "error":
-                echo "<div class='message-error'>" . PHP_EOL;
+                echo "<div class='message-error'><p>" . PHP_EOL;
                 echo $message;
                 break;
         }
-        echo "</div>";
+        echo "</p></div>";
     }
 
     public function clearFormFields($inputArray)
