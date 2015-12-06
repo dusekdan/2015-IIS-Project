@@ -1,35 +1,16 @@
 # IISProject2015
 
-### Emerging to-do's:
-* Kontrolovat formát emailu, čísla, apod (klient i server) - DONE FOR EMPLOYEE
-* Tam, kde se kontroluje jestli je uživatel přihlášený zároveň kontrolovat platnost jeho přihlášení (časovou) + oprávnění (_Zakázat popkový přístup do administrace kam nemá nárok lozit_)
-* Načítat do selektů správné hodnoty - při zadání špatných informací, ale i při editaci (postbacks, editation)
-* Kontrolovat duplicitní data (tam, kde to má smysl - mail/username...)
-* ?NOT? Prověřit náchylnost na XSS napříč webem
-* ?NOT? Zobrazovat v UI hlášku o tom, že bez javascriptu může administrace fungovat s ručením omezeným
-* ?NOT? DISABLE button který nejde použít ke smazání subkategorie/dodavatele apod + zobrazit informaci o tom, proč ne
-* !LAST!Refactorovat (pře-třídit a okomentovat) nový kód v AddHelper.classe
-
-
-#School task assignment, sorted by its level of completeness
-
-##Design todo:
-* (!) Povinná pole formulářů musí být odlišena od nepovinných ===> Hodnoty ve formulářích, které nejsou pro fungování aplikace nezbytné, neoznačujte jako povinné (např. adresy, telefonní čísla apod.) Nenuťte uživatele (opravujícího) vyplňovat desítky zbytečných řádků.
-* (!) Pokud je vyžadován konkrétní formát vstupu (např. datum), měl by být u daného pole naznačen.
-
-Kromě vlastní funkcionality musí být implementovány následující funkce:
+TODO:
 ===
-* (!) Ošetření všech uživatelských vstupů tak, aby nebylo možno zadat nesmyslná nebo nekonzistentní data.
 * (!) Přihlašování a odhlašování uživatelů přes uživatelské jméno a heslo. Automatické odhlášení po určité době nečinnosti.
 * (!) Vedení 2 moduly - statistiky systému, statistiky zaměstnanců
 * (!) Umožnit zákazníkovi měnit informace o sobě
+* (!) Kontrolovat formát emailu, čísla, apod (klient i server) - DONE FOR EMPLOYEE
+* (!) Tam, kde se kontroluje jestli je uživatel přihlášený zároveň kontrolovat platnost jeho přihlášení (časovou) + oprávnění (_Zakázat popkový přístup do administrace kam nemá nárok lozit_)
+* (!) Načítat do selektů správné hodnoty - při zadání špatných informací, ale i při editaci (postbacks, editation)
+* (!) Kontrolovat duplicitní data (tam, kde to má smysl - mail/username...)
+* (!) !LAST!Refactorovat (pře-třídit a okomentovat) nový kód ve všech nových dokumentech + heading commetaries
 
-
-### Emerging to-do's done
-* [RESOLVED: OK] Přidávání produktu/Editace produktu - filtrovat podkategorie v závislosti na kategorii do které patří (ajax pravděpodobně)
-* [RESOLVED: OK] Při nemožnosti využití ajaxu pro nahrátí kategorií, kontrolovat, že produkt může existovat v této kategorii
-* [RESOLVED: OK] Zabránit opakovanému post-backu
-* [RESOLVED: OK] Při špatném post-backu vypsat data zpátky do formuláře, vyznačit políčko, které je špatně (zapracovat klientskou kontrolu, na některé pole
 
 Done
 ===
@@ -51,6 +32,18 @@ Done
 * [x] Uživatelské rozhraní musí umožňovat snadno realizovat operace pro každou roli vyplývající z diagramu případů použití (use-case).
 * [x] Je-li cílem např. prodej zboží, musí systém implementovat odpovídající operaci, aby uživatel nemusel při každém prodeji ručně upravovat počty zboží na skladě, pamatovat si identifikátory položek a přepisovat je do objednávky a podobně.
 * [x] Kontrolovat formát emailu, čísla, apod (klient i server) - DONE FOR EMPLOYEE
+* [x] Povinná pole formulářů musí být odlišena od nepovinných ===> Hodnoty ve formulářích, které nejsou pro fungování aplikace nezbytné, neoznačujte jako povinné (např. adresy, telefonní čísla apod.) Nenuťte uživatele (opravujícího) vyplňovat desítky zbytečných řádků.
+* [x] Pokud je vyžadován konkrétní formát vstupu (např. datum), měl by být u daného pole naznačen.
+* [x] Ošetření všech uživatelských vstupů tak, aby nebylo možno zadat nesmyslná nebo nekonzistentní data.
+* [x] Přidávání produktu/Editace produktu - filtrovat podkategorie v závislosti na kategorii do které patří (ajax pravděpodobně)
+* [x] Při nemožnosti využití ajaxu pro nahrátí kategorií, kontrolovat, že produkt může existovat v této kategorii
+* [x] Zabránit opakovanému post-backu
+* [x] Při špatném post-backu vypsat data zpátky do formuláře, vyznačit políčko, které je špatně (zapracovat klientskou kontrolu, na některé pole
+* [x] Prověřit náchylnost na XSS napříč webem
+* [x] DO NOT DO: DISABLE button který nejde použít ke smazání subkategorie/dodavatele apod + zobrazit informaci o tom, proč ne
+* [x] DO NOT DO: Zobrazovat v UI hlášku o tom, že bez javascriptu může administrace fungovat s ručením omezeným
+
+
 # Information systems - Project in PHP with MySQL Database
 
 ### Authors
