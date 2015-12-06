@@ -121,34 +121,36 @@ final class AddHelper implements IAdminModule
         <form action="" method="post">
             <table>
                 <tr>
-                    <td>Název nového dodavatele</td>
+                    <td><strong>Název nového dodavatele</strong>*:</td>
                     <td><input class="text" type="text" name="supplierName" <?php $this->returnPostBackValue("supplierName"); ?>></td>
                     <td><input type="hidden" value="<?php echo $timeStamp;?>" name="formGenerationStamp"></td>
                 </tr>
 
                 <tr>
-                    <td>Mail dodavatele:</td>
-                    <td><input class="text" type="text" name="supplierMail"<?php $this->returnPostBackValue("supplierMail"); ?>></td>
+                    <td><strong>Mail dodavatele</strong>*:</td>
+                    <td><input class="text" type="email" name="supplierMail"<?php $this->returnPostBackValue("supplierMail"); ?>></td>
                 </tr>
 
                 <tr>
                     <td>Telefon:</td>
                     <td><input class="text" type="text" name="supplierPhone"<?php $this->returnPostBackValue("supplierPhone"); ?>></td>
+                    <td><small>(ve tvaru 721852506)</small></td>
                 </tr>
 
                 <tr>
-                    <td>Dostupnost zboží</td>
+                    <td><strong>Dostupnost zboží</strong>*:</td>
                     <td><input class="text" type="text" name="supplierResupplytime"<?php $this->returnPostBackValue("supplierResupplytime"); ?>></td>
-                    <td>(doba ve dnech)</td>
+                    <td><small>(doba ve dnech)</small></td>
                 </tr>
 
                 <tr>
-                    <td>IČO</td>
+                    <td>IČO:</td>
                     <td><input class="text" type="text" name="supplierICO"<?php $this->returnPostBackValue("supplierICO"); ?>></td>
+                    <td><small>(nevyplněno="00000000")</small></td>
                 </tr>
 
                 <tr>
-                    <td>Adresa</td>
+                    <td>Adresa:</td>
                     <td></td>
                 </tr>
 
@@ -210,11 +212,12 @@ final class AddHelper implements IAdminModule
                 $addRecord      = false;
             }
 
-            if(empty($categoryDescription))
+            // Removed cause of TASK SPEC
+            /*if(empty($categoryDescription))
             {
                 $errorMessage .= "Popisek kategorie musí být vyplněn! <br>";
                 $addRecord     = false;
-            }
+            }*/
 
 
             if($addRecord)
@@ -270,11 +273,12 @@ final class AddHelper implements IAdminModule
                 $addRecord = false;
             }
 
-            if(empty($subcategoryDescription))
+            // Removed cause of TASK SPEC
+            /*if(empty($subcategoryDescription))
             {
                 $errorMessage   .=  "Popisek podkategorie musí být vyplněn!";
                 $addRecord  = false;
-            }
+            }*/
 
             if(empty($subcategoryCategory))
             {
@@ -354,17 +358,20 @@ final class AddHelper implements IAdminModule
                 $errorMessage .= "Dobu obnovy dostupnosti zboží je třeba zadat jako číslo! <br>";
             }
 
+            // REMOVED 'cause of TASK SPEC
             if(empty($supplierICO))
             {
-                $addRecord = false;
-                $errorMessage .= "IČO dodavatele je nutné uvést! <br>";
+            //    $addRecord = false;
+            //    $errorMessage .= "IČO dodavatele je nutné uvést! <br>";
+                  $supplierICO = "00000000";
             }
 
-            if(empty($supplierAddress))
+            // REMOVED 'cause of TASK SPEC
+            /*if(empty($supplierAddress))
             {
                 $addRecord = false;
                 $errorMessage .= "Kontaktní informace na dodavatele je třeba uvést! <br>";
-            }
+            }*/
 
             if(empty($supplierMail))
             {
@@ -372,10 +379,16 @@ final class AddHelper implements IAdminModule
                 $errorMessage .= "Email dodavatele musí být uveden! <br>";
             }
 
-            if(empty($supplierPhone))
+            if(!empty($supplierMail) && !$this->FILTER->isMail($supplierMail))
+            {
+                $addRecord = false;
+                $errorMessage .= "Email musí být ve správném formátu! <br>";
+            }
+
+            if(!empty($supplierPhone) && (!is_numeric($supplierPhone) || strlen($supplierPhone) != 9))
             {
                $addRecord = false;
-               $errorMessage .= "Telefon dodavatele musí být uveden! <br>";
+               $errorMessage .= "Telefon není v předepsaném formátu! <br>";
             }
 
             if($addRecord)
@@ -472,21 +485,35 @@ final class AddHelper implements IAdminModule
                 $errorMessage .= "Produkt musí spadat do nějaké vedlejší kategoriie! <br>";
             }
 
-            if(empty($productDescription))
+
+            // Removed cause of TASK SPEC
+            /*if(empty($productDescription))
             {
                 $addRecord = false;
                 $errorMessage .= "Produkt musí mít popisek! <br>";
-            }
+            }*/
 
             if(empty($productInitialStock))
             {
                 $productInitialStock = 0;
             }
 
+            if(!is_numeric($productInitialStock))
+            {
+                $addRecord = false;
+                $errorMessage .= "Počáteční počet musí být zadán jako číslo!<br>";
+            }
+
             if(empty($productPrice))
             {
                 $addRecord = false;
                 $errorMessage .= "Produkt musí mít nastavenou cenu! <br>";
+            }
+
+            if(!is_numeric($productPrice))
+            {
+                $addRecord = false;
+                $errorMessage .= "Cena musí být zadána jako číslo!<br>";
             }
 
             if(empty($productUrl))
@@ -562,28 +589,29 @@ final class AddHelper implements IAdminModule
         <form action="" method="post">
             <table>
                 <tr>
-                    <td>Název nového produktu</td>
+                    <td><strong>Název nového produktu</strong>*:</td>
                     <td><input class="text" type="text" name="productName"<?php $this->returnPostBackValue("productName"); ?>></td>
                     <td><input type="hidden" name="formGenerationStamp" value="<?php echo $timeStamp; ?>"></td>
                 </tr>
 
                 <tr>
-                    <td>Cesta k náhledovému obrázku</td>
+                    <td>Cesta k náhledovému obrázku:</td>
                     <td><input class="text" type="text" name="productUrl"<?php $this->returnPostBackValue("productUrl");?>></td>
                 </tr>
 
                 <tr>
-                    <td>Cena</td>
+                    <td><strong>Cena</strong>*:</td>
                     <td><input class="text" type="text" name="productPrice"<?php $this->returnPostBackValue("productPrice");?>></td>
                 </tr>
 
                 <tr>
                     <td>Počáteční počet:</td>
                     <td><input class="text" type="text" name="productInitialStock"<?php $this->returnPostBackValue("productInitialStock");?>></td>
+                    <td><small>(nevyplněno=0)</small></td>
                 </tr>
 
                 <tr>
-                    <td>Dodavatel</td>
+                    <td>Dodavatel*:</td>
                     <td>
                         <select name="productSupplier">
                             <?php
@@ -594,7 +622,7 @@ final class AddHelper implements IAdminModule
                 </tr>
 
                 <tr>
-                    <td>Subkategorie produktu</td>
+                    <td>Podkategorie produktu*:</td>
                     <td>
                         <select name="productSubcategory">
                             <?php
@@ -605,7 +633,7 @@ final class AddHelper implements IAdminModule
                 </tr>
 
                 <tr>
-                    <td>Popis produktu</td>
+                    <td>Popis produktu:</td>
                     <td></td>
                 </tr>
 
@@ -725,7 +753,7 @@ final class AddHelper implements IAdminModule
             <table>
 
                     <tr>
-                        <td>Jméno kategorie:</td>
+                        <td><strong>Jméno kategorie</strong>*:</td>
                         <td><input type="text" class="text" name="categoryName"<?php $this->returnPostBackValue("categoryName"); ?>></td>
                         <td><input type="hidden" value="<?php echo $timeStamp;?>" name="formGenerationStamp"></td>
                     </tr>
@@ -754,13 +782,13 @@ final class AddHelper implements IAdminModule
             <table>
 
                 <tr>
-                    <td>Jméno podkategorie:</td>
+                    <td><strong>Jméno podkategorie</strong>*:</td>
                     <td><input type="text" class="text" name="subcategoryName"></td>
                     <td><input type="hidden" value="<?php echo $timeStamp;?>" name="formGenerationStamp"></td>
                 </tr>
 
                 <tr>
-                    <td>Nadřazená kategorie:</td>
+                    <td>Nadřazená kategorie*:</td>
                     <td><select name="subcategoryCategory">
                             <?php
                             $this->loadCategoryOptions();

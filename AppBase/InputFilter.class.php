@@ -112,5 +112,10 @@ class InputFilter
         return htmlspecialchars($output, ENT_QUOTES);
     }
 
+    public function isMail($mail)
+    {
+        return filter_var($mail, FILTER_VALIDATE_EMAIL);
+    }
+
 
 }
