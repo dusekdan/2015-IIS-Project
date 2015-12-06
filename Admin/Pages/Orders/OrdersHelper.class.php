@@ -124,7 +124,7 @@ class OrdersHelper implements IAdminModule
         <form method="post" action="">
             <table>
                 <tr>
-                    <td>Produkt:</td>
+                    <td><strong>Produkt</strong>*</td>
                     <td><select style="width: 450px;" name="resupplyProduct">
                             <?php
                                 $this->loadProductOptions();
@@ -133,9 +133,9 @@ class OrdersHelper implements IAdminModule
                     </td>
                 </tr>
                 <tr>
-                    <td>Množství:</td>
+                    <td><strong>Množství</strong>*:</td>
                     <td><input name="resupplyQuantity" type="text" class="text" value="10"></td>
-                    <td>(hodnota je předvyplněna pro usnadnění opravování)</td>
+                    <td><small>(hodnota je předvyplněna pro usnadnění opravování)</small></td>
                 </tr>
                 <tr>
                     <td></td>
