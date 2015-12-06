@@ -41,7 +41,7 @@ final class Auth
         // Prepare password to be send to database
         $password = $this->hashPassword($password);
 
-        $sql = $this->DBH->fetch("SELECT emp_id FROM employee WHERE emp_username='$name' AND emp_password='$password'");
+        $sql = $this->DBH->fetch("SELECT emp_id FROM employee WHERE emp_username='$name' AND emp_password='$password' AND emp_enabled='true'");
 
         if(empty($sql))
         {

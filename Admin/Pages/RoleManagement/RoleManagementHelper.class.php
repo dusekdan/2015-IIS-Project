@@ -119,6 +119,8 @@ class RoleManagementHelper implements IAdminModule
 
         while($r = mysql_fetch_assoc($selectQuery))
         {
+            $changeStateButton = ($r["emp_enabled"] == 'true')?"Deaktivovat":"Aktivovat";
+
             echo "<tr>";
             echo "<td>$r[emp_fullname]</td>";
             echo "<td>$r[erole_name]</td>";
@@ -126,12 +128,39 @@ class RoleManagementHelper implements IAdminModule
             // <form method="post" action=""><input type="hidden" name="deleteCategory" value="
             echo "<td><form method='post' action=''><input type='hidden' name='deleteEmployee' value='$r[emp_id]'><input type='submit' value='Smazat'></form></td>";
             echo "<td><a href='Admin.php?action=RoleManagement&amp;edittype=employee&amp;edit=$r[emp_id]'>Editovat</a></td>";
+            echo "<td><form method='post' action=''><input type='hidden' value='$r[emp_id]' name='activateToggleEmployee'><input type='submit' value='$changeStateButton'></form></td>";
             echo "</tr>";
         }
 
 
 
         echo "</table>";
+
+    }
+
+    public function toggleEmployeeStatus($employeeId)
+    {
+        $employeeId = $this->FILTER->prepareInputForSQL($employeeId);
+
+        $selectCurrentStatus = $this->DBH->fetch("SELECT emp_enabled FROM employee WHERE emp_id='$employeeId'");
+        if($selectCurrentStatus["emp_enabled"] == 'true')
+        {
+            $updateQuery =  $this->DBH->query("UPDATE employee SET emp_enabled='false' WHERE emp_id='$employeeId'");
+        }
+        else
+        {
+            $updateQuery =  $this->DBH->query("UPDATE employee SET emp_enabled='true' WHERE emp_id='$employeeId'");
+        }
+
+        if($updateQuery === -1)
+        {
+            $this->postBackInfo = "Nepodařilo se upravit stav zaměstance - vnitřní chyba, aktualizujte stránku a zkuste to prosím znovu.<br>";
+            return false;
+        }
+        else
+        {
+            return true;
+        }
 
     }
 
@@ -267,6 +296,19 @@ class RoleManagementHelper implements IAdminModule
         {
             return true;
         }
+    }
+
+    public function loadCustomerList()
+    {
+        $selectCustomers = $this->DBH->query("SELECT cust_firstname, cust_lastname, cust_email, cust_phone FROM customer ORDER BY cust_firstname, cust_lastname ASC");
+        echo "<table>";
+        while($r = mysql_fetch_assoc($selectCustomers))
+        {
+            echo "<tr>";
+            echo "<td>$r[cust_firstname] $r[cust_lastname]</td><td>$r[cust_email]</td><td>$r[cust_phone]</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
     }
 
     public function loadEmployeeEditForm($employeeId)

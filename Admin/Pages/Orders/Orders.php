@@ -21,10 +21,6 @@ if(isset($_GET["type"]) && $_GET["type"] == "process")
 
     $MH->loadUnprocessedOrders();
 
-
-
-
-    echo "<h2>Objednávky čekající na zboží od dodavatele</h2>";
 }
 
 if(isset($_GET["type"]) && $_GET["type"] == "orderhistory")
@@ -57,6 +53,18 @@ if(isset($_GET["type"]) && $_GET["type"] == "resupply")
     if($renderForm)
     {
         $MH->loadResupplyForm();
+    }
+}
+
+if(isset($_GET["type"]) && $_GET["type"] == "print")
+{
+    if(isset($_GET["orderid"]) && is_numeric($_GET["orderid"]))
+    {
+        $MH->showOrderToPrint($_GET["orderid"]);
+    }
+    else
+    {
+        $PBH->showMessage("Neoprávněný přístup, pardon!", "error");
     }
 }
 ?>

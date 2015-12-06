@@ -321,7 +321,7 @@ class EshopViewer
             }
 
             echo "Celková cena...";
-            echo "<a href=''>Vytisknout objednávku</a><hr>";
+            //echo "<a href=''>Vytisknout objednávku</a><hr>";
         }
 
         // Only already processed orders
@@ -338,9 +338,65 @@ class EshopViewer
                 echo "Položka #$i: " . $it["pr_name"] . " $it[ordp_quantity] × $it[pr_price] = " . ($it['ordp_quantity']*$it['pr_price']) . " Kč <br>";
                 $i++;
             }
-            echo "Celková cena...";
-            echo "<a href=''>Vytisknout objednávku</a><hr>";
+            echo "Celková cena...<br>";
+            echo "<a target='_blank' href='print.php?orderid=$r[ord_id]'>Vytisknout objednávku</a><hr>";
         }
+
+    }
+
+    public function printOrder($orderId)
+    {
+        $orderId = $this->FILTER->prepareInputForSQL($orderId);
+
+        $r = $this->DBH->fetch("SELECT ord_time, ord_processed, ord_id, cust_firstname, cust_lastname, cust_address FROM orders JOIN customer ON cust_id = ord_orderedby WHERE ord_id='$orderId'");
+
+        echo "<table>";
+
+        echo "<tr><td><b>Objednávka č. $r[ord_id]</b></td><td>Čas objednání: $r[ord_time]</td></tr>";
+
+        echo "<tr>";
+        echo "<td valign='top'><b>Dodavatel:</b></td>";
+        echo "<td>Papírnictví Dušek & Popková<br>Brněnská 158/88<br>Brno<br>637 18</td>";
+
+        echo "</tr>";
+
+        echo "<tr>";
+        echo "<td valign='top'><b>Odběratel:</b></td>";
+        echo "<td>$r[cust_firstname] $r[cust_lastname]<br>" . nl2br($r["cust_address"]). "</td>";
+        echo "</tr>";
+        echo "<tr><td><b>Položky:</b></td><td>";
+        $this->loadOrderItems($r["ord_id"]);
+        echo "</td></tr>";
+        echo "<tr><td><b>Cena celkem:</b> </td><td>" . $this->calculateOrderPrice($orderId) . " Kč</td></tr>";
+        echo "</table>";
+    }
+
+    private function loadOrderItems($orderId)
+    {
+        $orderId = $this->FILTER->prepareInputForSQL($orderId);
+
+        $selectOrderItems = $this->DBH->query("SELECT ordp_product, ordp_quantity, pr_price, pr_name FROM order_product JOIN product ON pr_id = ordp_product WHERE ordp_order = '$orderId'");
+        echo "<ul>";
+        while($r = mysql_fetch_assoc($selectOrderItems))
+        {
+            echo "<li>$r[ordp_quantity]× $r[pr_name] ($r[pr_price] Kč/ks)</li>";
+        }
+        echo "</ul>";
+    }
+
+    private function calculateOrderPrice($orderId)
+    {
+        $orderId = $this->FILTER->prepareInputForSQL($orderId);
+
+        $selectOrderItems = $this->DBH->query("SELECT ordp_product, ordp_quantity, pr_price FROM order_product JOIN product ON pr_id = ordp_product WHERE ordp_order = '$orderId'");
+
+        $totalPrice = 0;
+        while($r = mysql_fetch_assoc($selectOrderItems))
+        {
+            $totalPrice += ($r["pr_price"] * $r["ordp_quantity"]);
+        }
+
+        return $totalPrice;
 
     }
 

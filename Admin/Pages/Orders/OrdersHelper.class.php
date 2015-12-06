@@ -102,7 +102,7 @@ class OrdersHelper implements IAdminModule
             echo "<td>Vyřízena";
             $this->loadOrderItems($r["ord_id"]);
             echo "</td>";
-            echo "<td><a href=''>TISK</a></td>";
+            echo "<td><a href='Admin.php?action=Orders&amp;type=print&amp;orderid=$r[ord_id]'>TISK</a></td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -219,11 +219,30 @@ class OrdersHelper implements IAdminModule
                 echo "<em>$this->postBackInfo</em>";
                 echo "</td>";
                 echo "<td><a href='Admin.php?action=Orders&amp;type=resupply'>Doobjednat zboží</a></td>";
-                echo "<td><a href=''>TISK</a></td>";
+                echo "<td><a href='Admin.php?action=Orders&amp;type=print&amp;orderid=$r[ord_id]'>TISK</a></td>";
             }
             echo "</tr>";
         }
         echo "</table>";
+    }
+
+    public function showOrderToPrint($id)
+    {
+        $id = $this->FILTER->prepareInputForSQL($id);
+
+        $r = $this->DBH->fetch("SELECT ord_time, ord_processed, ord_id, cust_firstname, cust_lastname FROM orders JOIN customer ON cust_id = ord_orderedby WHERE ord_id='$id'");
+
+        $orderStatus = $r["ord_processed"]=="false"?"Nevyřízena":"Vyřízena";
+
+        echo "<a href='javascript:print();'>Klikněte pro tisk</a>";
+        echo "<table>";
+        echo "<tr><td>Objednávka č. $r[ord_id]</td><td>Čas objednání: $r[ord_time]</td></tr>";
+        echo "<tr><td>Objednal: $r[cust_firstname] $r[cust_lastname]</td><td>Stav: $orderStatus</td></tr>";
+        echo "<tr><td>Položky:</td><td>";
+        $this->loadOrderItems($r["ord_id"]);
+        echo "</td></tr>";
+        echo "</table>";
+
     }
 
     public function processOrder($orderId)

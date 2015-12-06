@@ -28,6 +28,19 @@ if(isset($_GET["type"]))
                 }
             }
 
+            if(isset($_POST["activateToggleEmployee"]) && is_numeric($_POST["activateToggleEmployee"]))
+            {
+                $toggleEmployeeStatus = $MH->toggleEmployeeStatus($_POST["activateToggleEmployee"]);
+                if($toggleEmployeeStatus)
+                {
+                    $PBH->showMessage("Uživatel změněn!");
+                }
+                else
+                {
+                    $PBH->showMessage($MH->getPostbackInfo(), "error");
+                }
+            }
+
 
 
             $MH->loadEmployeeList();
@@ -64,6 +77,7 @@ if(isset($_GET["type"]))
 
         case "customers":
             echo "<h2>Seznam zákazníků</h2>";
+            $MH->loadCustomerList();
             break;
     }
 

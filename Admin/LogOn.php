@@ -41,7 +41,7 @@ if(isset($_POST["logon_username"]) && isset($_POST["logon_password"]))
     }
     else
     {
-        echo "Given combination of username & password does not exist!";
+        echo "Nemohli jsme Vás přihlásit! Buď jste zadali neexistující kombinaci jména a hesla, nebo Vás účet byl deaktivován!";
     }
 
 }
