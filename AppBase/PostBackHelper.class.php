@@ -28,7 +28,7 @@ class PostBackHelper
                 echo $message;
                 break;
         }
-        echo "</p></div>";
+        echo "</p></div> ";
     }
 
     public function clearFormFields($inputArray)
