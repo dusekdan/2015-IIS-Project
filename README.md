@@ -2,7 +2,6 @@
 
 TODO:
 ===
-* (!) Tam, kde se kontroluje jestli je uživatel přihlášený zároveň kontrolovat platnost jeho přihlášení (časovou) + oprávnění (_Zakázat popkový přístup do administrace kam nemá nárok lozit_)
 * (!) Kontrolovat formát emailu, čísla, apod (klient i server) - DONE FOR EMPLOYEE
 * (!) Vedení 2 moduly - statistiky systému, statistiky zaměstnanců
 * (!) Kontrolovat duplicitní data (tam, kde to má smysl - mail/username...)
@@ -42,7 +41,7 @@ Done
 * [x] DO NOT DO: Zobrazovat v UI hlášku o tom, že bez javascriptu může administrace fungovat s ručením omezeným
 * [x] Načítat do selektů správné hodnoty - při zadání špatných informací, ale i při editaci (postbacks, editation)
 * [x] Přihlašování a odhlašování uživatelů přes uživatelské jméno a heslo. Automatické odhlášení po určité době nečinnosti. Nečinnost byla nastavena na 30 minut 
-
+* [x] Tam, kde se kontroluje jestli je uživatel přihlášený zároveň kontrolovat platnost jeho přihlášení (časovou) + oprávnění (_Zakázat popkový přístup do administrace kam nemá nárok lozit_)
 
 # Information systems - Project in PHP with MySQL Database
 

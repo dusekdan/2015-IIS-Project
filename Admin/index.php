@@ -54,7 +54,7 @@ if(isset($_SESSION["emp_id"]) && isset($_SESSION["emp_hash"]))
 
     if(isset($_GET["unauthorizedaccess"]))
     {
-        $PBH->showMessage("Neoprávněný přístup do administrace. Račte se přihlásit, nebo odstřelit.", "warning");
+        $PBH->showMessage("Neoprávněný přístup do administrace. Račte se přihlásit.", "warning");
     }
 
     if(isset($_GET["loggedout"]))
