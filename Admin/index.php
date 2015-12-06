@@ -13,6 +13,7 @@ function __autoload($className)
 }
 $db = new MySQLDriver();
 $Auth = new Auth($db);
+$PBH = new PostBackHelper();
 
 
 // User session exists - we test if its valid and eventually log user back in
@@ -44,6 +45,19 @@ if(isset($_SESSION["emp_id"]) && isset($_SESSION["emp_hash"]))
     <hr class="headerLine">
 
 </header>
+
+    <?php
+    if(isset($_GET["timeout"]))
+    {
+        $PBH->showMessage("Vaše přihlášení vypršelo, přihlašte se prosím znovu!", "warning");
+    }
+
+    if(isset($_GET["unauthorizedaccess"]))
+    {
+        $PBH->showMessage("Neoprávněný přístup do administrace. Račte se přihlásit, nebo odstřelit.", "warning");
+    }
+    ?>
+
 <form class="signInForm" method="post" action="LogOn.php">
     <table>
         <tr>

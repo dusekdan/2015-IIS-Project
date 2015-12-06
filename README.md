@@ -7,7 +7,6 @@ TODO:
 * (!) Umožnit zákazníkovi měnit informace o sobě
 * (!) Kontrolovat formát emailu, čísla, apod (klient i server) - DONE FOR EMPLOYEE
 * (!) Tam, kde se kontroluje jestli je uživatel přihlášený zároveň kontrolovat platnost jeho přihlášení (časovou) + oprávnění (_Zakázat popkový přístup do administrace kam nemá nárok lozit_)
-* (!) Načítat do selektů správné hodnoty - při zadání špatných informací, ale i při editaci (postbacks, editation)
 * (!) Kontrolovat duplicitní data (tam, kde to má smysl - mail/username...)
 * (!) !LAST!Refactorovat (pře-třídit a okomentovat) nový kód ve všech nových dokumentech + heading commetaries
 
@@ -42,6 +41,7 @@ Done
 * [x] Prověřit náchylnost na XSS napříč webem
 * [x] DO NOT DO: DISABLE button který nejde použít ke smazání subkategorie/dodavatele apod + zobrazit informaci o tom, proč ne
 * [x] DO NOT DO: Zobrazovat v UI hlášku o tom, že bez javascriptu může administrace fungovat s ručením omezeným
+* [x] Načítat do selektů správné hodnoty - při zadání špatných informací, ale i při editaci (postbacks, editation)
 
 
 # Information systems - Project in PHP with MySQL Database

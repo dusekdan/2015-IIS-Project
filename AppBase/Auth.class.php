@@ -20,6 +20,9 @@ final class Auth
     /// Salt used for hashing credentials (only password at the moment)
     const CREDENTIALS_SALT = "An0us3k4ndD4n0us3k";
 
+    // Constant for inactivity in minutes
+    private $inactivityLimit = 30;
+
     /**
      * Provides access to database helper for the whole class
      * @param $DBDriver MySQLDriver object
@@ -68,12 +71,47 @@ final class Auth
      */
     public function verifyEmployeeSession($uid, $hash)
     {
+        // Inactivity check will come here too
+        $userInactive = $this->isInactive($uid, $hash);
+            if($userInactive)
+            {
+                return false;
+            }
+
+        // Check existence of the session otherwise
         $sql = $this->DBH->fetch("SELECT * FROM employee_hash WHERE ehash_value='$hash' AND ehash_employee='$uid'");
         if(empty($sql))
         {
             return false;
         }
         return true;
+    }
+
+    private function isInactive($uid, $hash)
+    {
+        $sql = $this->DBH->fetch("SELECT * FROM employee_hash WHERE ehash_value='$hash' AND ehash_employee='$uid'");
+
+        $timeObj            = new DateTime(date("Y-m-d H:i:s"));
+        $timeNow = $timeObj->format('U');
+
+        $timeObjLA = new DateTime($sql["ehash_time"]);
+        $timeLastActivity   = $timeObjLA->format('U');
+
+        $difference = $timeNow - $timeLastActivity;
+        if(($difference/60) > $this->inactivityLimit)
+        {
+            //echo "PRESAZENA UROVEN NEAKTIVITY!" . $difference/60;;
+
+            // Yes, user is inactive
+            return true;
+        }
+        else
+        {
+            // echo "nepresazena " . $difference/60;
+            // No, user is not inactive
+            return false;
+        }
+
     }
 
 

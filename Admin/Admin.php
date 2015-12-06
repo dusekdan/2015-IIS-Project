@@ -52,14 +52,14 @@ $PBH = new PostBackHelper();
 // Case when someone access Admin.php without SESSIONs existing
 if(!isset($_SESSION["emp_id"]) || !isset($_SESSION["emp_hash"]))
 {
-    echo "Unauthorized access!";
+    header("location: index.php?unauthorizedaccess");
     exit;
 }
 
 // Case when SESSION are no longer valid
 if(!$Auth->verifyEmployeeSession($_SESSION["emp_id"], $_SESSION["emp_hash"]))
 {
-    echo "Unauthorized access!";
+    header("location: index.php?timeout");
     exit;
 }
 
