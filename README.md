@@ -1,7 +1,7 @@
 # IISProject2015
 
 ### Emerging to-do's:
-* Kontrolovat formát emailu, čísla, apod (klient i server)
+* Kontrolovat formát emailu, čísla, apod (klient i server) - DONE FOR EMPLOYEE
 * Tam, kde se kontroluje jestli je uživatel přihlášený zároveň kontrolovat platnost jeho přihlášení (časovou) + oprávnění (_Zakázat popkový přístup do administrace kam nemá nárok lozit_)
 * Načítat do selektů správné hodnoty - při zadání špatných informací, ale i při editaci (postbacks, editation)
 * Kontrolovat duplicitní data (tam, kde to má smysl - mail/username...)
@@ -50,7 +50,7 @@ Done
 * [x] Musí poskytovat výstupy ve formě, která je v dané oblasti využitelná. Tedy nezobrazovat obsah tabulek databáze, ale prezentovat uložená data tak, aby byla pro danou roli uživatele a danou činnost užitečná (např. spojit data z více tabulek, je-li to vhodné, poskytnout odkazy na související data, apod).
 * [x] Uživatelské rozhraní musí umožňovat snadno realizovat operace pro každou roli vyplývající z diagramu případů použití (use-case).
 * [x] Je-li cílem např. prodej zboží, musí systém implementovat odpovídající operaci, aby uživatel nemusel při každém prodeji ručně upravovat počty zboží na skladě, pamatovat si identifikátory položek a přepisovat je do objednávky a podobně.
-
+* [x] Kontrolovat formát emailu, čísla, apod (klient i server) - DONE FOR EMPLOYEE
 # Information systems - Project in PHP with MySQL Database
 
 ### Authors

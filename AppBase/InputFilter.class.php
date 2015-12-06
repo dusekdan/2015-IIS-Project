@@ -118,4 +118,12 @@ class InputFilter
     }
 
 
+    public function isBCN($bcn)
+    {
+        if(preg_match("~[0-9]{6}\/[0-9]{4}~", $bcn) == 1)
+            return true;
+        else
+            return false;
+    }
+
 }

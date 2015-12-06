@@ -126,7 +126,7 @@ class RoleManagementHelper implements IAdminModule
             echo "<td>$r[erole_name]</td>";
             echo "<td>$r[emp_phone]</td>";
             // <form method="post" action=""><input type="hidden" name="deleteCategory" value="
-            echo "<td><form method='post' action=''><input type='hidden' name='deleteEmployee' value='$r[emp_id]'><input type='submit' value='Smazat'></form></td>";
+            echo "<td><form method='post' action=''><input type='hidden' name='deleteEmployee' value='$r[emp_id]'><input type='submit' onclick=\"return confirm('Opravdu chcete tohoto zaměstnance smazat?');\" value='Smazat'></form></td>";
             echo "<td><a href='Admin.php?action=RoleManagement&amp;edittype=employee&amp;edit=$r[emp_id]'>Editovat</a></td>";
             echo "<td><form method='post' action=''><input type='hidden' value='$r[emp_id]' name='activateToggleEmployee'><input type='submit' value='$changeStateButton'></form></td>";
             echo "</tr>";
@@ -216,43 +216,65 @@ class RoleManagementHelper implements IAdminModule
 
             if(!is_numeric($employeeRole) || empty($employeeRole))
             {
-                $errorMessage .= "Zaměstnancká role musí být vyplněna správně!";
+                $errorMessage .= "Zaměstnanecká role musí být vyplněna správně!<br>";
                 $editRecord = false;
             }
 
             if(empty($employeeBCN))
             {
-                $errorMessage .= "Rodné číslo zaměstnance musí být vyplněno!";
-                $editRecord = false;
+                /*$errorMessage .= "Rodné číslo zaměstnance musí být vyplněno!";
+                $editRecord = false;*/
+                // Removed due to task spec
+                $employeeBCN = "000000/0000";
             }
 
+            if(!empty($employeeBCN) && !$this->FILTER->isBCN($employeeBCN))
+            {
+                $editRecord = false;
+                $errorMessage .= "Rodné číslo není ve správném formátu!<br>";
+            }
+
+
+            /* REMOVED DUE TO TASK SPEC
             if(empty($employeeAddress))
             {
-                $errorMessage .= "Adresa zaměstnance musí být vyplněna!";
+                $errorMessage .= "Adresa zaměstnance musí být vyplněna!<br>";
                 $editRecord = false;
             }
 
             if(empty($employeePhone))
             {
-                $errorMessage .= "Telefon zaměstnance musí být vyplněn!";
+                $errorMessage .= "Telefon zaměstnance musí být vyplněn!<br>";
+                $editRecord = false;
+            }*/
+
+            if(!empty($employeePhone) && (!is_numeric($employeePhone) || strlen($employeePhone) != 9))
+            {
+                $errorMessage .= "Telefon musí být v uvedeném formátu!<br>";
                 $editRecord = false;
             }
 
             if(empty($employeeMail))
             {
-                $errorMessage .= "Email zaměstnance musí být vyplněn!";
+                $errorMessage .= "Email zaměstnance musí být vyplněn!<br>";
+                $editRecord = false;
+            }
+
+            if(!empty($employeeMail) && !$this->FILTER->isMail($employeeMail))
+            {
+                $errorMessage .= "Email musí být uveden ve správném formátu!<br>";
                 $editRecord = false;
             }
 
             if(empty($employeeUserName))
             {
-                $errorMessage .= "Username pro zaměstnance musí být vyplněno!";
+                $errorMessage .= "Username pro zaměstnance musí být vyplněno!<br>";
                 $editRecord = false;
             }
 
             if(empty($employeeName))
             {
-                $errorMessage .= "Jméno zaměstnance musí být vyplněno!";
+                $errorMessage .= "Jméno zaměstnance musí být vyplněno!<br>";
                 $editRecord = false;
             }
 
@@ -269,7 +291,7 @@ class RoleManagementHelper implements IAdminModule
         }
         else
         {
-            $errorMessage .= "Obdržena nedostatečná POST data!";
+            $errorMessage .= "Obdržena nedostatečná POST data!<br>";
             $this->postBackInfo = $errorMessage;
             return false;
         }
@@ -327,33 +349,35 @@ class RoleManagementHelper implements IAdminModule
                     <table>
 
                         <tr>
-                            <td>Jméno zaměstnance: </td>
+                            <td><strong>Jméno zaměstnance</strong>*: </td>
                             <td><input type="text" class="text" name="employeeName"<?php $this->returnEditPostBackValue("employeeName", "emp_fullname"); ?>></td>
                             <td><input type="hidden" name="formGenerationStamp" value="<?php echo $timeStamp;?>"></td>
                         </tr>
 
                         <tr>
-                            <td>Username:</td>
+                            <td><strong>Username</strong>*:</td>
                             <td><input type="text" class="text" name="employeeUsername"<?php $this->returnEditPostBackValue("employeeUsername", "emp_username"); ?>></td>
                         </tr>
 
                         <tr>
-                            <td>Email:</td>
+                            <td><strong>Email</strong>*:</td>
                             <td><input type="email" class="text" name="employeeMail"<?php $this->returnEditPostBackValue("employeeMail", "emp_email"); ?>></td>
                         </tr>
 
                         <tr>
                             <td>Telefon:</td>
                             <td><input type="text" class="text" name="employeePhone"<?php $this->returnEditPostBackValue("employeePhone", "emp_phone"); ?>></td>
+                            <td><small>(ve tvaru 721852506)</small></td>
                         </tr>
 
                         <tr>
                             <td>Rodné číslo:</td>
                             <td><input type="text" class="text" name="employeeBCN"<?php $this->returnEditPostBackValue("employeeBCN", "emp_bcn"); ?>></td>
+                            <td><small>(nevyplněno="000000/0000")</small></td>
                         </tr>
 
                         <tr>
-                            <td>Role:</td>
+                            <td>Role*:</td>
                             <td>
                                 <select name="employeeRole">
                                     <?php $this->loadUserRolesOptions(); ?>
@@ -368,7 +392,7 @@ class RoleManagementHelper implements IAdminModule
 
                         <tr>
                             <td></td>
-                            <td><input type="submit" value="Přidat zaměstnance"></td>
+                            <td><input type="submit" value="Upravit zaměstnance"></td>
                         </tr>
 
                     </table>
@@ -421,55 +445,76 @@ class RoleManagementHelper implements IAdminModule
 
             if(!is_numeric($employeeRole) || empty($employeeRole))
             {
-                $errorMessage .= "Zaměstnancká role musí být vyplněna správně!";
+                $errorMessage .= "Zaměstnancká role musí být vyplněna správně!<br>";
                 $addRecord = false;
             }
 
             if(empty($employeeBCN))
             {
-                $errorMessage .= "Rodné číslo zaměstnance musí být vyplněno!";
+                //$errorMessage .= "Rodné číslo zaměstnance musí být vyplněno!<br>";
+               // $addRecord = false;
+                $employeeBCN = "000000/0000";
+            }
+
+            if(!empty($employeeBCN) && !$this->FILTER->isBCN($employeeBCN))
+            {
+                $errorMessage .= "Rodné číslo musí být zadané ve správném formátu!<br>";
                 $addRecord = false;
             }
 
+            /*
             if(empty($employeeAddress))
             {
                 $errorMessage .= "Adresa zaměstnance musí být vyplněna!";
                 $addRecord = false;
             }
 
+
             if(empty($employeePhone))
             {
                 $errorMessage .= "Telefon zaměstnance musí být vyplněn!";
+                $addRecord = false;
+            }*/
+
+            if(!empty($employeePhone) && (!is_numeric($employeePhone) || strlen($employeePhone) != 9))
+            {
+                $errorMessage .= "Telefon musí být zadán v uvedeném formátu!<br>";
                 $addRecord = false;
             }
 
             if(empty($employeeMail))
             {
-                $errorMessage .= "Email zaměstnance musí být vyplněn!";
+                $errorMessage .= "Email zaměstnance musí být vyplněn!<br>";
+                $addRecord = false;
+            }
+
+            if(!empty($employeeMail) && !$this->FILTER->isMail($employeeMail))
+            {
+                $errorMessage .= "Email musí být ve správném formátu!<br>";
                 $addRecord = false;
             }
 
             if(empty($employeeUserName))
             {
-                $errorMessage .= "Username pro zaměstnance musí být vyplněno!";
+                $errorMessage .= "Username pro zaměstnance musí být vyplněno!<br>";
                 $addRecord = false;
             }
 
             if(empty($employeePassword) || empty($employeePassword2))
             {
-                $errorMessage .= "Heslo nesmí být prázdné!";
+                $errorMessage .= "Heslo nesmí být prázdné!<br>";
                 $addRecord = false;
             }
 
             if(empty($employeeName))
             {
-                $errorMessage .= "Jméno zaměstnance musí být vyplněno!";
+                $errorMessage .= "Jméno zaměstnance musí být vyplněno!<br>";
                 $addRecord = false;
             }
 
             if($employeePassword != $employeePassword2)
             {
-                $errorMessage .= "Zadaná hesla se neshodují!";
+                $errorMessage .= "Zadaná hesla se neshodují!<br>";
                 $addRecord = false;
             }
 
@@ -496,8 +541,8 @@ class RoleManagementHelper implements IAdminModule
 
     private function insertEmployee($employeeName, $employeeUserName, $employeePassword, $employeeMail, $employeePhone, $employeeAddress, $employeeBCN, $employeeRole)
     {
-        $insertQuery = $this->DBH->query("INSERT INTO employee (emp_fullname, emp_username, emp_password, emp_email, emp_phone, emp_address, emp_bcn, emp_role )
-        VALUES ('$employeeName', '$employeeUserName', '$employeePassword', '$employeeMail', '$employeePhone', '$employeeAddress', '$employeeBCN', '$employeeRole')");
+        $insertQuery = $this->DBH->query("INSERT INTO employee (emp_fullname, emp_username, emp_password, emp_email, emp_phone, emp_address, emp_bcn, emp_role, emp_enabled )
+        VALUES ('$employeeName', '$employeeUserName', '$employeePassword', '$employeeMail', '$employeePhone', '$employeeAddress', '$employeeBCN', '$employeeRole', 'true')");
 
         if($insertQuery === -1)
         {
@@ -520,39 +565,41 @@ class RoleManagementHelper implements IAdminModule
                     <table>
 
                         <tr>
-                            <td>Jméno zaměstnance: </td>
+                            <td><strong>Jméno zaměstnance</strong>*: </td>
                             <td><input type="text" class="text" name="employeeName"<?php $this->returnPostBackValue("employeeName"); ?>></td>
                             <td><input type="hidden" name="formGenerationStamp" value="<?php echo $timeStamp;?>"></td>
                         </tr>
 
                         <tr>
-                            <td>Username:</td>
+                            <td><strong>Username</strong>*:</td>
                             <td><input type="text" class="text" name="employeeUsername"<?php $this->returnPostBackValue("employeeUsername"); ?>></td>
                         </tr>
 
                         <tr>
-                            <td>Heslo:</td>
+                            <td><strong>Heslo</strong>*:</td>
                             <td><input type="password" class="text" name="employeePassword"></td>
                         </tr>
 
                         <tr>
-                            <td>Heslo znovu:</td>
+                            <td><strong>Heslo znovu</strong>*:</td>
                             <td><input type="password" class="text" name="employeePassword2"></td>
                         </tr>
 
                         <tr>
-                            <td>Email:</td>
+                            <td><strong>Email</strong>*:</td>
                             <td><input type="email" class="text" name="employeeMail"<?php $this->returnPostBackValue("employeeMail"); ?>></td>
                         </tr>
 
                         <tr>
                             <td>Telefon:</td>
                             <td><input type="text" class="text" name="employeePhone"<?php $this->returnPostBackValue("employeePhone"); ?>></td>
+                            <td><small>(ve tvaru 721852506)</small></td>
                         </tr>
 
                         <tr>
                             <td>Rodné číslo:</td>
                             <td><input type="text" class="text" name="employeeBCN"<?php $this->returnPostBackValue("employeeBCN"); ?>></td>
+                            <td><small>(nevyplněno="000000/0000")</small></td>
                         </tr>
 
                         <tr>
