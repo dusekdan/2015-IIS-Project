@@ -56,6 +56,11 @@ if(isset($_SESSION["emp_id"]) && isset($_SESSION["emp_hash"]))
     {
         $PBH->showMessage("Neoprávněný přístup do administrace. Račte se přihlásit, nebo odstřelit.", "warning");
     }
+
+    if(isset($_GET["loggedout"]))
+    {
+        $PBH->showMessage("Odhlášení proběhlo úspěšně!");
+    }
     ?>
 
 <form class="signInForm" method="post" action="LogOn.php">
