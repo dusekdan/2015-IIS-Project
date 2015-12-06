@@ -54,12 +54,6 @@ header .userdata .a_sign_out, header .userdata .username
     font-weight: bold;
 }
 
-.signInForm {
-    
-    padding-bottom: 1000px;
-    clear: both;
-    font-size: 22px;
-}
 
 a {
     color: #214ea5;
@@ -143,6 +137,7 @@ a.selected {
 .form table
 {
     border-spacing:1em;
+    width: 100%;
 }
 
 .form table tr, .form table td
@@ -152,7 +147,7 @@ a.selected {
 
 .form_content {
     color: #383D3D;
-    text-align: left;
+    text-align:  left;
     width: 100%;
 }
 
@@ -163,29 +158,61 @@ a.selected {
 
 .form textarea{
     margin-top: 1%;
-    width: 97%;
+    width: 99%;
+    height: 4em;
 }
 
 form .text {
     border: none;
-    width: 300px;
+    width: 100%;
     height: 100%;
     padding: 2px 1px;
 }
 
-input.button {
-    height: 40px;
-    width: 128px;
+form .button {
+
+    border: solid 1px;
+    border-radius: 8px;
+    border-color: #2f5e9d;
     color: #102f6a;
-    background-image: url("../Images/button.png");
-    background-repeat: no-repeat;
+    background-color: rgba(95, 156, 225, 0.73);
+    padding: 2% 6% 2% 6%;
     font-size: 100%;
     font-weight: bold;
-    border:none;
-    align-content: center;
+    text-align: center;
     margin: auto;
 
 }
+form .button:hover {
+
+    box-shadow: inset 0 0 1em #397ac4;
+}
+
+table.information {
+    clear: both;
+    float: left;
+    background-color: rgba(95, 156, 225, 0.24);
+    display: table;
+
+    margin: 0 10% 1%;
+    padding: 3%;
+    width: 80%;
+}
+
+table.information th {
+    padding-bottom: 2%;
+    border-bottom: solid 2px #2f5e9d;
+}
+
+table.information td.buttons {
+    text-align: center;
+}
+
+table.information td {
+    border-bottom: solid 1px rgb(95, 156, 225);
+}
+
+
 
 /*form table {
     width: 1000px;
@@ -231,13 +258,14 @@ div.message-error, div.message-warning, div.message-info
 {
     width: 350px;
     min-height: 60px;
-    margin: 0.5% auto 0.5%;
+    margin: 1% auto 1%;
     line-height: 120%;
     vertical-align: middle;
     background-position: 15px 50%;
     background-repeat: no-repeat;
     border-width: 2px;
     padding: 0.5% 0.5% 0.5% 80px;
+    clear: both;
 
 }
 

@@ -144,7 +144,6 @@ if(isset($_GET["type"]) && $_GET["type"] == "category")
     $MH->loadCategoryList();
 
 
-    echo "<hr>";
 
     if(isset($_POST["deleteSubcategory"]) && is_numeric($_POST["deleteSubcategory"]))
     {

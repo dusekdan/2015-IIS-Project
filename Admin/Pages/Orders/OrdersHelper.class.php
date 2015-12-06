@@ -187,7 +187,7 @@ class OrdersHelper implements IAdminModule
 
     public function loadUnprocessedOrders()
     {
-        echo "<table>";
+        echo "<table class=\"information\">";
         echo "<tr>";
         echo "<th>Číslo objednávky</th><th>Čas objednání</th><th>Jméno zákazníka</th><th>Částka</th><th>Stav</th>";
         echo "</tr>";

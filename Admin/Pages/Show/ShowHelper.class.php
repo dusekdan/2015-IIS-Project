@@ -88,10 +88,12 @@ final class ShowHelper implements IAdminModule
         $selectQuery = $this->DBH->query("SELECT pcat_id, pcat_name FROM product_category ORDER BY pcat_name ASC");
 
 
-        echo "<table>";
+        echo "<table class=\"information\">";
         echo "<tr>";
         echo "<th>#</th>";
         echo "<th>Název kategorie</th>";
+        echo "<th></th>";
+        echo "<th></th>";
         echo "</tr>";
 
         $i = 1;
@@ -102,8 +104,8 @@ final class ShowHelper implements IAdminModule
             <tr>
                 <td><?php echo $i; ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["pcat_name"]); ?></td>
-                <td><form method="post" action=""><input type="hidden" name="deleteCategory" value="<?php echo $this->FILTER->prepareInputForSQL($r["pcat_id"]); ?>"><input onclick="return confirm('Opravdu chcete smazat tuto kategorii?');" type="submit" value="Smazat" class="button"></form></td>
-                <td><a href="Admin.php?action=Show&amp;edittype=category&amp;edit=<?php echo $this->FILTER->prepareText($r["pcat_id"]); ?>">Editovat</a></td>
+                <td class="buttons"><form method="post" action=""><input type="hidden" name="deleteCategory" value="<?php echo $this->FILTER->prepareInputForSQL($r["pcat_id"]); ?>"><input onclick="return confirm('Opravdu chcete smazat tuto kategorii?');" type="submit" value="Smazat" class="button"></form></td>
+                <td class="buttons"><a href="Admin.php?action=Show&amp;edittype=category&amp;edit=<?php echo $this->FILTER->prepareText($r["pcat_id"]); ?>">Editovat</a></td>
             </tr>
 
             <?php
@@ -152,11 +154,13 @@ final class ShowHelper implements IAdminModule
 
         $selectQuery = $this->DBH->query("SELECT sup_id, sup_name, sup_ico, sup_enabled FROM supplier ORDER BY sup_name ASC");
 
-        echo "<table>";
+        echo "<table class=\"information\">";
         echo "<tr>";
         echo "<th>#</th>";
         echo "<th>Jméno dodavatele</th>";
         echo "<th>IČO</th>";
+        echo "<th></th>";
+        echo "<th></th>";
         //echo "<th>Aktivní</th>";
         echo "</tr>";
 
@@ -169,8 +173,8 @@ final class ShowHelper implements IAdminModule
                 <td><?php echo $this->FILTER->prepareText($r["sup_name"]);      ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["sup_ico"]);       ?></td>
                 <!--<td><?php echo $this->FILTER->prepareText($r["sup_enabled"]);   ?></td>-->
-                <td><form method="post" action=""><input type="hidden" name="deleteSupplier" value="<?php echo $this->FILTER->prepareInputForSQL($r["sup_id"]); ?>"><input onclick="return confirm('Opravdu chcete tohoto dodavatele smazat?');" type="submit" value="Smazat" class="button"></form></td>
-                <td><a href="Admin.php?action=Show&amp;edittype=supplier&amp;edit=<?php echo $this->FILTER->prepareText($r["sup_id"]); ?>">Editovat</a></td>
+                <td class="buttons"><form method="post" action=""><input type="hidden" name="deleteSupplier" value="<?php echo $this->FILTER->prepareInputForSQL($r["sup_id"]); ?>"><input onclick="return confirm('Opravdu chcete tohoto dodavatele smazat?');" type="submit" value="Smazat" class="button"></form></td>
+                <td class="buttons"><a href="Admin.php?action=Show&amp;edittype=supplier&amp;edit=<?php echo $this->FILTER->prepareText($r["sup_id"]); ?>">Editovat</a></td>
             </tr>
             <?php
             $i++;
@@ -219,11 +223,13 @@ final class ShowHelper implements IAdminModule
     {
         $selectQuery = $this->DBH->query("SELECT psub_id, psub_name, psub_category, pcat_name FROM product_category JOIN product_subcategory ON pcat_id=psub_category ORDER BY psub_name ASC");
 
-        echo "<table>";
+        echo "<table class=\"information\">";
         echo "<tr>";
         echo "<th>#</th>";
         echo "<th>Název podkategorie</th>";
         echo "<th>Název nadřazené kategorie</th>";
+        echo "<th></th>";
+        echo "<th></th>";
         echo "</tr>";
 
         $i = 1;
@@ -234,8 +240,8 @@ final class ShowHelper implements IAdminModule
                 <td><?php echo $i; ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["psub_name"]); ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["pcat_name"]); ?></td>
-                <td><form method="post" action=""><input type="hidden" name="deleteSubcategory" value="<?php echo $this->FILTER->prepareInputForSQL($r["psub_id"]); ?>"><input onclick="return confirm('Opravdu chcete tuto podkategorii smazat?\n \n');" type="submit" value="Smazat" class="button"></form></td>
-                <td><a href="Admin.php?action=Show&amp;edittype=subcategory&amp;edit=<?php echo $this->FILTER->prepareText($r["psub_id"]); ?>">Editovat</a></td>
+                <td class="buttons"><form method="post" action=""><input type="hidden" name="deleteSubcategory" value="<?php echo $this->FILTER->prepareInputForSQL($r["psub_id"]); ?>"><input onclick="return confirm('Opravdu chcete tuto podkategorii smazat?\n \n');" type="submit" value="Smazat" class="button"></form></td>
+                <td class="buttons"><a href="Admin.php?action=Show&amp;edittype=subcategory&amp;edit=<?php echo $this->FILTER->prepareText($r["psub_id"]); ?>">Editovat</a></td>
             </tr>
             <?php
             $i++;
@@ -284,13 +290,15 @@ final class ShowHelper implements IAdminModule
     {
         $selectQuery = $this->DBH->query("SELECT pr_name, pr_id, pcat_name, psub_name, sup_name FROM product JOIN product_subcategory ON psub_id = pr_subcategory JOIN product_category ON psub_category = pcat_id JOIN supplier ON pr_supplier = sup_id");
 
-        echo "<table>";
+        echo "<table class=\"information\">";
         echo "<tr>";
         echo "<th>#</th>";
         echo "<th>Název produktu</th>";
         echo "<th>Název kategorie</th>";
         echo "<th>Název podkategorie</th>";
         echo "<th>Název dodavatele</th>";
+        echo "<th></th>";
+        echo "<th></th>";
         echo "</tr>";
 
         $i = 1;
@@ -304,8 +312,8 @@ final class ShowHelper implements IAdminModule
                 <td><?php echo $this->FILTER->prepareText($r["pcat_name"]);?></td>
                 <td><?php echo $this->FILTER->prepareText($r["psub_name"]);?></td>
                 <td><?php echo $this->FILTER->prepareTExt($r["sup_name"]);?></td>
-                <td><form method="post" action=""><input type="hidden" name="deleteProduct" value="<?php echo $this->FILTER->prepareInputForSQL($r["pr_id"]); ?>"><input onclick="return confirm('Opravdu chcete smazat tento produkt?');" type="submit" value="Smazat" class="button"></form></td>
-                <td><a href="Admin.php?action=Show&amp;edittype=product&amp;edit=<?php echo $this->FILTER->prepareText($r["pr_id"]); ?>">Editovat</a></td>
+                <td class="buttons"><form method="post" action=""><input type="hidden" name="deleteProduct" value="<?php echo $this->FILTER->prepareInputForSQL($r["pr_id"]); ?>"><input onclick="return confirm('Opravdu chcete smazat tento produkt?');" type="submit" value="Smazat" class="button"></form></td>
+                <td class="buttons"><a href="Admin.php?action=Show&amp;edittype=product&amp;edit=<?php echo $this->FILTER->prepareText($r["pr_id"]); ?>">Editovat</a></td>
             </tr>
 
             <?php
