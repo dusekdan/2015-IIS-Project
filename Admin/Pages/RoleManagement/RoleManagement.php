@@ -1,3 +1,10 @@
+<?php
+if(!$Auth->checkUserAccess(2))
+{
+    $PBH->showMessage("Omlouváme se, ale do této sekce nemáte přístup!", "warning");
+    die();
+}
+?>
 <!-- MODULE DESIGN & CODE GOES HERE -->
 <div class="navigation">
     <a href="<?php echo $linkBase; ?>&type=list" class="<?php if( isset($_GET["type"]) && $_GET["type"] == "list")
