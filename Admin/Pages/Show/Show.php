@@ -1,7 +1,7 @@
 <!-- MODULE DESIGN & CODE GOES HERE -->
-<a href="<?php echo $linkBase; ?>&amp;type=category">Kategorie</a> |
+<div class="navigation"><a href="<?php echo $linkBase; ?>&amp;type=category">Kategorie</a> |
 <a href="<?php echo $linkBase; ?>&amp;type=product">Produkty</a> | <a href="<?php echo $linkBase; ?>&amp;type=supplier">Dodavatelé</a>
-<hr>
+</div><hr>
 <?php
 
 if(isset($_GET["edittype"], $_GET["edit"]) && is_numeric($_GET["edit"]))

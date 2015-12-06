@@ -1,8 +1,8 @@
 <!-- MODULE DESIGN & CODE GOES HERE -->
-<a href="<?php echo $linkBase; ?>&type=list">Všichni zaměstnanci</a> |
+<div class="navigation"><a href="<?php echo $linkBase; ?>&type=list">Všichni zaměstnanci</a> |
 <a href="<?php echo $linkBase;?>&type=add">Přidat zaměstnance</a> |
 <a href="<?php echo $linkBase;?>&amp;type=customers">Databáze zákazníků</a>
-<hr>
+</div><hr>
 <?php
 
 if(isset($_GET["type"]))
