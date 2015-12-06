@@ -19,7 +19,6 @@ if(isset($_GET["edittype"], $_GET["edit"]) && is_numeric($_GET["edit"]))
             {
 
                 $editSupplierResult = $MH->editSupplier();
-                var_dump($editSupplierResult);
                 if($editSupplierResult)
                 {
                     $PBH->showMessage("Dodavatel úspěšně změněn! Chcete se vrátit <a href='Admin.php?action=Show&amp;type=supplier'>zpět na seznam dodavatelů</a>?");
