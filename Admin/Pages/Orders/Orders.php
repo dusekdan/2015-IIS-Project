@@ -1,6 +1,11 @@
 <!-- MODULE DESIGN & CODE GOES HERE -->
-<div class="navigation"><a href="<?php echo $linkBase; ?>&amp;type=resupply">Doplnit zásoby produktu</a> |
-<a href="<?php echo $linkBase; ?>&amp;type=process">Nevyřízené objednávky</a> | <a href="<?php echo $linkBase; ?>&amp;type=orderhistory">Historie objednávek</a>
+<div class="navigation">
+    <a href="<?php echo $linkBase; ?>&amp;type=resupply" class="<?php if( isset($_GET["type"]) && $_GET["type"] == "resupply")
+        echo "selected"?>">Doplnit zásoby produktu</a> |
+    <a href="<?php echo $linkBase; ?>&amp;type=process" class="<?php if( isset($_GET["type"]) && $_GET["type"] == "process")
+        echo "selected"?>">Nevyřízené objednávky</a> |
+    <a href="<?php echo $linkBase; ?>&amp;type=orderhistory" class="<?php if( isset($_GET["type"]) && $_GET["type"] == "orderhistory")
+        echo "selected"?>">Historie objednávek</a>
 </div>
 <?php
 if(isset($_GET["type"]) && $_GET["type"] == "process")

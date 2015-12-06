@@ -1,6 +1,11 @@
 <!-- MODULE DESIGN & CODE GOES HERE -->
-<div class="navigation"><a href="<?php echo $linkBase; ?>&amp;type=category">Kategorie</a> |
-<a href="<?php echo $linkBase; ?>&amp;type=product">Produkty</a> | <a href="<?php echo $linkBase; ?>&amp;type=supplier">Dodavatelé</a>
+<div class="navigation">
+    <a href="<?php echo $linkBase; ?>&amp;type=category" class="<?php if( isset($_GET["type"]) && $_GET["type"] == "category")
+        echo "selected"?>">Kategorie</a> |
+    <a href="<?php echo $linkBase; ?>&amp;type=product" class="<?php if( isset($_GET["type"]) && $_GET["type"] == "product")
+        echo "selected"?>">Produkty</a> |
+    <a href="<?php echo $linkBase; ?>&amp;type=supplier" class="<?php if( isset($_GET["type"]) && $_GET["type"] == "supplier")
+        echo "selected"?>">Dodavatelé</a>
 </div>
 <?php
 

@@ -63,7 +63,7 @@ if(isset($_SESSION["emp_id"]) && isset($_SESSION["emp_hash"]))
     }
     ?>
 
-<form class="signInForm" method="post" action="LogOn.php">
+<form class="form" method="post" action="LogOn.php">
     <table>
         <tr>
             <td>Přihlašovací jméno:</td>

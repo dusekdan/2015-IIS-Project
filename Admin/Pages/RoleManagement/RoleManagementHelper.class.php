@@ -126,9 +126,9 @@ class RoleManagementHelper implements IAdminModule
             echo "<td>$r[erole_name]</td>";
             echo "<td>$r[emp_phone]</td>";
             // <form method="post" action=""><input type="hidden" name="deleteCategory" value="
-            echo "<td><form method='post' action=''><input type='hidden' name='deleteEmployee' value='$r[emp_id]'><input type='submit' onclick=\"return confirm('Opravdu chcete tohoto zaměstnance smazat?');\" value='Smazat'></form></td>";
+            echo "<td><form method='post' action=''><input type='hidden' name='deleteEmployee' value='$r[emp_id]'><input type='submit' onclick=\"return confirm('Opravdu chcete tohoto zaměstnance smazat?');\" value='Smazat' class='button'></form></td>";
             echo "<td><a href='Admin.php?action=RoleManagement&amp;edittype=employee&amp;edit=$r[emp_id]'>Editovat</a></td>";
-            echo "<td><form method='post' action=''><input type='hidden' value='$r[emp_id]' name='activateToggleEmployee'><input type='submit' value='$changeStateButton'></form></td>";
+            echo "<td><form method='post' action=''><input type='hidden' value='$r[emp_id]' name='activateToggleEmployee'><input type='submit' value='$changeStateButton' class='button'></form></td>";
             echo "</tr>";
         }
 
@@ -392,7 +392,7 @@ class RoleManagementHelper implements IAdminModule
 
                         <tr>
                             <td></td>
-                            <td><input type="submit" value="Upravit zaměstnance"></td>
+                            <td><input type="submit" value="Upravit zaměstnance" class="button"></td>
                         </tr>
 
                     </table>
@@ -618,7 +618,7 @@ class RoleManagementHelper implements IAdminModule
 
                         <tr>
                             <td></td>
-                            <td><input type="submit" value="Přidat zaměstnance"></td>
+                            <td><input type="submit" value="Přidat zaměstnance" class="button"></td>
                         </tr>
 
                     </table>

@@ -139,7 +139,7 @@ class OrdersHelper implements IAdminModule
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" value="Doobjednat zboží"></td>
+                    <td><input type="submit" value="Doobjednat zboží" class="button"></td>
                 </tr>
             </table>
         </form>
@@ -209,7 +209,7 @@ class OrdersHelper implements IAdminModule
                 $this->loadOrderItems($r["ord_id"]);
 
                 echo "</td>";
-                echo "<td><form method='post' action=''><input type='hidden' value='$r[ord_id]' name='orderId'><input name='processOrder' type='submit' value='Vyřídit'></form></td>";
+                echo "<td><form method='post' action=''><input type='hidden' value='$r[ord_id]' name='orderId'><input name='processOrder' type='submit' value='Vyřídit' class='button'></form></td>";
                 echo "<td><a href=''>TISK</a></td>";
             }
             else

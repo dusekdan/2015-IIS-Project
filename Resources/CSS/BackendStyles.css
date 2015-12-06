@@ -34,10 +34,11 @@ header img.logo {
 }
 
 header .headline {
+    text-align: right;
     float: right;
-    font-size: 200%;
-    margin-top: 10%;
-    margin-right: 15%;
+    font-size: 180%;
+    margin-top: 5%;
+    margin-right: 5%;
 }
 
 header .userdata {
@@ -173,15 +174,16 @@ form .text {
 }
 
 input.button {
-    height: 44px;
-    width: 130px;
-    color: #214ea5;
+    height: 40px;
+    width: 128px;
+    color: #102f6a;
     background-image: url("../Images/button.png");
-    font-size: 90%;
-    font-weight: normal;
+    background-repeat: no-repeat;
+    font-size: 100%;
+    font-weight: bold;
     border:none;
     align-content: center;
-    margin: 50px auto;
+    margin: auto;
 
 }
 
@@ -267,6 +269,18 @@ div.navigation {
     text-align: center;
 }
 
+div.navigation a
+{
+    color: #5b8bcc;
+}
+
 div.navigation a:hover {
+    color: #5b8bcc;
+    border-bottom: solid #5b8bcc 2px;
+}
+
+div.navigation a.selected {
+
+    color: #214ea5;
     border-bottom: solid #214ea5 2px;
 }

@@ -102,7 +102,7 @@ final class ShowHelper implements IAdminModule
             <tr>
                 <td><?php echo $i; ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["pcat_name"]); ?></td>
-                <td><form method="post" action=""><input type="hidden" name="deleteCategory" value="<?php echo $this->FILTER->prepareInputForSQL($r["pcat_id"]); ?>"><input onclick="return confirm('Opravdu chcete smazat tuto kategorii?');" type="submit" value="Smazat"></form></td>
+                <td><form method="post" action=""><input type="hidden" name="deleteCategory" value="<?php echo $this->FILTER->prepareInputForSQL($r["pcat_id"]); ?>"><input onclick="return confirm('Opravdu chcete smazat tuto kategorii?');" type="submit" value="Smazat" class="button"></form></td>
                 <td><a href="Admin.php?action=Show&amp;edittype=category&amp;edit=<?php echo $this->FILTER->prepareText($r["pcat_id"]); ?>">Editovat</a></td>
             </tr>
 
@@ -169,7 +169,7 @@ final class ShowHelper implements IAdminModule
                 <td><?php echo $this->FILTER->prepareText($r["sup_name"]);      ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["sup_ico"]);       ?></td>
                 <!--<td><?php echo $this->FILTER->prepareText($r["sup_enabled"]);   ?></td>-->
-                <td><form method="post" action=""><input type="hidden" name="deleteSupplier" value="<?php echo $this->FILTER->prepareInputForSQL($r["sup_id"]); ?>"><input onclick="return confirm('Opravdu chcete tohoto dodavatele smazat?');" type="submit" value="Smazat"></form></td>
+                <td><form method="post" action=""><input type="hidden" name="deleteSupplier" value="<?php echo $this->FILTER->prepareInputForSQL($r["sup_id"]); ?>"><input onclick="return confirm('Opravdu chcete tohoto dodavatele smazat?');" type="submit" value="Smazat" class="button"></form></td>
                 <td><a href="Admin.php?action=Show&amp;edittype=supplier&amp;edit=<?php echo $this->FILTER->prepareText($r["sup_id"]); ?>">Editovat</a></td>
             </tr>
             <?php
@@ -234,7 +234,7 @@ final class ShowHelper implements IAdminModule
                 <td><?php echo $i; ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["psub_name"]); ?></td>
                 <td><?php echo $this->FILTER->prepareText($r["pcat_name"]); ?></td>
-                <td><form method="post" action=""><input type="hidden" name="deleteSubcategory" value="<?php echo $this->FILTER->prepareInputForSQL($r["psub_id"]); ?>"><input onclick="return confirm('Opravdu chcete tuto podkategorii smazat?\n \n');" type="submit" value="Smazat"></form></td>
+                <td><form method="post" action=""><input type="hidden" name="deleteSubcategory" value="<?php echo $this->FILTER->prepareInputForSQL($r["psub_id"]); ?>"><input onclick="return confirm('Opravdu chcete tuto podkategorii smazat?\n \n');" type="submit" value="Smazat" class="button"></form></td>
                 <td><a href="Admin.php?action=Show&amp;edittype=subcategory&amp;edit=<?php echo $this->FILTER->prepareText($r["psub_id"]); ?>">Editovat</a></td>
             </tr>
             <?php
@@ -304,7 +304,7 @@ final class ShowHelper implements IAdminModule
                 <td><?php echo $this->FILTER->prepareText($r["pcat_name"]);?></td>
                 <td><?php echo $this->FILTER->prepareText($r["psub_name"]);?></td>
                 <td><?php echo $this->FILTER->prepareTExt($r["sup_name"]);?></td>
-                <td><form method="post" action=""><input type="hidden" name="deleteProduct" value="<?php echo $this->FILTER->prepareInputForSQL($r["pr_id"]); ?>"><input onclick="return confirm('Opravdu chcete smazat tento produkt?');" type="submit" value="Smazat"></form></td>
+                <td><form method="post" action=""><input type="hidden" name="deleteProduct" value="<?php echo $this->FILTER->prepareInputForSQL($r["pr_id"]); ?>"><input onclick="return confirm('Opravdu chcete smazat tento produkt?');" type="submit" value="Smazat" class="button"></form></td>
                 <td><a href="Admin.php?action=Show&amp;edittype=product&amp;edit=<?php echo $this->FILTER->prepareText($r["pr_id"]); ?>">Editovat</a></td>
             </tr>
 
@@ -818,7 +818,7 @@ final class ShowHelper implements IAdminModule
 
                     <tr>
                         <td></td>
-                        <td><input type="submit" value="Upravit kategorii"></td>
+                        <td><input type="submit" value="Upravit kategorii" class="button"></td>
                     </tr>
             </table>
         </form>
@@ -898,7 +898,7 @@ final class ShowHelper implements IAdminModule
 
                         <tr>
                             <td></td>
-                            <td><input type="submit" value="Upravit produkt"></td>
+                            <td><input type="submit" value="Upravit produkt" class="button"></td>
                         </tr>
                     </table>
                 </form>
@@ -951,7 +951,7 @@ final class ShowHelper implements IAdminModule
 
                         <tr>
                             <td></td>
-                            <td><input type="submit" value="Upravit kategorii"></td>
+                            <td><input type="submit" value="Upravit kategorii" class="button"></td>
                         </tr>
                     </table>
                 </form>
@@ -1017,7 +1017,7 @@ final class ShowHelper implements IAdminModule
 
                         <tr>
                             <td></td>
-                            <td><input type="submit" value="Upravit dodavatele"></td>
+                            <td><input type="submit" value="Upravit dodavatele" class="button"></td>
                         </tr>
                     </table>
                 </form>

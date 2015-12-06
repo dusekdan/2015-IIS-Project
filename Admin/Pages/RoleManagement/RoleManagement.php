@@ -1,7 +1,11 @@
 <!-- MODULE DESIGN & CODE GOES HERE -->
-<div class="navigation"><a href="<?php echo $linkBase; ?>&type=list">Všichni zaměstnanci</a> |
-<a href="<?php echo $linkBase;?>&type=add">Přidat zaměstnance</a> |
-<a href="<?php echo $linkBase;?>&amp;type=customers">Databáze zákazníků</a>
+<div class="navigation">
+    <a href="<?php echo $linkBase; ?>&type=list" class="<?php if( isset($_GET["type"]) && $_GET["type"] == "list")
+        echo "selected"?>">Všichni zaměstnanci</a> |
+    <a href="<?php echo $linkBase;?>&type=add" class="<?php if( isset($_GET["type"]) && $_GET["type"] == "add")
+        echo "selected"?>">Přidat zaměstnance</a> |
+    <a href="<?php echo $linkBase;?>&amp;type=customers" class="<?php if( isset($_GET["type"]) && $_GET["type"] == "customers")
+        echo "selected"?>">Databáze zákazníků</a>
 </div>
 <?php
 

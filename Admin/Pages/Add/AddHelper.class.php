@@ -162,7 +162,7 @@ final class AddHelper implements IAdminModule
 
                 <tr>
                     <td></td>
-                    <td><input type="submit" value="Přidat dodavatele"></td>
+                    <td><input type="submit" value="Přidat dodavatele" class="button"></td>
                 </tr>
             </table>
         </form>
@@ -668,7 +668,7 @@ final class AddHelper implements IAdminModule
 
                 <tr>
                     <td></td>
-                    <td><input type="submit" value="Přidat produkt"></td>
+                    <td><input type="submit" value="Přidat produkt" class="button"></td>
                 </tr>
             </table>
         </form>
@@ -792,7 +792,7 @@ final class AddHelper implements IAdminModule
 
                     <tr>
                         <td></td>
-                        <td><input type="submit" value="Přidat kategorii"></td>
+                        <td><input type="submit" value="Přidat kategorii" class="button"></td>
                     </tr>
             </table>
         </form>
@@ -831,7 +831,7 @@ final class AddHelper implements IAdminModule
 
                 <tr>
                     <td></td>
-                    <td><input type="submit" value="Přidat kategorii"></td>
+                    <td><input type="submit" value="Přidat kategorii" class="button"></td>
                 </tr>
             </table>
         </form>
