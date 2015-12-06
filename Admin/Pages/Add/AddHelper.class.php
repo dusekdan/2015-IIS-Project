@@ -416,7 +416,14 @@ final class AddHelper implements IAdminModule
 
         while($r = mysql_fetch_assoc($selectQuery))
         {
-            echo "<option value='$r[sup_id]'>" . $this->FILTER->prepareText($r["sup_name"]) . "</option>" . PHP_EOL;
+            if(isset($_POST["productSupplier"]) && $_POST["productSupplier"] == $r["sup_id"])
+            {
+                $selectedAdd = " selected='selected' ";
+            }
+            else
+            {$selectedAdd = "" ;}
+
+            echo "<option $selectedAdd value='$r[sup_id]'>" . $this->FILTER->prepareText($r["sup_name"]) . "</option>" . PHP_EOL;
         }
     }
 
@@ -426,7 +433,15 @@ final class AddHelper implements IAdminModule
 
         while($r = mysql_fetch_assoc($selectQuery))
         {
-            echo "<option value='$r[pcat_id]'>" . $this->FILTER->prepareText($r["pcat_name"]) . "</option>" . PHP_EOL;
+            if(isset($_POST["subcategoryCategory"]) && $_POST["subcategoryCategory"] == $r["pcat_id"])
+            {
+                $selectedAdd = " selected='selected' ";
+            }
+            else
+            {
+                $selectedAdd = "";
+            }
+            echo "<option $selectedAdd value='$r[pcat_id]'>" . $this->FILTER->prepareText($r["pcat_name"]) . "</option>" . PHP_EOL;
         }
     }
 
@@ -574,7 +589,15 @@ final class AddHelper implements IAdminModule
             $selectSubcategories = $this->DBH->query("SELECT psub_name, psub_id FROM product_subcategory WHERE psub_category = '".$r["pcat_id"]."'");
             while($sc = mysql_fetch_assoc($selectSubcategories))
             {
-                echo "<option value='$sc[psub_id]'>&nbsp;&nbsp;$sc[psub_name]</option>";
+                if(isset($_POST["productSubcategory"]) && $_POST["productSubcategory"] == $sc["psub_id"])
+                {
+                    $selectedAdd = " selected='selected' ";
+                }
+                else
+                {
+                    $selectedAdd = "";
+                }
+                echo "<option $selectedAdd value='$sc[psub_id]'>&nbsp;&nbsp;$sc[psub_name]</option>";
             }
         }
     }

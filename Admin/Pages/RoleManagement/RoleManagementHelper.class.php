@@ -380,7 +380,7 @@ class RoleManagementHelper implements IAdminModule
                             <td>Role*:</td>
                             <td>
                                 <select name="employeeRole">
-                                    <?php $this->loadUserRolesOptions(); ?>
+                                    <?php $this->loadUserRolesOptions($this->temporaryDataBuffer["emp_role"]); ?>
                                 </select>
                             </td>
                         </tr>
@@ -606,7 +606,7 @@ class RoleManagementHelper implements IAdminModule
                             <td>Role:</td>
                             <td>
                                 <select name="employeeRole">
-                                <?php $this->loadUserRolesOptions(); ?>
+                                <?php $this->loadAddUserRolesOptions(); ?>
                                 </select>
                             </td>
                         </tr>
@@ -629,17 +629,44 @@ class RoleManagementHelper implements IAdminModule
         <?php
     }
 
-    private function loadUserRolesOptions()
+    private function loadUserRolesOptions($employeeRole)
     {
         $selectQuery = $this->DBH->query("SELECT erole_id, erole_name FROM employee_role ORDER BY erole_name ASC");
 
         while($r = mysql_fetch_assoc($selectQuery))
         {
-            echo "<option value='$r[erole_id]'>$r[erole_name]</option>";
+            if($r["erole_id"] == $employeeRole)
+            {
+                $selectedAdd = " selected='selected' ";
+            }
+            else
+            {
+                $selectedAdd = "";
+            }
+            echo "<option $selectedAdd value='$r[erole_id]'>$r[erole_name]</option>";
         }
 
     }
 
+    private function loadAddUserRolesOptions()
+    {
+        $selectQuery = $this->DBH->query("SELECT erole_id, erole_name FROM employee_role ORDER BY erole_name ASC");
+
+        while($r = mysql_fetch_assoc($selectQuery))
+        {
+            if(isset($_POST["employeeRole"]) && $r["erole_id"] == $_POST["employeeRole"])
+            {
+                $selectedAdd = " selected='selected' ";
+            }
+            else
+            {
+                $selectedAdd = "";
+            }
+
+            echo "<option $selectedAdd value='$r[erole_id]'>$r[erole_name]</option>";
+        }
+
+    }
 
 }
 ?>

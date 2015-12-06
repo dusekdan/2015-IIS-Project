@@ -868,7 +868,7 @@ final class ShowHelper implements IAdminModule
                             <td>
                                 <select name="productSupplier">
                                     <?php
-                                    $this->loadSupplierSelectionOptions();
+                                    $this->loadSupplierSelectionOptions($this->temporaryDataBuffer["pr_supplier"]);
                                     ?>
                                 </select>
                             </td>
@@ -879,7 +879,7 @@ final class ShowHelper implements IAdminModule
                             <td>
                                 <select name="productSubcategory">
                                     <?php
-                                    $this->loadProductCategoryOptions();
+                                    $this->loadProductCategoryOptions($this->temporaryDataBuffer["pr_subcategory"]);
                                     ?>
                                 </select>
                             </td>
@@ -934,7 +934,7 @@ final class ShowHelper implements IAdminModule
                             <td>Nadřazená kategorie*:</td>
                             <td><select name="subcategoryCategory">
                                     <?php
-                                    $this->loadSubcategoryCategoryOptions();
+                                    $this->loadSubcategoryCategoryOptions($this->temporaryDataBuffer["psub_category"]);
                                     ?>
                                 </select>
                             </td>
@@ -951,7 +951,7 @@ final class ShowHelper implements IAdminModule
 
                         <tr>
                             <td></td>
-                            <td><input type="submit" value="Přidat kategorii"></td>
+                            <td><input type="submit" value="Upravit kategorii"></td>
                         </tr>
                     </table>
                 </form>
@@ -1032,7 +1032,7 @@ final class ShowHelper implements IAdminModule
 
     // Selection options load methods
 
-    private function loadProductCategoryOptions()
+    private function loadProductCategoryOptions($productCategory)
     {
         $selectCategoryQueries = $this->DBH->query("SELECT pcat_name, pcat_id FROM product_category ORDER BY pcat_name");
 
@@ -1044,28 +1044,55 @@ final class ShowHelper implements IAdminModule
             $selectSubcategories = $this->DBH->query("SELECT psub_name, psub_id FROM product_subcategory WHERE psub_category = '".$r["pcat_id"]."'");
             while($sc = mysql_fetch_assoc($selectSubcategories))
             {
-                echo "<option value='$sc[psub_id]'>&nbsp;&nbsp;$sc[psub_name]</option>";
+
+                if($productCategory == $sc["psub_id"])
+                {
+                    $selectedAdd = " selected='selected' ";
+                }
+                else
+                {
+                    $selectedAdd = "";
+                }
+
+                echo "<option $selectedAdd value='$sc[psub_id]'>&nbsp;&nbsp;$sc[psub_name]</option>";
             }
         }
     }
 
-    private function loadSubcategoryCategoryOptions()
+    private function loadSubcategoryCategoryOptions($selected)
     {
-        $selectQuery = $this->DBH->query("SELECT pcat_id, pcat_name FROM product_category ORDER BY pcat_name ASC");
+
+       $selectQuery = $this->DBH->query("SELECT pcat_id, pcat_name FROM product_category ORDER BY pcat_name ASC");
 
         while($r = mysql_fetch_assoc($selectQuery))
         {
-            echo "<option value='$r[pcat_id]'>" . $this->FILTER->prepareText($r["pcat_name"]) . "</option>" . PHP_EOL;
+            if($r["pcat_id"] == $selected)
+            {
+                $selectedAdd = " selected='selected' ";
+            }
+            else
+            {
+                $selectedAdd = "";
+            }
+            echo "<option $selectedAdd value='$r[pcat_id]'>" . $this->FILTER->prepareText($r["pcat_name"]) . "</option>" . PHP_EOL;
         }
     }
 
-    private function loadSupplierSelectionOptions()
+    private function loadSupplierSelectionOptions($productSupplier)
     {
         $selectQuery = $this->DBH->query("SELECT sup_name, sup_id FROM supplier ORDER BY sup_name ASC");
 
         while($r = mysql_fetch_assoc($selectQuery))
         {
-            echo "<option value='$r[sup_id]'>" . $this->FILTER->prepareText($r["sup_name"]) . "</option>" . PHP_EOL;
+            if($r["sup_id"] == $productSupplier)
+            {
+                $selectedAdd = " selected='selected' ";
+            }
+            else
+            {
+                $selectedAdd = "";
+            }
+            echo "<option $selectedAdd value='$r[sup_id]'>" . $this->FILTER->prepareText($r["sup_name"]) . "</option>" . PHP_EOL;
         }
     }
 
