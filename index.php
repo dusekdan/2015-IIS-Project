@@ -29,7 +29,9 @@ $Viewer = new EshopViewer($db, $Auth, $IF);
 <body>
 <div id="container">
     <div class="header">
-<h1><a href="index.php">IS Eshop</a> - Papírnictví</h1>
+        <div class="header_content">
+<h1><a href="index.php">IIS ESHOP</a> - PAPÍRNICTVÍ</h1>
+            <hr>
 <?php
 // Logon/Userinfo part
 $isSessionValid = false;
@@ -55,7 +57,7 @@ else
     ?><a href="index.php?auth=register">Registrovat se</a> | <a href="index.php?auth=logon">Přihlásit se</a> <?php
 }
 ?>
-
+    </div>
         </div>
 
 

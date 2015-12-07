@@ -58,11 +58,17 @@ class EshopViewer
         while($product = mysql_fetch_assoc($productInfoQuery))
         {
             echo "<div class='product-box'>";
+            echo "<div class='productname'>";
             echo "<h3><a href='index.php?shopaction=viewproduct&amp;productid=$product[pr_id]'>$product[pr_name]</a></h3>";
+            echo "</div>";
             echo "<hr>";
             echo "<a href='index.php?shopaction=viewproduct&amp;productid=$product[pr_id]'><img src='$product[pr_imageurl]' width='150' height='150'></a>";
             echo "<hr>";
-            echo "$product[pr_price] Kč s DPH | <a href='index.php?shopaction=addtobasket&amp;productid=$product[pr_id]'>Do košíku</a>";
+            echo "<strong>$product[pr_price] Kč </strong>s DPH";
+            echo "<br>";
+            echo "Skladem (x kusů)";
+            echo "<br>";
+            echo "<a href='index.php?shopaction=addtobasket&amp;productid=$product[pr_id]' class='addtobasket'>Do košíku</a>";
             echo "</div>";
         }
     }
@@ -133,9 +139,9 @@ class EshopViewer
         $productInfo = $this->DBH->fetch("SELECT pr_id, pr_name, pr_description, pr_quantity, pr_available, pr_imageurl, pr_price, pr_addtime, sup_resupplytime FROM product JOIN supplier ON pr_supplier = sup_id WHERE pr_id='$productId'");
 
             echo "<h2>$productInfo[pr_name]</h2>";
-            echo "<img src='$productInfo[pr_imageurl]' height='150' widht='150'>";
+            echo "<img src='$productInfo[pr_imageurl]' height='300' widht='300'>";
             echo "<p>$productInfo[pr_description]</p>";
-            echo "<p>Cena produktu: $productInfo[pr_price]</p>";
+            echo "<p>Cena produktu:<strong> $productInfo[pr_price] Kč</strong> s DPH</p>";
 
                 if($productInfo["pr_available"] == 'true')
                 {
@@ -143,10 +149,10 @@ class EshopViewer
                 }
                 else
                 {
-                    echo "<p>Dostupnost: Objednáme (dostupnost do $productInfo[sup_resupplytime] dní)</p>";
+                    echo "<p>Dostupnost: Objednáme (dostupnost do $productInfo[sup_resupplytime] dní)</p><br>";
                 }
 
-            echo "<a href='index.php?shopaction=addtobasket&productid=$productInfo[pr_id]'>Přidat do košíku</a>";
+            echo "<br><a href='index.php?shopaction=addtobasket&productid=$productInfo[pr_id]' class='addtobasket_det'>Přidat do košíku</a>";
 
     }
 
@@ -156,23 +162,25 @@ class EshopViewer
 
         $addedProductInfo = $this->DBH->fetch("SELECT pr_id, pr_name, pr_price FROM product WHERE pr_id='$productId'");
         ?>
+        <div class='form'>
+        <div class='form_content'>
         <form method="post" action="">
             <table>
                 <tr>
                     <td>Produkt: <?php echo $addedProductInfo["pr_name"]; ?> </td>
                     <td>Množství: <input type="text" name="addToBasketQuantity" value="1"></td>
                     <td>Cena:   <?php echo $addedProductInfo["pr_price"];?> Kč</td>
-                    <td><input type="submit" value="Přidat do košíku"></td>
+                    <td><input type="submit" value="Přidat do košíku" class="button"></td>
                 </tr>
                 <tr>
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td>Cena celkem: MAYBE_HERE</td>
                 </tr>
             </table>
         </form>
-        <hr>
+        </div>
+        </div>
         <?php
     }
 
@@ -245,7 +253,7 @@ class EshopViewer
 
         $priceTotal = 0;
 
-        echo "<table>";
+        echo "<table class='information'>";
         echo "<tr>";
         echo "<th>Název produktu</th><th>Množství</th><th>Cena</th><th></th>";
         echo"</tr>";
@@ -254,13 +262,13 @@ class EshopViewer
             $productInfo = $this->DBH->fetch("SELECT pr_name, pr_price FROM product WHERE pr_id= '$item'");
             $priceTotal += $value*$productInfo["pr_price"];
             echo "<tr>";
-            echo "<td>$productInfo[pr_name]</td><td>$value</td><td>$value × $productInfo[pr_price] = ". ($value*$productInfo["pr_price"]) ." Kč</td><td><form method='post' action=''><input type='hidden' value='$item' name='deleteItem'><input onclick=\"return confirm('Opravdu chcete odstranit tuto položku z košíku?');\" type='submit' value='Odebrat'></form></td>";
+            echo "<td>$productInfo[pr_name]</td><td>$value</td><td>$value × $productInfo[pr_price] = ". ($value*$productInfo["pr_price"]) ." Kč</td><td><form method='post' action=''><input type='hidden' value='$item' name='deleteItem'><input onclick=\"return confirm('Opravdu chcete odstranit tuto položku z košíku?');\" type='submit' value='Odebrat' class='button'></form></td>";
             echo "</tr>";
         }
         echo "</table>";
         echo "<hr>";
         echo "Celková cena: " . $priceTotal . " Kč <br>";
-        echo "<form method='post' action=''><input type='submit' name='makeOrder' value='Objednat obsah košíku'></form>";
+        echo "<form method='post' action=''><input type='submit' name='makeOrder' value='Objednat obsah košíku' class='button'></form>";
 
 
     }
@@ -329,7 +337,7 @@ class EshopViewer
         echo "<h2>Nevyřízené objednávky</h2>";
         $orderSelect = $this->DBH->query("SELECT ord_time, ord_processed, ord_id FROM orders WHERE (ord_processed='false' or ord_processed='waiting') AND ord_orderedby='$uid'  ORDER BY ord_time DESC");
 
-        echo "<table>";
+        echo "<table class='information'>";
         echo "<tr><th>Číslo objednávky</th><th>Čas</th><td>Položky</td><th>Celková cena</th></tr>";
         while($r = mysql_fetch_assoc($orderSelect))
         {
@@ -351,10 +359,12 @@ class EshopViewer
         echo "</table>";
 
 
+
         // Only already processed orders
         echo "<h2>Vyřízené objednávky</h2>";
         $orderSelect = $this->DBH->query("SELECT ord_time, ord_processed, ord_id FROM orders WHERE ord_processed='true' AND ord_orderedby='$uid'  ORDER BY ord_time DESC");
-        echo "<table>";
+
+        echo "<table class='information'>";
         echo "<tr><th>Číslo objednávky</th><th>Čas</th><td>Položky</td><th>Celková cena</th><th>TISK</th></tr>";
         while($r = mysql_fetch_assoc($orderSelect))
         {
@@ -454,7 +464,8 @@ class EshopViewer
         $_SESSION["formGenerationStamp"] = $timeStamp;
 
         ?>
-
+        <div class="form">
+        <div class="form_content">
         <form method="post" action="">
 
             <table>
@@ -503,12 +514,14 @@ class EshopViewer
                 </tr>
                 <tr>
                     <td>
-                        <input type="submit" value="Zaregistrovat">
+                        <input type="submit" value="Zaregistrovat" class='button'>
                     </td>
                 </tr>
             </table>
 
         </form>
+        </div>
+        </div>
 
         <?php
     }
@@ -580,7 +593,6 @@ class EshopViewer
     private function registerUser($registerFirstName, $registerLastName, $registerEmail, $registerAddress, $registerAddress, $registerPassword, $registerPhone, $registerGender)
     {
         $registerPassword = $this->FILTER->prepareInputForSQL($this->AUTH->hashPassword($registerPassword));
-        echo $registerPassword;
         //echo $registerFirstName . " - " . $registerLast$registerEmail;//
         $insertQuery = $this->DBH->query("INSERT INTO customer (cust_firstname, cust_lastname, cust_address, cust_email, cust_password, cust_phone, cust_registerdate, cust_gender)
         VALUES ('$registerFirstName', '$registerLastName', '$registerAddress', '$registerEmail', '$registerPassword', '$registerPhone', NOW(), '$registerGender')");
@@ -596,7 +608,8 @@ class EshopViewer
     public function loadLogonForm()
     {
         ?>
-
+        <div class='form'>
+        <div class='form_content'>
         <form method="post" action="">
             <table>
                 <tr>
@@ -609,10 +622,12 @@ class EshopViewer
                 </tr>
                 <tr>
                     <td></td>
-                    <td><input type="submit" value="Přihlásit se"></td>
+                    <td><input type="submit" value="Přihlásit se" class='button'></td>
                 </tr>
             </table>
         </form>
+        </div>
+        </div>
 
         <p>Nemáte ještě účet? <a href="index.php?auth=register">Vytvořte si ho zdarma zde!</a></p>
 
@@ -640,7 +655,7 @@ class EshopViewer
 
         $customerDataSelectQuery = $this->DBH->fetch("SELECT cust_firstname, cust_lastname FROM customer WHERE cust_id = '$uid'");
 
-        echo "Přihlášen: ". $customerDataSelectQuery["cust_firstname"] . " " . $customerDataSelectQuery["cust_lastname"] ." <small>(<a href='index.php?auth=logoff'>odhlásit</a>)</small> | <a href=\"index.php?shopaction=viewcart\">Košík</a> | <a href='index.php?shopaction=orderhistory'>Historie objednávek</a>  | <a href='index.php?shopaction=changecontact'>Změnit kontaktní údaje</a>";
+        echo "Přihlášen: <strong>". $customerDataSelectQuery["cust_firstname"] . " " . $customerDataSelectQuery["cust_lastname"] ." </strong><small>(<a href='index.php?auth=logoff'>odhlásit</a>)</small> | <a href=\"index.php?shopaction=viewcart\">Košík</a> | <a href='index.php?shopaction=orderhistory'>Historie objednávek</a>  | <a href='index.php?shopaction=changecontact'>Změnit kontaktní údaje</a>";
     }
 
     public function loadEditContactForm()
@@ -651,6 +666,8 @@ class EshopViewer
         echo "<h2>Změnit kontaktní údaje</h2>";
         ?>
 
+        <div class='form'>
+        <div class='form_content'>
         <form method="post" action="">
 
             <table>
@@ -691,12 +708,14 @@ class EshopViewer
                 </tr>
                 <tr>
                     <td>
-                        <input type="submit" value="Zaregistrovat">
+                        <input type="submit" value="Změnit údaje" class='button'>
                     </td>
                 </tr>
             </table>
 
         </form>
+        </div>
+        </div>
 
         <?php
     }
