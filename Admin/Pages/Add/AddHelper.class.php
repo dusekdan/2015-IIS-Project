@@ -625,6 +625,7 @@ final class AddHelper implements IAdminModule
                 <tr>
                     <td><strong>Cena</strong>*:</td>
                     <td><input class="text" type="text" name="productPrice"<?php $this->returnPostBackValue("productPrice");?>></td>
+                    <td><small>(ve formátu 33.90)</small></td>
                 </tr>
 
                 <tr>

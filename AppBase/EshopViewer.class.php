@@ -244,9 +244,9 @@ class EshopViewer
 
     public function loadBasketContents()
     {
-        if(!isset($_SESSION["cust_cart"]))
+        if(!isset($_SESSION["cust_cart"]) || !is_string($_SESSION["cust_cart"]))
         {
-            $_SESSION["cust_cart"] = array();
+            $_SESSION["cust_cart"] = "{}";
         }
 
         $basket = json_decode($_SESSION["cust_cart"], true);
@@ -470,39 +470,40 @@ class EshopViewer
 
             <table>
                 <tr>
-                    <td>Jméno</td>
+                    <td><strong>Jméno</strong>*</td>
                     <td><input type="text"
                                name="registerFirstName" <?php $this->returnPostBackValue("registerFirstName"); ?>></td>
                     <td><input type="hidden" name="formGenerationStamp" value="<?php echo $timeStamp; ?>"></td>
                 </tr>
                 <tr>
-                    <td>Příjmení</td>
+                    <td><strong>Příjmení</strong>*</td>
                     <td><input type="text"
                                name="registerLastName" <?php $this->returnPostBackValue("registerLastName"); ?>></td>
                 </tr>
                 <tr>
-                    <td>Email</td>
+                    <td><strong>Email</strong>*</td>
                     <td><input type="text" name="registerEmail" <?php $this->returnPostBackValue("registerEmail"); ?>>
                     </td>
                 </tr>
                 <tr>
-                    <td>Adresa</td>
+                    <td><strong>Adresa</strong>*</td>
                     <td><textarea type="text"
                                   name="registerAddress"><?php $this->returnPostBackValuePlain("registerAddress"); ?></textarea>
                     </td>
                 </tr>
                 <tr>
-                    <td>Heslo</td>
+                    <td><strong>Heslo</strong>*</td>
                     <td><input type="password" name="registerPassword"></td>
                 </tr>
                 <tr>
-                    <td>Potvrzení hesla</td>
+                    <td><strong>Potvrzení hesla</strong>*</td>
                     <td><input type="password" name="registerPassword2"></td>
                 </tr>
                 <tr>
                     <td>Telefon</td>
                     <td><input type="text"
                                name="registerPhone" <?php $this->returnPostBackValue("registerLastName"); ?>></td>
+                               <td><small>(ve formátu 721852605)</small></td>
                 </tr>
                 <tr>
                     <td>Pohlaví</td>
@@ -562,8 +563,20 @@ class EshopViewer
                 $doRegister = false;
             }
 
+            if(!empty($registerEmail) && !$this->FILTER->isMail($registerEmail))
+            {
+                $this->postBackInfo .= "Email není ve správném formátu!<br>";
+                $doRegister = false;
+            }
+
             if (empty($registerAddress)) {
                 $this->postBackInfo .= "Je třeba vyplnit vaši adresu<br>";
+                $doRegister = false;
+            }
+
+            if(!empty($registerPhone) && (!is_numeric($registerPhone) || strlen($registerPhone) != 9))
+            {
+                $this->postBackInfo .= "Telefon musí být v uvedeném formátu!";
                 $doRegister = false;
             }
 

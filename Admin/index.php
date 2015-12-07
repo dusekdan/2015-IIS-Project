@@ -32,7 +32,7 @@ if(isset($_SESSION["emp_id"]) && isset($_SESSION["emp_hash"]))
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="../Resources/CSS/BackendStyles.css">
-    <title></title>
+    <title>Přihlášení do administrace Papírnictví Dušek &amp; Popková</title>
 </head>
 
 <body>
