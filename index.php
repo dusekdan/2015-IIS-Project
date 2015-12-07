@@ -27,7 +27,8 @@ $Viewer = new EshopViewer($db, $Auth, $IF);
 
 </head>
 <body>
-<h1><a href="index.php">Eshop</a> - Papírnictví</h1>
+<div id="container">
+<h1><a href="index.php">IS Eshop</a> - Papírnictví</h1>
 <hr>
 <?php
 // Logon/Userinfo part
@@ -62,7 +63,7 @@ else
 
 <div id="left-menu">
     <div class="left-menu-heading">
-        Kategorie zboží
+        Kategorie&nbsp;zboží
     </div>
 
     <?php
@@ -70,7 +71,7 @@ else
     ?>
 </div>
 
-<div class="frontend-content">
+<div class="content">
 <?php if(!count($_GET)) { ?>
     <h2>Nejnovější produkty...</h2>
     <?php
@@ -262,7 +263,7 @@ if(isset($_GET["shopaction"]))
 </div>
 
 <div class="clearingbox"></div>
-
+</div>
 </body>
 
 </html>

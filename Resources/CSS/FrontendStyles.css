@@ -5,34 +5,45 @@ html, body
     font-family: 'MS Sans Serif', Arial, Verdana, sans-serif;
 }
 
-.frontend-menu
+.clearingbox
+{
+    width: 100%;
+    clear: both;
+    height: 5px;
+    background-color: #ff0000;
+}
+
+
+
+/* CONTAINING THE DESIGN */
+#container {
+    width: 95%;
+    height: auto;
+    clear: both;
+    background-color: lime;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 1px;
+    margin: auto;
+}
+
+#container h1
+{
+    font-size: 35px;
+}
+
+/* CONTENT PART */
+.content
 {
     float: left;
-    width: 250px;
+    width: 80%;
     border: solid 1px #000;
     height: auto;
     min-height: 500px;
     padding: 15px;
 }
 
-.frontend-content
-{
-    float: left;
-    width: 750px;
-    border: solid 1px #000;
-    height: auto;
-    min-height: 500px;
-    padding: 25px;
-}
-
-.clearingbox
-{
-    width: 800px;
-    clear: both;
-    height: 5px;
-    background-color: #ff0000;
-}
-
+/* PRODUCT BOX */
 .product-box
 {
     width: 180px;
@@ -40,6 +51,8 @@ html, body
     border: solid 1px #000;
     padding: 10px;
     float: left;
+    margin-left: 7.5px;
+    margin-right: 7.5px;
 }
 
 .product-box img
@@ -50,20 +63,23 @@ html, body
     clear: both;
 }
 
-
 /* LEFT MENU PART */
 #left-menu{
-    width: 210px;
+    /*width: 210px;*/
+    width: 13.25%;
     height: auto;
     min-height: 500px;
     background-color: #d1d6d1;
     padding: 0;
+    float: left;
 }
 
 .left-menu-heading
 {
-    width: 210px;
-    height: 21px;
+    /*width: 210px;*/
+    width: 100%;
+    /*height: 21px;*/
+    height: auto;
     background-color: red;
     background-image: url('../Images/menu-heading-left.png');
     background-repeat: repeat-x;
@@ -79,8 +95,11 @@ html, body
 {
     /*margin-top: 5px;
     margin-bottom: 5px;*/
-    width: 210px;
-    height: 21px;
+    /*width: 210px;*/
+    width: 100%;
+    /*height: 21px;*/
+    min-height: 21px;
+    height: auto;
     text-align: left;
     color: #000;
     font-weight: bold;
@@ -94,8 +113,6 @@ html, body
     padding-top: 6px;
     padding-bottom: 3px;
 }
-
-#left
 
 #left-menu .first:hover
 {
@@ -113,8 +130,8 @@ html, body
     border-top: dashed 1px #000;
     margin-top: -1px;
     margin-bottom: 0px;
-    padding-top: 6px;
-    padding-bottom: 2px;
+    padding-top: 9px;
+    padding-bottom: 6px;
 }
 
 #left-menu .sub-item:hover
