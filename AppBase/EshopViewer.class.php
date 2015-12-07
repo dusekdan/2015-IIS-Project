@@ -29,10 +29,26 @@ class EshopViewer
         $categorySelectQuery = $this->DBH->query("SELECT pcat_name, pcat_id FROM product_category ORDER BY pcat_name ASC");
 
         while ($row = mysql_fetch_assoc($categorySelectQuery)) {
-            echo "<a href='index.php?shopaction=viewcategory&categoryid=$row[pcat_id]'>" . $this->FILTER->prepareText($row["pcat_name"]) . "</a><br>";
+            $subcategoryCount = $this->DBH->fetch("SELECT count(*) subcategorycount FROM product_subcategory WHERE psub_category='$row[pcat_id]'");
+            if($subcategoryCount["subcategorycount"] > 0)
+            {
+            ?>
+                <a href="<?php echo "index.php?shopaction=viewcategory&categoryid=$row[pcat_id]"; ?>">
+                <div class="item first">
+                    <?php echo $this->FILTER->prepareText($row["pcat_name"]);?>
+                </div>
+                </a>
+            <?php
             $subcategorySelectQuery = $this->DBH->query("SELECT psub_name, psub_id FROM product_subcategory WHERE psub_category = '" . $row["pcat_id"] . "' ORDER BY psub_name ASC");
             while ($srow = mysql_fetch_assoc($subcategorySelectQuery)) {
-                echo "&nbsp;&nbsp;<a href='index.php?shopaction=viewsubcategory&subcategoryid=$srow[psub_id]'>" . $this->FILTER->prepareText($srow["psub_name"]) . "</a><br>";
+                ?>
+                <a href="<?php echo "index.php?shopaction=viewsubcategory&subcategoryid=$srow[psub_id]" ?>">
+                    <div class="item sub-item">
+                        <?php echo $this->FILTER->prepareText($srow["psub_name"]); ?>
+                    </div>
+                </a>
+                <?php
+                }
             }
         }
     }

@@ -57,14 +57,17 @@ else
 
 <hr>
 
-<div class="frontend-menu">
-    <!-- HERE COMES CATEGORY LISTING -->
-    <strong>Kategorie zboží</strong> <br>
+
+
+
+<div id="left-menu">
+    <div class="left-menu-heading">
+        Kategorie zboží
+    </div>
+
     <?php
     $Viewer->loadCategoryListing();
     ?>
-
-
 </div>
 
 <div class="frontend-content">
