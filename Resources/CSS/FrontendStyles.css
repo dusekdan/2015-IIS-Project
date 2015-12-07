@@ -180,7 +180,7 @@ div.header div.header_content {
     height: 4em;
 }
 
-.form .button, a.addtobasket, a.addtobasket_det {
+ .button, a.addtobasket, a.addtobasket_det {
 
     border: solid 1px;
     border-radius: 8px;
@@ -195,7 +195,7 @@ div.header div.header_content {
 
 }
 
-form .button:hover, a.addtobasket:hover, a.addtobasket_det:hover {
+ .button:hover, a.addtobasket:hover, a.addtobasket_det:hover {
     background-image: linear-gradient(#efbec6, #f5dfdd);
 }
 

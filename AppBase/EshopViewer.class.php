@@ -721,7 +721,7 @@ class EshopViewer
                     <td><input type="radio" name="registerGender[]" <?php if($dataSelect["cust_gender"] == "male"){echo "checked='checked'";}?> value="male">Muž <input type="radio"
                                                                                             name="registerGender[]"
                                                                                             value="female" <?php if($dataSelect["cust_gender"] == "female"){echo "checked='checked'";}?>>Žena <input
-                            type="radio" name="registerGender[]" value="none" checked="checked" <?php if($dataSelect["cust_gender"] == "none"){echo "checked='checked'";}?>> Preferuji neuvádět
+                            type="radio" name="registerGender[]" value="none"  <?php if($dataSelect["cust_gender"] == "none"){echo "checked='checked'";}?>> Preferuji neuvádět
                     </td>
                 </tr>
                 <tr>
