@@ -385,7 +385,7 @@ class EshopViewer
 
         echo "<table>";
 
-        echo "<tr><td><b>Objednávka č. $r[ord_id]</b></td><td>Čas objednání: $r[ord_time]</td></tr>";
+        echo "<tr><td><b>Objednávka č. $r[ord_id]</b></td><td>Čas objednání:". $this->convertTime($r["ord_time"]) ."</td></tr>";
 
         echo "<tr>";
         echo "<td valign='top'><b>Dodavatel:</b></td>";
@@ -402,6 +402,12 @@ class EshopViewer
         echo "</td></tr>";
         echo "<tr><td><b>Cena celkem:</b> </td><td>" . $this->calculateOrderPrice($orderId) . " Kč</td></tr>";
         echo "</table>";
+    }
+
+        private function convertTime($time)
+    {
+        $dateFormat = new DateTime($time);
+        return date_format($dateFormat, "m.d.Y H:i:s");
     }
 
     private function loadOrderItems($orderId)

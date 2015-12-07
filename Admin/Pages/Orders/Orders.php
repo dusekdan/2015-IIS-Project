@@ -62,7 +62,8 @@ if(isset($_GET["type"]) && $_GET["type"] == "print")
 {
     if(isset($_GET["orderid"]) && is_numeric($_GET["orderid"]))
     {
-        $MH->showOrderToPrint($_GET["orderid"]);
+        echo "<a href='javascript:print()'>Vytisknout</a><br><br>";
+        $MH->printOrder($_GET["orderid"]);
     }
     else
     {

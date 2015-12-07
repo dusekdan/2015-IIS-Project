@@ -322,12 +322,13 @@ class RoleManagementHelper implements IAdminModule
 
     public function loadCustomerList()
     {
-        $selectCustomers = $this->DBH->query("SELECT cust_firstname, cust_lastname, cust_email, cust_phone FROM customer ORDER BY cust_firstname, cust_lastname ASC");
+        $selectCustomers = $this->DBH->query("SELECT cust_firstname, cust_lastname, cust_email, cust_address, cust_phone FROM customer ORDER BY cust_firstname, cust_lastname ASC");
         echo "<table class='information'>";
+        echo "<tr><th>Jméno zákazníka</th><th>Adresa</th><th>Email</th><th>Telefon</th><th></th></tr>";
         while($r = mysql_fetch_assoc($selectCustomers))
         {
             echo "<tr>";
-            echo "<td>$r[cust_firstname] $r[cust_lastname]</td><td>$r[cust_email]</td><td>$r[cust_phone]</td>";
+            echo "<td>$r[cust_firstname] $r[cust_lastname]</td><td>".nl2br($r["cust_address"])."</td><td>$r[cust_email]</td><td>$r[cust_phone]</td>";
             echo "</tr>";
         }
         echo "</table>";
