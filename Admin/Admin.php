@@ -59,8 +59,13 @@ if(!isset($_SESSION["emp_id"]) || !isset($_SESSION["emp_hash"]))
 // Case when SESSION are no longer valid
 if(!$Auth->verifyEmployeeSession($_SESSION["emp_id"], $_SESSION["emp_hash"]))
 {
+    $Auth->logOffEmployee();
     header("location: index.php?timeout");
     exit;
+}
+else
+{
+    $Auth->reactivateUser($_SESSION["emp_id"], $_SESSION["emp_hash"]);
 }
 
 // Current user data SESSION storage
@@ -170,7 +175,7 @@ if(!isset($_GET["action"]))
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
-                            <a href="Admin.php">
+                            <a href="Admin.php?action=Stats">
                                 <img class="rs" src="../Resources/Images/seest.png"
                                      onmouseover="this.src='../Resources/Images/seest_selected.png'"
                                      onmouseout="this.src='../Resources/Images/seest.png'"/>
@@ -184,7 +189,7 @@ if(!isset($_GET["action"]))
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
-                            <a href="Admin.php">
+                            <a href="Admin.php?action=OrderState">
                                 <img class="rs" src="../Resources/Images/seeobj.png"
                                      onmouseover="this.src='../Resources/Images/seeobj_selected.png'"
                                      onmouseout="this.src='../Resources/Images/seeobj.png'"/>

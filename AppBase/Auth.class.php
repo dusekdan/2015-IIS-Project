@@ -100,18 +100,20 @@ final class Auth
         $difference = $timeNow - $timeLastActivity;
         if(($difference/60) > $this->inactivityLimit)
         {
-            //echo "PRESAZENA UROVEN NEAKTIVITY!" . $difference/60;;
-
             // Yes, user is inactive
             return true;
         }
         else
         {
-            // echo "nepresazena " . $difference/60;
             // No, user is not inactive
             return false;
         }
 
+    }
+
+    public function reactivateUser($uid, $hash)
+    {
+        $sql = $this->DBH->query("UPDATE employee_hash SET ehash_time=NOW() WHERE ehash_value='$hash' AND ehash_employee='$uid'");
     }
 
 
