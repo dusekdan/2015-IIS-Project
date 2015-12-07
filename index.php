@@ -73,7 +73,7 @@ else
 
 <div class="content">
 <?php if(!count($_GET)) { ?>
-    <h2>Nejnovější produkty...</h2>
+    <h2>NEJNOVĚJŠÍ PRODUKTY</h2>
     <?php
     $Viewer->loadNewestProducts();
     ?>

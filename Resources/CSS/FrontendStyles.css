@@ -10,7 +10,7 @@ html, body
     width: 100%;
     clear: both;
     height: 5px;
-    background-color: #ff0000;
+    background-color: #4b0000;
 }
 
 
@@ -20,7 +20,9 @@ html, body
     width: 95%;
     height: auto;
     clear: both;
-    background-color: lime;
+    background-color: deeppink;
+    background-image: url("../Images/background-frontend.png");
+    background-repeat: repeat;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 1px;
@@ -36,30 +38,60 @@ html, body
 .content
 {
     float: left;
-    width: 80%;
-    border: solid 1px #000;
+    width: 75%;
+    max-width: 80%;
+    border: none;
     height: auto;
     min-height: 500px;
     padding: 15px;
+    margin: 0 1% 1% 0;
+}
+
+.content h2 {
+    margin: 0;
+    padding: 0 0 1% 0;
+    text-align: center;
+    color: #561515;
+    font-size: 200%;
+
 }
 
 /* PRODUCT BOX */
 .product-box
 {
     width: 180px;
-    height: 280px;
+    height: 300px;
     border: solid 1px #000;
     padding: 10px;
     float: left;
-    margin-left: 7.5px;
-    margin-right: 7.5px;
+    margin: 2% 1% 0% 1%;
+    background-color: #e3e3e3;
+    text-align: center;
+}
+
+.product-box a {
+    color: #ac2929;
+    text-decoration: none;
+    text-align: center;
+}
+
+.product-box a:hover {
+    color: #ce2a2a;
+    text-decoration: none;
+}
+
+.product-box hr {
+    background-color: #8a2222;
+    margin: 4% 0.5% 4% 0.5%;
+    height: 1px;
+    clear: both;
 }
 
 .product-box img
 {
     width: 150px;
     height: 150px;
-    margin: auto;
+    margin: 5px 15px 5px 15px;
     clear: both;
 }
 
@@ -67,11 +99,16 @@ html, body
 #left-menu{
     /*width: 210px;*/
     width: 13.25%;
+    min-width: 130px;
     height: auto;
     min-height: 500px;
     background-color: #d1d6d1;
-    padding: 0;
+    padding: 0%;
     float: left;
+    border: solid 1px #000;
+    background-image: url('../Images/menu-heading-left.png');
+    background-repeat: repeat-x;
+    background-position: top center;
 }
 
 .left-menu-heading
@@ -80,9 +117,7 @@ html, body
     width: 100%;
     /*height: 21px;*/
     height: auto;
-    background-color: red;
-    background-image: url('../Images/menu-heading-left.png');
-    background-repeat: repeat-x;
+
     font-size: 17px;
     font-weight: bold;
     text-align: center;
@@ -96,7 +131,7 @@ html, body
     /*margin-top: 5px;
     margin-bottom: 5px;*/
     /*width: 210px;*/
-    width: 100%;
+    width: 94%;
     /*height: 21px;*/
     min-height: 21px;
     height: auto;
@@ -104,7 +139,7 @@ html, body
     color: #000;
     font-weight: bold;
     font-size: 15px;
-    padding: 0;
+    padding: 3%;
 }
 
 #left-menu .first
