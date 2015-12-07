@@ -88,7 +88,7 @@ $globalUSERNAME = $userData["emp_username"];
     <meta charset="UTF-8">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../Resources/CSS/BackendStyles.css">
-    <title></title>
+    <title>Papírnictví Dušek & Popková</title>
 </head>
 <body>
 
