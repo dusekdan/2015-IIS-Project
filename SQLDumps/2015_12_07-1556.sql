@@ -304,7 +304,7 @@ INSERT INTO `product_subcategory` (`psub_id`, `psub_name`, `psub_description`, `
 -- --------------------------------------------------------
 
 --
--- Struktura tabulky `supplier`
+-- Struktura tabulky `supplier` This is sparta
 --
 
 CREATE TABLE IF NOT EXISTS `supplier` (
