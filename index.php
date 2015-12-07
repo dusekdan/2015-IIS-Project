@@ -28,8 +28,8 @@ $Viewer = new EshopViewer($db, $Auth, $IF);
 </head>
 <body>
 <div id="container">
+    <div class="header">
 <h1><a href="index.php">IS Eshop</a> - Papírnictví</h1>
-<hr>
 <?php
 // Logon/Userinfo part
 $isSessionValid = false;
@@ -56,7 +56,7 @@ else
 }
 ?>
 
-<hr>
+        </div>
 
 
 
@@ -267,32 +267,3 @@ if(isset($_GET["shopaction"]))
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-<hr>
-<hr>
-<hr>
-<hr>
-<form method="post" action="">
-    <table>
-        <tr>
-            <td>Heslo k vygenerování:</td>
-            <td><input type="text" name="passwordToHash"></td>
-        </tr>
-        <tr>
-            <td>Hash:</td>
-            <td><input type="text" name="hashedPassword" value="<?php if(isset($_POST["passwordToHash"])){echo $Auth->hashPassword($_POST["passwordToHash"]);} ?>"></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td><input type="submit" value="Vygenerovat hash"></td>
-        </tr>
-    </table>
-</form>

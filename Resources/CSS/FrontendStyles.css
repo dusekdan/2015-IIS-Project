@@ -20,12 +20,11 @@ html, body
     width: 95%;
     height: auto;
     clear: both;
-    background-color: deeppink;
     background-image: url("../Images/background-frontend.png");
     background-repeat: repeat;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 1px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
     margin: auto;
 }
 
@@ -34,22 +33,39 @@ html, body
     font-size: 35px;
 }
 
+.header{
+    background-image: url("../Images/header-front.png");
+    background-repeat: repeat-x;
+    height: 99px;
+    margin: 0;
+    padding: 0;
+    border-left: solid 1px #000;
+    border-bottom: solid 1px #000;
+    border-top: none;
+    border-right: solid 1px #000;
+}
+
+.header hr {
+    background-color: #f4d1d4;
+    margin: 0.5% 0.5% 0.5% 0.5%;
+    height: 1px;
+}
+
 /* CONTENT PART */
 .content
 {
     float: left;
-    width: 75%;
-    max-width: 80%;
+    width: 79%;
     border: none;
     height: auto;
     min-height: 500px;
-    padding: 15px;
-    margin: 0 1% 1% 0;
+    padding: 0 1.5% 0 1.5%;
+    margin: 0 0.5% 0 0.5%;
 }
 
 .content h2 {
-    margin: 0;
-    padding: 0 0 1% 0;
+    margin: 2% 0 0 0;
+    padding: 0;
     text-align: center;
     color: #561515;
     font-size: 200%;
@@ -98,14 +114,17 @@ html, body
 /* LEFT MENU PART */
 #left-menu{
     /*width: 210px;*/
-    width: 13.25%;
-    min-width: 130px;
+    width: 15%;
+    margin: 0 0.5% 0 0;
     height: auto;
     min-height: 500px;
     background-color: #d1d6d1;
-    padding: 0%;
+    padding: 0;
     float: left;
-    border: solid 1px #000;
+    border-left: solid 1px #000;
+    border-bottom: solid 1px #000;
+    border-top: none;
+    border-right: solid 1px #000;
     background-image: url('../Images/menu-heading-left.png');
     background-repeat: repeat-x;
     background-position: top center;
