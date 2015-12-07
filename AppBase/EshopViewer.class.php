@@ -601,10 +601,140 @@ class EshopViewer
 
         $customerDataSelectQuery = $this->DBH->fetch("SELECT cust_firstname, cust_lastname FROM customer WHERE cust_id = '$uid'");
 
-        echo "Přihlášen: ". $customerDataSelectQuery["cust_firstname"] . " " . $customerDataSelectQuery["cust_lastname"] ." <small>(<a href='index.php?auth=logoff'>odhlásit</a>)</small> | <a href=\"index.php?shopaction=viewcart\">Košík</a> | <a href='index.php?shopaction=orderhistory'>Historie objednávek</a>";
+        echo "Přihlášen: ". $customerDataSelectQuery["cust_firstname"] . " " . $customerDataSelectQuery["cust_lastname"] ." <small>(<a href='index.php?auth=logoff'>odhlásit</a>)</small> | <a href=\"index.php?shopaction=viewcart\">Košík</a> | <a href='index.php?shopaction=orderhistory'>Historie objednávek</a>  | <a href='index.php?shopaction=changecontact'>Změnit kontaktní údaje</a>";
     }
 
+    public function loadEditContactForm()
+    {
 
+        $dataSelect = $this->DBH->fetch("select * from customer where cust_id='$_SESSION[cust_id]'");
+
+        echo "<h2>Změnit kontaktní údaje</h2>";
+        ?>
+
+        <form method="post" action="">
+
+            <table>
+                <tr>
+                    <td><strong>Jméno</strong>*:</td>
+                    <td><input type="text"
+                               name="registerFirstName" value="<?php echo $dataSelect["cust_firstname"];?>"></td>
+                    <td><input type="hidden" name="formGenerationStamp"></td>
+                </tr>
+                <tr>
+                    <td><strong>Příjmení</strong>*:</td>
+                    <td><input type="text"
+                               name="registerLastName" value="<?php echo $dataSelect["cust_lastname"];?>"></td>
+                </tr>
+                <tr>
+                    <td><strong>Email</strong>*:</td>
+                    <td><input type="text" name="registerEmail" value="<?php echo $dataSelect["cust_email"];?>">
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Adresa</strong>*:</td>
+                    <td><textarea type="text"
+                                  name="registerAddress"><?php echo $dataSelect["cust_address"];?></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Telefon:</td>
+                    <td><input type="text"
+                               name="registerPhone" value="<?php echo $dataSelect["cust_phone"];?>"></td>
+                </tr>
+                <tr>
+                    <td>Pohlaví:</td>
+                    <td><input type="radio" name="registerGender[]" <?php if($dataSelect["cust_gender"] == "male"){echo "checked='checked'";}?> value="male">Muž <input type="radio"
+                                                                                            name="registerGender[]"
+                                                                                            value="female" <?php if($dataSelect["cust_gender"] == "female"){echo "checked='checked'";}?>>Žena <input
+                            type="radio" name="registerGender[]" value="none" checked="checked" <?php if($dataSelect["cust_gender"] == "none"){echo "checked='checked'";}?>> Preferuji neuvádět
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="Zaregistrovat">
+                    </td>
+                </tr>
+            </table>
+
+        </form>
+
+        <?php
+    }
+
+    public function editCustomer()
+    {
+        $p = $_POST;
+        $editRecord = true;
+        $errorMessage = "";
+        $this->postBackInfo = "";
+
+        if(isset($p["registerFirstName"], $p["registerEmail"], $p["registerLastName"], $p["registerAddress"], $p["registerPhone"], $p["registerGender"]))
+        {
+            $firstName = $this->FILTER->prepareInputForSQL($p["registerFirstName"]);
+            $lastName = $this->FILTER->prepareInputForSQL($p["registerLastName"]);
+            $address = $this->FILTER->prepareInputForSQL($p["registerAddress"]);
+            $phone = $this->FILTER->prepareInputForSQL($p["registerPhone"]);
+            $gender = $this->FILTER->prepareInputForSQL($p["registerGender"][0]);
+            $mail = $this->FILTER->prepareInputForSQL($p["registerEmail"]);
+
+            if(empty($firstName))
+            {
+                $errorMessage .= "Jméno nesmí být prázdné!<br>";
+                $editRecord = false;
+            }
+
+            if(empty($lastName))
+            {
+                $errorMessage .= "Příjmení nesmí být prázdné!<br>";
+                $editRecord = false;
+            }
+
+            if(empty($address))
+            {
+                $errorMessage .= "Adresa musí být uvedena!<br>";
+                $editRecord = false;
+            }
+
+            if(!empty($phone) && (!is_numeric($phone)) || strlen($phone) != 9)
+            {
+                $errorMessage .= "Telefon musí být ve správném tvaru!<br>";
+                $editRecord = false;
+            }
+
+            if(!$this->FILTER->isMail($mail))
+            {
+                $errorMessage .= "Email musí být ve správném tvaru!<br>";
+                $editRecord = false;
+            }
+
+
+            if($editRecord)
+            {
+                $updateQuery = $this->DBH->query("UPDATE customer SET cust_firstname='$firstName', cust_lastname='$lastName', cust_email='$mail', cust_phone='$phone', cust_gender='$gender',
+                                cust_address='$address' WHERE cust_id='$_SESSION[cust_id]'");
+                if($updateQuery === -1)
+                {
+                    $this->postBackInfo = "Nepodařilo se upravit data, vnitřní chyba, zkuste to znovu prosím!<br>";
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                $this->postBackInfo = $errorMessage;
+                return false;
+            }
+        }
+        else
+        {
+            $this->postBackInfo = "Obdržena nedostatečná post DATA";
+            return false;
+        }
+    }
 }
 
 ?>

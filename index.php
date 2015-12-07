@@ -196,7 +196,7 @@ if(isset($_GET["shopaction"]))
                 $Auth->killUnauthorizedVisit();
                 $Viewer->orderBasketContent();
                 $Viewer->emptyBasket();
-                $PBH->showMessage("Obsah košíku byl objednán. Objednávku si můžete <a href='index.php'>prohlédnout zde</a>.");
+                $PBH->showMessage("Obsah košíku byl objednán. Objednávku si můžete <a href='index.php?shopaction=orderhistory'>prohlédnout zde</a>.");
             }
 
             $Viewer->loadBasketContents();
@@ -206,6 +206,25 @@ if(isset($_GET["shopaction"]))
         case "orderhistory":
             $Auth->killUnauthorizedVisit();
             $Viewer->showOrderHistory();
+            break;
+
+        case "changecontact":
+            $Auth->killUnauthorizedVisit();
+
+            if(isset($_POST["registerFirstName"]))
+            {
+                $editCustomerResult = $Viewer->editCustomer();
+                if($editCustomerResult)
+                {
+                    $PBH->showMessage("Údaje úspěšně změněny!");
+                }
+                else
+                {
+                    $PBH->showMessage($Viewer->getPostbackInfo(), "error");
+                }
+            }
+
+            $Viewer->loadEditContactForm();
             break;
 
         // Listing cases
