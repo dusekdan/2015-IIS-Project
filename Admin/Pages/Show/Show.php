@@ -11,13 +11,11 @@
 
 if(isset($_GET["edittype"], $_GET["edit"]) && is_numeric($_GET["edit"]))
 {
-    echo "<h2> Editovat ";
 
     switch($_GET["edittype"])
     {
         // Editace dodavatele
         case "supplier":
-            echo "dodavatele</h2>";
 
             $renderForm = true;
             if(isset($_POST["supplierName"]) && @$_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
@@ -46,7 +44,6 @@ if(isset($_GET["edittype"], $_GET["edit"]) && is_numeric($_GET["edit"]))
 
         // Editace kategorie
         case "category":
-            echo "kategorii</h2>";
 
             $renderForm = true;
             if(isset($_POST["categoryName"], $_POST["categoryDescription"]) && @$_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
@@ -71,7 +68,6 @@ if(isset($_GET["edittype"], $_GET["edit"]) && is_numeric($_GET["edit"]))
             break;
 
         case "subcategory":
-            echo "podkategorii</h2>";
 
             $renderForm = true;
             if(isset($_POST["subcategoryName"]) && @$_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
@@ -97,7 +93,6 @@ if(isset($_GET["edittype"], $_GET["edit"]) && is_numeric($_GET["edit"]))
             break;
 
         case "product":
-            echo "produkt</h2>";
 
             $renderForm = true;
             if(isset($_POST["productName"]) && @$_SESSION["formGenerationStamp"] == $_POST["formGenerationStamp"])
