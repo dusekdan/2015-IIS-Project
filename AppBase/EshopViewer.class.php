@@ -278,6 +278,11 @@ class EshopViewer
         $basket = json_decode($_SESSION["cust_cart"], true);
         $priceTotal = 0;
 
+        if(empty($basket))
+        {
+            return false;
+        }
+
         // Create a record for order table
         $uid = $this->FILTER->prepareInputForSQL($_SESSION["cust_id"]);
         $createOrderRecord = $this->DBH->query("INSERT INTO orders(ord_processed, ord_servedby, ord_orderedby, ord_time) VALUES('false', '0', '$uid', NOW())");

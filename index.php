@@ -200,9 +200,15 @@ if(isset($_GET["shopaction"]))
             if(isset($_POST["makeOrder"]))
             {
                 $Auth->killUnauthorizedVisit();
-                $Viewer->orderBasketContent();
-                $Viewer->emptyBasket();
-                $PBH->showMessage("Obsah košíku byl objednán. Objednávku si můžete <a href='index.php?shopaction=orderhistory'>prohlédnout zde</a>.");
+                if($Viewer->orderBasketContent() === false)
+                {
+                    $PBH->showMessage("Nelze objednat prázdný košík.", "warning");
+                }
+                else
+                {
+                    $Viewer->emptyBasket();
+                    $PBH->showMessage("Obsah košíku byl objednán. Objednávku si můžete <a href='index.php?shopaction=orderhistory'>prohlédnout zde</a>.");
+                }
             }
 
             $Viewer->loadBasketContents();
