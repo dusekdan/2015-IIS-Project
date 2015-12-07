@@ -28,20 +28,24 @@ if(isset($_POST["logon_username"]) && isset($_POST["logon_password"]))
     $name = $IF->stripUnsafeCredentialsCharacters($name);
 
     // Checks whether accepted data are in a correct format (no additional input filtration)
-    if(!$IF->checkUsernameFormat($name) || !$IF->checkPasswordFormat($password))
+    // Simplified in the end
+    /*if(!$IF->checkUsernameFormat($name) || !$IF->checkPasswordFormat($password))
     {
         echo $IF->getLastError();
+        header("location: index.php?loginunsuccessfull")
         exit;
-    }
+    }*/
 
     // Trial to log user on
     if($Auth->logOnEmployee($name, $password))
     {
         header("location: Admin.php");
+        exit;
     }
     else
     {
-        echo "Nemohli jsme Vás přihlásit! Buď jste zadali neexistující kombinaci jména a hesla, nebo Vás účet byl deaktivován!";
+        header("location: index.php?loginunsuccessful");
+        exit;
     }
 
 }

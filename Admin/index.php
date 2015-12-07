@@ -61,6 +61,11 @@ if(isset($_SESSION["emp_id"]) && isset($_SESSION["emp_hash"]))
     {
         $PBH->showMessage("Odhlášení proběhlo úspěšně!");
     }
+
+    if(isset($_GET["loginunsuccessful"]))
+    {
+        $PBH->showMessage("Přihlášení nebylo úspěšné. Buď byla zadána neexistující kombinace uživatelského jména a hesla, nebo Váš účet byl deaktivován.", "error");
+    }
     ?>
 
 <form class="form" method="post" action="LogOn.php">
