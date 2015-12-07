@@ -26,7 +26,7 @@ final class AddHelper implements IAdminModule
     private $postBackInfo = "";
     private $postBackType = "info";
 
-    const PRODUCT_DEFAULT_URL = "HTTP_DEFAULT_URL_FILLIN";
+    const PRODUCT_DEFAULT_URL = "http://iis.fhfstudio.com/SI/default_picture.png";
 
     public function getPostBackInfo()
     {
