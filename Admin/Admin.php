@@ -120,42 +120,39 @@ if(!isset($_GET["action"]))
          if($globalROLE == 1)
          {
          ?>
-            <div class="employee_box">
+            <div class="employee_box left">
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
                             <a href="Admin.php?action=Add&type=product">
-                                <img class="rs" src="../Resources/Images/add.png"
-                                     onmouseover="this.src='../Resources/Images/add_selected.png'"
-                                     onmouseout="this.src='../Resources/Images/add.png'"/>
+                                <img class="rs" src="../Resources/Images/ic_plus.png">
+                                <br><strong>PŘIDAT</strong><br><span class="narrow">produkt/dodavatele/kategorii</span>
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="employee_box">
+            <div class="employee_box middle">
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
                             <a href="Admin.php?action=Show&type=product">
-                                <img class="rs" src="../Resources/Images/see.png"
-                                     onmouseover="this.src='../Resources/Images/see_selected.png'"
-                                     onmouseout="this.src='../Resources/Images/see.png'"/>
+                                <img class="rs" src="../Resources/Images/ic_eye.png"/>
+                                <br><strong>PROHLÍŽET</strong><br><span class="narrow">produkt/dodavatele/kategorii</span>
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="employee_box">
+            <div class="employee_box right">
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
                             <a href="Admin.php?action=Orders&type=process">
-                                <img class="rs" src="../Resources/Images/deal.png"
-                                     onmouseover="this.src='../Resources/Images/deal_selected.png'"
-                                     onmouseout="this.src='../Resources/Images/deal.png'"/>
+                                <img class="rs" src="../Resources/Images/ic_ods.png"/>
+                                <br><strong>VYŘIZOVAT</strong><br><span class="narrow">objednávky</span>
                             </a>
                         </div>
                     </div>
@@ -171,42 +168,39 @@ if(!isset($_GET["action"]))
             <!-- 2nd row */  -->
 
 
-            <div class="director_box">
+            <div class="director_box left">
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
                             <a href="Admin.php?action=Stats">
-                                <img class="rs" src="../Resources/Images/seest.png"
-                                     onmouseover="this.src='../Resources/Images/seest_selected.png'"
-                                     onmouseout="this.src='../Resources/Images/seest.png'"/>
+                                <img class="rs" src="../Resources/Images/ic_stats.png">
+                                <br><strong>PROHLÍŽET</strong><br><span class="narrow">statistiky</span>
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="director_box">
+            <div class="director_box middle">
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
                             <a href="Admin.php?action=OrderState">
-                                <img class="rs" src="../Resources/Images/seeobj.png"
-                                     onmouseover="this.src='../Resources/Images/seeobj_selected.png'"
-                                     onmouseout="this.src='../Resources/Images/seeobj.png'"/>
+                                <img class="rs" src="../Resources/Images/ic_ords_check.png">
+                                <br><strong>ZJISTIT STAV</strong><br><span class="narrow">objednávek</span>
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="director_box">
+            <div class="director_box right">
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
                             <a href="Admin.php?action=RoleManagement&type=list">
-                                <img class="rs" src="../Resources/Images/edit.png"
-                                     onmouseover="this.src='../Resources/Images/edit_selected.png'"
-                                     onmouseout="this.src='../Resources/Images/edit.png'"/>
+                                <img class="rs" src="../Resources/Images/ic_man.png">
+                                <br><strong>SPRAVOVAT</strong><br><span class="narrow">zaměstnance/zákazníky</span>
                             </a>
                         </div>
                     </div>

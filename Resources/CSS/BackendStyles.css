@@ -67,30 +67,87 @@ a.selected {
 .boxes {
     width: 60%;
     height: 413px;
-    margin: auto;
+    margin: 3% auto 3%;
 }
 
 .employee_box, .director_box{
     float:left;
     position: relative;
     overflow: hidden;
-    width: 33%;
-    height: 100%;
-    margin: auto;
+    width: 30%;
+    padding-bottom: 30%;
+    background-color: #3a86d0;
+    margin: 0%;
+
+    -webkit-box-shadow: inset 0px 0px 200px 50px rgba(0,0,0,0.15);
+    -moz-box-shadow:    inset 0px 0px 200px 50px rgba(0,0,0,0.15);
+    box-shadow:         inset 0px 0px 200px 50px rgba(0,0,0,0.15);
+}
+
+.employee_box:hover, .director_box:hover{
+    -webkit-box-shadow: inset 0px 0px 200px 50px rgba(0,0,0,0.05);
+    -moz-box-shadow:    inset 0px 0px 200px 50px rgba(0,0,0,0.05);
+    box-shadow:         inset 0px 0px 200px 50px rgba(0,0,0,0.05);
+}
+
+.employee_box.left, .director_box.left {
+    border-left: solid 3px;
+    border-bottom: solid 3px;
+    border-top: solid 3px;
+    border-right: none;
+
+    border-bottom-left-radius: 10%;
+    border-top-left-radius: 10%;
+}
+
+.employee_box.middle, .director_box.middle {
+    border-right: none;
+    border-bottom: solid 3px;
+    border-top: solid 3px;
+    border-left: none;
+}
+
+.employee_box.right, .director_box.right {
+    border-right: solid 3px;
+    border-bottom: solid 3px;
+    border-top: solid 3px;
+    border-left: none;
+
+    border-bottom-right-radius: 10%;
+    border-top-right-radius: 10%;
 }
 
 
 .box_content {
     position:absolute;
-    height:100%; /* = 100% - 2*10% padding */
-    width:100%; /* = 100% - 2*5% padding */
-    padding: 0 0;
+    height:90%; /* = 100% - 2*10% padding */
+    width:90%; /* = 100% - 2*5% padding */
+    padding: 5%;
+    text-align: center;
+    color: black;
+    font-size: 150%;
+}
+
+.box_content a {
+    color: black;
+}
+
+.box_content a:hover {
+    color: black;
+}
+
+
+
+.box_content span.narrow{
+    font-weight: lighter;
+    font-size: 70%;
 }
 .box_content .rs{
-    width: auto;
-    height:auto;
-    max-height:100%;
-    max-width:100%;
+    width: 50%;
+    max-width:50%;
+    margin-bottom: 5%;
+
+
 }
 
 .box_table{
