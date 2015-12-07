@@ -37,7 +37,7 @@ class EshopViewer
                 <div class="item first">
                     <?php echo $this->FILTER->prepareText($row["pcat_name"]);?>
                 </div>
-                </a>
+
             <?php
             $subcategorySelectQuery = $this->DBH->query("SELECT psub_name, psub_id FROM product_subcategory WHERE psub_category = '" . $row["pcat_id"] . "' ORDER BY psub_name ASC");
             while ($srow = mysql_fetch_assoc($subcategorySelectQuery)) {
@@ -236,6 +236,11 @@ class EshopViewer
 
     public function loadBasketContents()
     {
+        if(!isset($_SESSION["cust_cart"]))
+        {
+            $_SESSION["cust_cart"] = array();
+        }
+
         $basket = json_decode($_SESSION["cust_cart"], true);
 
         $priceTotal = 0;
