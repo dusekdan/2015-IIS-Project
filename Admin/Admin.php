@@ -124,7 +124,7 @@ if(!isset($_GET["action"]))
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
-                            <a href="Admin.php?action=Add">
+                            <a href="Admin.php?action=Add&type=product">
                                 <img class="rs" src="../Resources/Images/add.png"
                                      onmouseover="this.src='../Resources/Images/add_selected.png'"
                                      onmouseout="this.src='../Resources/Images/add.png'"/>
@@ -138,7 +138,7 @@ if(!isset($_GET["action"]))
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
-                            <a href="Admin.php?action=Show">
+                            <a href="Admin.php?action=Show&type=product">
                                 <img class="rs" src="../Resources/Images/see.png"
                                      onmouseover="this.src='../Resources/Images/see_selected.png'"
                                      onmouseout="this.src='../Resources/Images/see.png'"/>
@@ -152,7 +152,7 @@ if(!isset($_GET["action"]))
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
-                            <a href="Admin.php?action=Orders">
+                            <a href="Admin.php?action=Orders&type=process">
                                 <img class="rs" src="../Resources/Images/deal.png"
                                      onmouseover="this.src='../Resources/Images/deal_selected.png'"
                                      onmouseout="this.src='../Resources/Images/deal.png'"/>
@@ -203,7 +203,7 @@ if(!isset($_GET["action"]))
                 <div class="box_content">
                     <div class="box_table">
                         <div class="box_table-cell">
-                            <a href="Admin.php?action=RoleManagement">
+                            <a href="Admin.php?action=RoleManagement&type=list">
                                 <img class="rs" src="../Resources/Images/edit.png"
                                      onmouseover="this.src='../Resources/Images/edit_selected.png'"
                                      onmouseout="this.src='../Resources/Images/edit.png'"/>

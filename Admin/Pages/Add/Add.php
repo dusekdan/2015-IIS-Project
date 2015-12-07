@@ -1,11 +1,11 @@
 <!-- MODULE DESIGN & CODE GOES HERE -->
 <div class="navigation">
     <a href="<?php echo $linkBase; ?>&amp;type=category" class="<?php if( isset($_GET["type"]) && $_GET["type"] == "category")
-        echo "selected"?>">Přidat (pod)kategorie</a> |
+        echo "selected"?>">(Pod)kategorii</a> |
     <a href="<?php echo $linkBase; ?>&amp;type=product" class="<?php if( isset($_GET["type"]) && $_GET["type"] == "product")
-        echo "selected"?>">Přidat produkt</a> |
+        echo "selected"?>">Produkt</a> |
     <a href="<?php echo $linkBase; ?>&amp;type=supplier" class="<?php if( isset($_GET["type"]) && $_GET["type"] == "supplier")
-        echo "selected"?>">Přidat dodavatele</a>
+        echo "selected"?>">Dodavatele</a>
 </div>
 
 <?php

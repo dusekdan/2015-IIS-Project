@@ -87,6 +87,7 @@ if(isset($_GET["type"]))
         case "customers":
             $MH->loadCustomerList();
             break;
+
     }
 
 
