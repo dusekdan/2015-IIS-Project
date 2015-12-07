@@ -5,7 +5,18 @@ if(!$Auth->checkUserAccess(2))
     die();
 }
 ?>
-<h2>Stav objednávek: <?php $MH->loadOrderProcessingState(); ?></h2>
-<p><em>Pokud je objednávek více jak 5 čekajících na zpracování, stav se mění na "nestíhá se vyřizovat".</em></p>
-<strong>Objednávky čekající na vyřízení:</strong> <?php $MH->loadWaitingOrders(); ?><br>
-<strong>Vyřízené objednávky</strong>: <?php $MH->loadProcessedOrders(); ?>
+<h2 class="statistics">Stav objednávek: <?php $MH->loadOrderProcessingState(); ?></h2>
+
+<table class="information statistics">
+    <tr>
+        <td>Objednávky čekající na vyřízení: </td>
+        <td class="number"><?php $MH->loadWaitingOrders(); ?></td>
+    </tr>
+
+    <tr>
+        <td>Vyřízené objednávky:</td>
+        <td class="number"><?php $MH->loadProcessedOrders(); ?></td>
+    </tr>
+
+</table>
+<p style="text-align: center"><small><em>Pokud je objednávek více jak 5 čekajících na zpracování, stav se mění na "nestíhá se vyřizovat".</em></small></p>

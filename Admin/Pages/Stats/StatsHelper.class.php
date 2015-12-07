@@ -140,7 +140,7 @@ class StatsHelper implements IAdminModule
     {
         $select = $this->DBH->query("SELECT count(*) totalcount, ord_orderedby, cust_firstname, cust_lastname FROM orders JOIN customer ON cust_id = ord_orderedby GROUP BY ord_orderedby ORDER BY count(*) DESC");
 
-        echo "<table>";
+        echo "<table class='information statistics'>";
         echo "<tr>";
         echo "<th>Jméno zákazníka</th><th>Počet objednávek</th>";
         echo "</tr>";
@@ -148,7 +148,7 @@ class StatsHelper implements IAdminModule
         while($r = mysql_fetch_assoc($select))
         {
             echo "<tr>";
-            echo "<td>$r[cust_firstname] $r[cust_lastname]</td><td>$r[totalcount]</td>";
+            echo "<td>$r[cust_firstname] $r[cust_lastname]</td><td class=\"number\">$r[totalcount]</td>";
             echo "</tr>";
         }
 
@@ -159,7 +159,7 @@ class StatsHelper implements IAdminModule
     {
         $select = $this->DBH->query("SELECT count(*) soldtotal, pr_name FROM order_product JOIN product ON pr_id=ordp_product GROUP BY ordp_product");
 
-        echo "<table>";
+        echo "<table class='information statistics'>";
         echo "<tr>";
         echo "<th>Produkt</th><th>Počet objednávek</th>";
         echo "</tr>";
@@ -167,7 +167,7 @@ class StatsHelper implements IAdminModule
         while($r = mysql_fetch_assoc($select))
         {
             echo "<tr>";
-            echo "<td>$r[pr_name]</td><td>$r[soldtotal]</td>";
+            echo "<td>$r[pr_name]</td><td class=\"number\">$r[soldtotal]</td>";
             echo "</tr>";
         }
 

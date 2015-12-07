@@ -10,7 +10,6 @@
 <?php
 if(isset($_GET["type"]) && $_GET["type"] == "process")
 {
-    echo "<h2>Objednávky čekající na vyřízení</h2>";
 
     if(isset($_POST["processOrder"], $_POST["orderId"]) && is_numeric($_POST["orderId"]))
     {
@@ -30,14 +29,12 @@ if(isset($_GET["type"]) && $_GET["type"] == "process")
 
 if(isset($_GET["type"]) && $_GET["type"] == "orderhistory")
 {
-    echo "<h2>Historie objednávek</h2>";
 
     $MH->loadOrderHistory();
 }
 
 if(isset($_GET["type"]) && $_GET["type"] == "resupply")
 {
-    echo "<h2>Doplnění zboží</h2>";
 
     $renderForm = true;
 

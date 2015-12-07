@@ -23,7 +23,6 @@ if(isset($_GET["type"]))
     switch($g["type"])
     {
         case "list":
-            echo "<h2>Seznam zaměstnanců</h2>";
 
 
             if(isset($_POST["deleteEmployee"]) && is_numeric($_POST["deleteEmployee"]))
@@ -58,7 +57,6 @@ if(isset($_GET["type"]))
             break;
 
         case "add":
-            echo "<h2>Přidat zaměstnance</h2>";
 
             $renderForm = true;
 
@@ -87,7 +85,6 @@ if(isset($_GET["type"]))
             break;
 
         case "customers":
-            echo "<h2>Seznam zákazníků</h2>";
             $MH->loadCustomerList();
             break;
     }
@@ -97,8 +94,6 @@ if(isset($_GET["type"]))
 
 if(isset($_GET["edittype"]) && $_GET["edittype"] == "employee" && is_numeric($_GET["edit"]))
 {
-
-    echo "<h2>Editovat zaměstnance</h2>";
 
     $renderForm = true;
 

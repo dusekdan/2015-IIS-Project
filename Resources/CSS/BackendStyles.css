@@ -127,9 +127,9 @@ a.selected {
     float: left;
     background-color: rgba(95, 156, 225, 0.24);
     display: block;
-    margin: 0 25%;
+    margin: 0 18%;
     padding: 3%;
-    width: 44%;
+    width: 60%;
     -webkit-column-count: 1;
     column-count: 1;
 }
@@ -142,6 +142,7 @@ a.selected {
 
 .form table tr, .form table td
 {
+    width: auto;
     height: 2em;
 }
 
@@ -175,7 +176,7 @@ form .button {
     border-radius: 8px;
     border-color: #2f5e9d;
     color: #102f6a;
-    background-color: rgba(95, 156, 225, 0.73);
+    background-image: linear-gradient(#95BAE1, #6ba0db);
     padding: 2% 6% 2% 6%;
     font-size: 100%;
     font-weight: bold;
@@ -185,7 +186,7 @@ form .button {
 }
 form .button:hover {
 
-    box-shadow: inset 0 0 1em #397ac4;
+    background-image: linear-gradient(#6ba0db, #95BAE1);
 }
 
 table.information {
@@ -201,7 +202,7 @@ table.information {
 
 table.information th {
     padding-bottom: 2%;
-    border-bottom: solid 2px #2f5e9d;
+    border-bottom: solid 2px rgba(95, 156, 225, 0.36);
 }
 
 table.information td.buttons {
@@ -209,7 +210,16 @@ table.information td.buttons {
 }
 
 table.information td {
-    border-bottom: solid 1px rgb(95, 156, 225);
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    padding-right: 1%;
+    padding-left: 1%;
+    border-bottom: solid 1px rgba(95, 156, 225, 0.3);
+}
+
+table.information td.number {
+    text-align: right;
+    font-weight: bold;
 }
 
 
@@ -242,7 +252,7 @@ select option {
     background: rgba(95, 156, 225, 0.29);
 }
 select:active, select:hover {
-    outline: none
+    /*outline: none*/
 }
 
 select:active, select:hover {
@@ -312,3 +322,20 @@ div.navigation a.selected {
     color: #214ea5;
     border-bottom: solid #214ea5 2px;
 }
+
+h2.statistics {
+    margin-top: 2%;
+    text-align: center;
+}
+
+table.statistics {
+    width: 45%;
+    clear: both;
+    float: left;
+    background-color: rgba(95, 156, 225, 0.24);
+    display: table;
+
+    margin: 0 28% 3% 28%;
+    padding: 3%;
+}
+

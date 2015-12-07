@@ -87,9 +87,9 @@ class OrdersHelper implements IAdminModule
     {
         $orderHistorySelect = $this->DBH->query("SELECT ord_time, ord_processed, ord_id, cust_firstname, cust_lastname FROM orders JOIN customer ON cust_id = ord_orderedby WHERE ord_processed='true' ORDER BY ord_time ASC");
 
-        echo "<table>";
+        echo "<table class='information'>";
         echo "<tr>";
-        echo "<th>Číslo objednávky</th><th>Čas objednání</th><th>Jméno zákazníka</th><th>Částka</th><th>Stav</th>";
+        echo "<th>Číslo objednávky</th><th>Čas objednání</th><th>Jméno zákazníka</th><th>Částka</th><th>Stav</th><th></th>";
         echo "</tr>";
         while($r = mysql_fetch_assoc($orderHistorySelect))
         {
@@ -102,7 +102,7 @@ class OrdersHelper implements IAdminModule
             echo "<td>Vyřízena";
             $this->loadOrderItems($r["ord_id"]);
             echo "</td>";
-            echo "<td><a href='Admin.php?action=Orders&amp;type=print&amp;orderid=$r[ord_id]'>TISK</a></td>";
+            echo "<td class=\"buttons\"><a href='Admin.php?action=Orders&amp;type=print&amp;orderid=$r[ord_id]'>TISK</a></td>";
             echo "</tr>";
         }
         echo "</table>";
@@ -120,17 +120,19 @@ class OrdersHelper implements IAdminModule
     public function loadResupplyForm()
     {
         ?>
-
+        <div class="form">
+        <div class="form_content">
         <form method="post" action="">
             <table>
                 <tr>
                     <td><strong>Produkt</strong>*</td>
-                    <td><select style="width: 450px;" name="resupplyProduct">
+                    <td><select name="resupplyProduct">
                             <?php
                                 $this->loadProductOptions();
                             ?>
                         </select>
                     </td>
+                    <td></td>
                 </tr>
                 <tr>
                     <td><strong>Množství</strong>*:</td>
@@ -140,9 +142,12 @@ class OrdersHelper implements IAdminModule
                 <tr>
                     <td></td>
                     <td><input type="submit" value="Doobjednat zboží" class="button"></td>
+                    <td></td>
                 </tr>
             </table>
         </form>
+        </div>
+        </div>
 
         <?php
     }
@@ -210,7 +215,7 @@ class OrdersHelper implements IAdminModule
 
                 echo "</td>";
                 echo "<td><form method='post' action=''><input type='hidden' value='$r[ord_id]' name='orderId'><input name='processOrder' type='submit' value='Vyřídit' class='button'></form></td>";
-                echo "<td><a href=''>TISK</a></td>";
+                echo "<td class=\"buttons\"><a href=''>TISK</a></td>";
             }
             else
             {
@@ -218,8 +223,8 @@ class OrdersHelper implements IAdminModule
                 $this->loadOrderItems($r["ord_id"]);
                 echo "<em>$this->postBackInfo</em>";
                 echo "</td>";
-                echo "<td><a href='Admin.php?action=Orders&amp;type=resupply'>Doobjednat zboží</a></td>";
-                echo "<td><a href='Admin.php?action=Orders&amp;type=print&amp;orderid=$r[ord_id]'>TISK</a></td>";
+                echo "<td class=\"buttons\"><a href='Admin.php?action=Orders&amp;type=resupply'>Doobjednat zboží</a></td>";
+                echo "<td class=\"buttons\"><a href='Admin.php?action=Orders&amp;type=print&amp;orderid=$r[ord_id]'>TISK</a></td>";
             }
             echo "</tr>";
         }
