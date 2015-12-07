@@ -40,7 +40,7 @@ if(isset($_SESSION["emp_id"]) && isset($_SESSION["emp_hash"]))
 
 <header>
 
-    <img src="../Resources/Images/logo.png" alt="LOGO" class="logo" height="120px">
+    <a href="../index.php"><img src="../Resources/Images/logo.png" alt="LOGO" class="logo" height="120px"></a>
     <div class="headline">Přihlášení do systému</div>
     <hr class="headerLine">
 

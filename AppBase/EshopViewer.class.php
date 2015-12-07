@@ -328,9 +328,14 @@ class EshopViewer
         // Not resolved orders
         echo "<h2>Nevyřízené objednávky</h2>";
         $orderSelect = $this->DBH->query("SELECT ord_time, ord_processed, ord_id FROM orders WHERE (ord_processed='false' or ord_processed='waiting') AND ord_orderedby='$uid'  ORDER BY ord_time DESC");
+
+        echo "<table>";
+        echo "<tr><th>Číslo objednávky</th><th>Čas</th><td>Položky</td><th>Celková cena</th></tr>";
         while($r = mysql_fetch_assoc($orderSelect))
         {
-            echo "Objednávka z " . $r["ord_time"] . " STAV: $r[ord_processed]<br>";
+            echo "<tr>";
+            echo "<td>$r[ord_id]</td><td>$r[ord_time]</td><td><ul>";
+
             $itemSelect = $this->DBH->query("SELECT pr_name, pr_price, ordp_product, ordp_quantity FROM order_product JOIN product ON pr_id=ordp_product WHERE ordp_order='$r[ord_id]'");
 
             $i = 1;
@@ -341,27 +346,34 @@ class EshopViewer
                 $i++;
             }
 
-            echo "Celková cena...";
-            //echo "<a href=''>Vytisknout objednávku</a><hr>";
+            echo "</ul></td><td>".$this->calculateOrderPrice($r["ord_id"])."</td></tr>";
         }
+        echo "</table>";
+
 
         // Only already processed orders
         echo "<h2>Vyřízené objednávky</h2>";
         $orderSelect = $this->DBH->query("SELECT ord_time, ord_processed, ord_id FROM orders WHERE ord_processed='true' AND ord_orderedby='$uid'  ORDER BY ord_time DESC");
+        echo "<table>";
+        echo "<tr><th>Číslo objednávky</th><th>Čas</th><td>Položky</td><th>Celková cena</th><th>TISK</th></tr>";
         while($r = mysql_fetch_assoc($orderSelect))
         {
-            echo "Objednávka z " . $r["ord_time"] . "<br>";
+            echo "<tr>";
+            echo "<td>$r[ord_id]</td><td>$r[ord_time]</td><td><ul>";
+
             $itemSelect = $this->DBH->query("SELECT pr_name, pr_price, ordp_product, ordp_quantity FROM order_product JOIN product ON pr_id=ordp_product WHERE ordp_order='$r[ord_id]'");
 
             $i = 1;
             while($it = mysql_fetch_assoc($itemSelect))
             {
                 echo "Položka #$i: " . $it["pr_name"] . " $it[ordp_quantity] × $it[pr_price] = " . ($it['ordp_quantity']*$it['pr_price']) . " Kč <br>";
+
                 $i++;
             }
-            echo "Celková cena...<br>";
-            echo "<a target='_blank' href='print.php?orderid=$r[ord_id]'>Vytisknout objednávku</a><hr>";
+
+            echo "</ul></td><td>".$this->calculateOrderPrice($r["ord_id"])."</td><td><a target='_blank' href='print.php?orderid=$r[ord_id]'>Vytisknout</a></td></tr>";
         }
+        echo "</table>";
 
     }
 
