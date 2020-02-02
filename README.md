@@ -3,7 +3,7 @@
 
 One of the shittiest repositories on my GitHub account. Just go away and never come back. Everything was written on the go, with one eye, right hand and only one testicle. The ol' good FITVUT-style. If you are stupid enough to copy any of this, be sure you'll end up infront of the disciplinary commission on FIT, Brno University of Technology.
 
-And yes, it was for full, sweeeet 30/30 points.
+And yes, it was for full, sweeeet 30/30 points. 
 
 ### Authors
 
